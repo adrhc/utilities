@@ -1,4 +1,4 @@
-package adrhc.go.ro.util.collection;
+package ro.go.adrhc.util.collection;
 
 import java.util.Collection;
 import java.util.Comparator;

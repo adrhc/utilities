@@ -1,4 +1,4 @@
-package adrhc.go.ro.util;
+package ro.go.adrhc.util;
 
 public class CpuUtils {
 	public static int cpuCoresMultipliedBy(String multiplier) {

@@ -1,4 +1,4 @@
-package adrhc.go.ro.util.collection;
+package ro.go.adrhc.util.collection;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package adrhc.go.ro.util;
+package ro.go.adrhc.util;
 
 import java.util.Arrays;
 import java.util.Objects;
