@@ -2,6 +2,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <!-- https://github.com/spring-projects/spring-shell/issues/324 -->
+        <version>3.1.0</version>
+        <!--
+            Spring Boot [2.7.0] is not compatible with this Spring Cloud release train',
+            action = 'Change Spring Boot version to one of the following versions [2.4.x, 2.5.x].
+        -->
+        <!--<version>2.7.0</version>-->
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
     <groupId>ro.go.adrhc</groupId>
     <artifactId>utilities</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -16,6 +29,9 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
+
+        <commons-io-version>2.11.0</commons-io-version>
+        <sneakythrow-version>1.2.0</sneakythrow-version>
     </properties>
 
     <dependencyManagement>
@@ -31,30 +47,35 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <!--            <version>1.18.30</version>-->
+            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.rainerhahnekamp</groupId>
             <artifactId>sneakythrow</artifactId>
-            <version>1.2.0</version>
+            <version>${sneakythrow-version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io-version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.9</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
