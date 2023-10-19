@@ -72,4 +72,8 @@ public class SimpleDirectory {
 	public Path resolvePath(Path path) {
 		return rootPathSupplier.get().resolve(path);
 	}
+
+	public Path getRoot() {
+		return rootPathSupplier.get();
+	}
 }
