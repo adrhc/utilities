@@ -39,7 +39,7 @@ public class FilenameUtils {
 				.trim();
 	}
 
-	public static Optional<String> filenameNoExtOf(Path path) {
+	public static Optional<String> filenameNoExt(Path path) {
 		return Optional.ofNullable(path)
 				.map(Path::getFileName)
 				.map(Path::toString)
@@ -52,7 +52,7 @@ public class FilenameUtils {
 				+ suffix + filename.substring(extensionDot);
 	}
 
-	public static String removeFilenameSuffix(String filename, String suffix) {
+	public static String removeSuffix(String filename, String suffix) {
 		int lastIndex = filename.lastIndexOf(suffix);
 		if (lastIndex < 0) {
 			return filename;
