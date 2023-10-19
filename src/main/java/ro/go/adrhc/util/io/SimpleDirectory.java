@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 import java.nio.file.CopyOption;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -71,6 +72,17 @@ public class SimpleDirectory {
 
 	public Path resolvePath(Path path) {
 		return rootPathSupplier.get().resolve(path);
+	}
+
+	public List<Path> getAllPaths() {
+		return getPaths(getRoot());
+	}
+
+	/**
+	 * @param start is excluded from the result
+	 */
+	public List<Path> getPaths(Path start) {
+		return transformPathsStream(start, Stream::toList);
 	}
 
 	public Path getRoot() {
