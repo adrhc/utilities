@@ -27,4 +27,8 @@ public class Pair<K, V> {
 	public <R> Pair<K, R> transformValue(Function<V, R> valueTransformer) {
 		return new Pair<>(this.key, valueTransformer.apply(this.value));
 	}
+
+	public boolean hasValue() {
+		return value != null;
+	}
 }
