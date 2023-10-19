@@ -1,8 +1,8 @@
 package ro.go.adrhc.util.io;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 
+import java.io.IOException;
 import java.nio.file.CopyOption;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Path;
@@ -27,46 +27,41 @@ public class SimpleDirectory {
 		return new SimpleDirectory(FOLLOW_LINKS, fsUtils, rootPathSupplier, pathsFilter);
 	}
 
-	public <R> R transformPathsStream(Function<Stream<Path>, R> pathsStreamProcessor) {
+	public <R> R transformPathsStream(Function<Stream<Path>, R> pathsStreamProcessor) throws IOException {
 		return transformPathsStream(rootPathSupplier.get(), pathsStreamProcessor);
 	}
 
-	@SneakyThrows
-	public <R> R transformPathsStream(Path start, Function<Stream<Path>, R> pathsStreamProcessor) {
+	public <R> R transformPathsStream(Path start, Function<Stream<Path>, R> pathsStreamProcessor) throws IOException {
 		try (Stream<Path> paths = fsUtils.walk(resolvePath(start), fileVisitOption)) {
 			return pathsStreamProcessor.apply(paths.filter(pathsFilter));
 		}
 	}
 
-	public void doWithPathsStream(Consumer<Stream<Path>> pathsStreamConsumer) {
+	public void doWithPathsStream(Consumer<Stream<Path>> pathsStreamConsumer) throws IOException {
 		doWithPathsStream(rootPathSupplier.get(), pathsStreamConsumer);
 	}
 
-	@SneakyThrows
-	public void doWithPathsStream(Path start, Consumer<Stream<Path>> pathsStreamConsumer) {
+	public void doWithPathsStream(Path start, Consumer<Stream<Path>> pathsStreamConsumer) throws IOException {
 		try (Stream<Path> paths = fsUtils.walk(resolvePath(start), fileVisitOption)) {
 			pathsStreamConsumer.accept(paths.filter(pathsFilter));
 		}
 	}
 
-	@SneakyThrows
-	public Path cp(Path source, Path destination, CopyOption... options) {
+	public Path cp(Path source, Path destination, CopyOption... options) throws IOException {
 		source = resolvePath(source);
 		destination = resolvePath(destination);
 		fsUtils.copy(source, destination, options);
 		return destination;
 	}
 
-	@SneakyThrows
-	public Path mv(Path source, Path destination, CopyOption... options) {
+	public Path mv(Path source, Path destination, CopyOption... options) throws IOException {
 		source = resolvePath(source);
 		destination = resolvePath(destination);
 		fsUtils.move(source, destination, options);
 		return destination;
 	}
 
-	@SneakyThrows
-	public boolean rm(Path path) {
+	public boolean rm(Path path) throws IOException {
 		return fsUtils.deleteIfExists(resolvePath(path));
 	}
 
@@ -74,14 +69,14 @@ public class SimpleDirectory {
 		return rootPathSupplier.get().resolve(path);
 	}
 
-	public List<Path> getAllPaths() {
+	public List<Path> getAllPaths() throws IOException {
 		return getPaths(getRoot());
 	}
 
 	/**
 	 * @param start is excluded from the result
 	 */
-	public List<Path> getPaths(Path start) {
+	public List<Path> getPaths(Path start) throws IOException {
 		return transformPathsStream(start, Stream::toList);
 	}
 
