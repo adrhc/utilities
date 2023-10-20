@@ -10,11 +10,13 @@ public class FileSystemUtils {
 	}
 
 	public Path copy(Path source, Path target, CopyOption... options) throws IOException {
+		createParentDirectories(target);
 		return Files.copy(source, target, options);
 	}
 
 	public Path move(Path source, Path target, CopyOption... options) throws IOException {
-		return Files.copy(source, target, options);
+		createParentDirectories(target);
+		return Files.move(source, target, options);
 	}
 
 	public boolean deleteIfExists(Path path) throws IOException {
@@ -27,5 +29,12 @@ public class FileSystemUtils {
 
 	public boolean isRegularFile(Path path, LinkOption... options) {
 		return Files.isRegularFile(path, options);
+	}
+
+	private void createParentDirectories(Path target) throws IOException {
+		Path parent = target.getParent();
+		if (parent != null && !Files.exists(parent)) {
+			Files.createDirectories(parent);
+		}
 	}
 }
