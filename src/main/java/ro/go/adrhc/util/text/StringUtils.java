@@ -15,24 +15,29 @@ public class StringUtils {
 		return text == null || text.isBlank();
 	}
 
-	public static <T> String concat(Function<T, String> toString, Iterable<T> iterable) {
-		return stream(iterable).map(toString).collect(Collectors.joining("\n"));
-	}
-
-	public static <T> String concat(Iterable<T> iterable) {
-		return concat("\n", iterable);
-	}
-
 	public static <T> String concat(Stream<T> stream) {
-		return concat("\n", stream::iterator);
+		return concat("\n", Function.identity(), stream::iterator);
 	}
 
 	public static <T> String concat(String separator, Stream<T> stream) {
-		return concat(separator, stream::iterator);
+		return concat(separator, Function.identity(), stream::iterator);
+	}
+
+	public static <T> String concat(Iterable<T> iterable) {
+		return concat("\n", Function.identity(), iterable);
+	}
+
+	public static <T, R> String concat(Function<T, R> mapper, Iterable<T> iterable) {
+		return concat("\n", mapper, iterable);
 	}
 
 	public static <T> String concat(String separator, Iterable<T> iterable) {
+		return concat(separator, Function.identity(), iterable);
+	}
+
+	public static <T, R> String concat(String separator, Function<T, R> mapper, Iterable<T> iterable) {
 		return stream(iterable)
+				.map(mapper)
 				.map(Object::toString)
 				.collect(Collectors.joining(separator));
 	}
