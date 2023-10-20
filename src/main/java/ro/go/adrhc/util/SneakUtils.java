@@ -24,7 +24,7 @@ public class SneakUtils {
 			return sneakySupplier.get();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return List.of();
 		}
+		return List.of();
 	}
 }
