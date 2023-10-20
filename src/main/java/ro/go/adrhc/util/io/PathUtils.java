@@ -2,12 +2,16 @@ package ro.go.adrhc.util.io;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import ro.go.adrhc.util.Assert;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.nio.file.attribute.PosixFilePermission.*;
 
@@ -35,6 +39,13 @@ public class PathUtils {
 	 */
 	public static Path relativize(Path referencePath, Path path) {
 		return path.isAbsolute() ? referencePath.relativize(path) : path;
+	}
+
+	public static Set<Path> relativize(Path referencePath, Collection<Path> paths) {
+		Assert.isTrue(referencePath.isAbsolute(), "referencePath must be absolute!");
+		Assert.isTrue(paths.stream().allMatch(p -> p.startsWith(referencePath)),
+				"All paths must have referencePath as parent!");
+		return paths.stream().map(referencePath::relativize).collect(Collectors.toSet());
 	}
 
 	/**
