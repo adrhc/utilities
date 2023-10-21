@@ -9,7 +9,7 @@ import java.util.function.Function;
 @UtilityClass
 public class SneakyFunctionUtils {
 	public static <T, R, E extends Exception>
-	SneakyFunction<T, Optional<R>, E> toSneakyFunction(Function<T, R> fn) {
+	SneakyFunction<T, Optional<R>, E> toOptionalResult(Function<T, R> fn) {
 		return t -> Optional.of(fn.apply(t));
 	}
 }
