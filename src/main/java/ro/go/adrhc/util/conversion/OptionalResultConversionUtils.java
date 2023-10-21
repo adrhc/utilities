@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class OptionalResultConversionUtils {
-	public static <T, R, E extends Exception> List<R> convertAll(
+	public static <T, R, E extends Exception> List<R> convertAllSneaky(
 			SneakyFunction<T, Optional<R>, E> converter, Collection<T> items) throws E {
 		List<R> result = new ArrayList<>();
 		for (T t : items) {
