@@ -10,6 +10,6 @@ import java.util.function.Function;
 public class SneakyFunctionUtils {
 	public static <T, R, E extends Exception>
 	SneakyFunction<T, Optional<R>, E> toOptionalResult(Function<T, R> fn) {
-		return t -> Optional.of(fn.apply(t));
+		return t -> Optional.ofNullable(fn.apply(t));
 	}
 }
