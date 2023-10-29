@@ -2,12 +2,18 @@ package ro.go.adrhc.util.collection;
 
 import lombok.experimental.UtilityClass;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @UtilityClass
 public class StreamUtils {
+	public static <T> HashSet<T> collectToHashSet(Stream<T> tStream) {
+		return tStream.collect(Collectors.toCollection(HashSet::new));
+	}
+
 	public static <T> Stream<T> stream(Iterable<T> iterable) {
 		return stream(false, iterable);
 	}
