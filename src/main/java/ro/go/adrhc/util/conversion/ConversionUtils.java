@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static ro.go.adrhc.util.collection.StreamUtils.stream;
+
 @UtilityClass
 public class ConversionUtils {
 	public static <T, R, E extends Exception> List<R>
@@ -20,13 +22,15 @@ public class ConversionUtils {
 		return result;
 	}
 
-	public static <T, R> List<R> convertCollection(Function<T, R> converter, Collection<T> items) {
-		return items.stream()
-				.map(converter)
-				.toList();
+	public static <T, R> Stream<R> convertStream(Function<T, R> converter, Stream<T> tStream) {
+		return tStream.map(converter);
 	}
 
-	public static <T, R> Stream<R> convertStream(Function<T, R> converter, Stream<T> items) {
-		return items.map(converter);
+	public static <T, R> List<R> convertCollection(Function<T, R> converter, Collection<T> tCollection) {
+		return tCollection.stream().map(converter).toList();
+	}
+
+	public static <T, R> List<R> convertCollection(Function<T, R> converter, Iterable<T> tIterable) {
+		return stream(tIterable).map(converter).toList();
 	}
 }
