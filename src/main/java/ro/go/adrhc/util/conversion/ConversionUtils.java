@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 @UtilityClass
 public class ConversionUtils {
@@ -23,5 +24,9 @@ public class ConversionUtils {
 		return items.stream()
 				.map(converter)
 				.toList();
+	}
+
+	public static <T, R> Stream<R> convertAll(Function<T, R> converter, Stream<T> items) {
+		return items.map(converter);
 	}
 }
