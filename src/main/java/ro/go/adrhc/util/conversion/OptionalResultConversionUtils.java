@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class OptionalResultConversionUtils {
 	public static <T, R, E extends Exception> List<R> convertAllSneaky(
@@ -18,10 +19,11 @@ public class OptionalResultConversionUtils {
 		return result;
 	}
 
-	public static <T, R> List<R> convertAll(Function<T, Optional<R>> converter, Collection<T> items) {
-		return items.stream()
-				.map(converter)
-				.flatMap(Optional::stream)
-				.toList();
+	public static <T, R> List<R> convertCollection(Function<T, Optional<R>> converter, Collection<T> items) {
+		return items.stream().map(converter).flatMap(Optional::stream).toList();
+	}
+
+	public static <T, R> Stream<R> convertStream(Function<T, Optional<R>> converter, Stream<T> items) {
+		return items.map(converter).flatMap(Optional::stream);
 	}
 }

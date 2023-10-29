@@ -20,13 +20,13 @@ public class ConversionUtils {
 		return result;
 	}
 
-	public static <T, R> List<R> convertAll(Function<T, R> converter, Collection<T> items) {
+	public static <T, R> List<R> convertCollection(Function<T, R> converter, Collection<T> items) {
 		return items.stream()
 				.map(converter)
 				.toList();
 	}
 
-	public static <T, R> Stream<R> convertAll(Function<T, R> converter, Stream<T> items) {
+	public static <T, R> Stream<R> convertStream(Function<T, R> converter, Stream<T> items) {
 		return items.map(converter);
 	}
 }
