@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class PairsCollection<K, V> {
@@ -20,6 +21,14 @@ public class PairsCollection<K, V> {
 
 	public void addAll(PairsCollection<K, V> pairsCollection) {
 		pairs.addAll(pairsCollection.pairs);
+	}
+
+	public Optional<V> getValueByKeyRef(K keyRef) {
+		return pairs.stream().filter(p -> p.key() == keyRef).map(Pair::value).findAny();
+	}
+
+	public List<K> getKeys() {
+		return pairs.stream().map(Pair::key).toList();
 	}
 
 	public List<V> getValues() {
