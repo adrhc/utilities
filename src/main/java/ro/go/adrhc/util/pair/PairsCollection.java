@@ -22,6 +22,10 @@ public class PairsCollection<K, V> {
 		pairs.addAll(pairsCollection.pairs);
 	}
 
+	public List<V> getValues() {
+		return pairs.stream().map(Pair::value).toList();
+	}
+
 	public HashMap<K, V> toHashMap() {
 		HashMap<K, V> map = new HashMap<>(pairs.size());
 		pairs.forEach(p -> map.put(p.key(), p.value()));
