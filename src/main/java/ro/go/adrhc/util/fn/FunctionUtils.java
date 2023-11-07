@@ -24,4 +24,11 @@ public class FunctionUtils {
 			}
 		};
 	}
+
+	public static <T> Function<T, String> string(Function<T, ?> function) {
+		return t -> {
+			Object value = function.apply(t);
+			return value == null ? null : value.toString();
+		};
+	}
 }
