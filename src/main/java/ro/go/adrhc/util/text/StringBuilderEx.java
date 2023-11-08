@@ -10,7 +10,7 @@ public class StringBuilderEx {
 	private final StringBuilder sb = new StringBuilder();
 	private final String separator;
 
-	public static StringBuilderEx space() {
+	public static StringBuilderEx spaceSeparator() {
 		return new StringBuilderEx(" ");
 	}
 
