@@ -17,6 +17,10 @@ public class StreamCounter {
 		return count.getCount();
 	}
 
+	public void reset() {
+		count.count = 0;
+	}
+
 	@Getter
 	private static class StreamCountHolder {
 		private long count;
