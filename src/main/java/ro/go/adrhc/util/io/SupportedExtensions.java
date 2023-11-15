@@ -1,6 +1,7 @@
 package ro.go.adrhc.util.io;
 
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.nio.file.Path;
 import java.util.Set;
@@ -10,6 +11,7 @@ import static org.apache.commons.io.FilenameUtils.getExtension;
 import static ro.go.adrhc.util.io.PathUtils.hasFilename;
 
 @RequiredArgsConstructor
+@ToString
 public class SupportedExtensions {
 	private final Set<String> supportedExtensions;
 
