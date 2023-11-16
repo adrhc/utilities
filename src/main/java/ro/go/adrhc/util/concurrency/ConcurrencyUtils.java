@@ -1,4 +1,4 @@
-package ro.go.adrhc.util;
+package ro.go.adrhc.util.concurrency;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,6 +11,11 @@ import java.util.stream.Stream;
 
 @Slf4j
 public class ConcurrencyUtils {
+	public static void waitForAll(Stream<CompletableFuture<?>> futures) {
+		CompletableFuture<?>[] futuresArray = futures.toArray(CompletableFuture[]::new);
+		CompletableFuture.allOf(futuresArray).join();
+	}
+
 	public static <T> Stream<T> safelyGetAll(Stream<CompletableFuture<T>> futures) {
 		return joinAll(futures).map(ConcurrencyUtils::safelyGet).flatMap(Optional::stream);
 	}
