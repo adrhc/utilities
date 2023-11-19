@@ -20,6 +20,14 @@ public class FilesMetadataLoader<M> {
 	private final SimpleDirectory filesDirectory;
 	private final Function<Path, M> metadataLoader;
 
+	public static <M> FilesMetadataLoader<M> create(
+			ExecutorService adminExecutorService, ExecutorService metadataExecutorService,
+			SimpleDirectory filesDirectory, Function<Path, M> metadataLoader) {
+		return new FilesMetadataLoader<>(metadataExecutorService,
+				new CompletableFuturesToOutcomeStreamConverter(adminExecutorService),
+				filesDirectory, metadataLoader);
+	}
+
 	public Stream<M> loadByPaths(Stream<Path> ids) {
 		return ids.flatMap(this::safelyLoadByPath);
 	}
