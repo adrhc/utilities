@@ -7,8 +7,6 @@ import ro.go.adrhc.util.ObjectUtils;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedTransferQueue;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitForAll;
@@ -18,21 +16,30 @@ import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitForAll;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class AsyncStream<T> {
+public class CompletableFuturesToOutcomeStreamConverter {
 	private final LinkedTransferQueue<Object> queue = new LinkedTransferQueue<>();
 	private final ExecutorService adminExecutorService;
 
-	public Stream<T> toStream(Function<Consumer<T>, Stream<CompletableFuture<?>>> futuresProvider) {
-		Stream<CompletableFuture<?>> futures = futuresProvider.apply(queue::put);
-		return toStream(futures);
+	/**
+	 * Consumer<T> is the asynchronous processing outcome collector.
+	 */
+	public <T> Stream<T> toStream(Stream<CompletableFuture<T>> futures) {
+		Stream<CompletableFuture<?>> voidFutures = futures
+				.map(cf -> cf.whenComplete(this::doWhenComplete));
+		return collect(voidFutures).map(ObjectUtils::cast);
 	}
 
-	protected Stream<T> toStream(Stream<CompletableFuture<?>> futures) {
+	protected void doWhenComplete(Object t, Throwable e) {
+		if (t != null) {
+			queue.put(t);
+		}
+	}
+
+	protected Stream<Object> collect(Stream<CompletableFuture<?>> futures) {
 		signalProcessingCompletion(queue, futures);
 		return Stream.generate(() -> null)
 				.map(it -> safelyTake(queue, this))
-				.takeWhile(it -> it != this)
-				.map(ObjectUtils::cast);
+				.takeWhile(it -> it != this);
 	}
 
 	protected void signalProcessingCompletion(
