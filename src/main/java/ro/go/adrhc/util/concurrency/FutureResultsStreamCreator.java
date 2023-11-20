@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedTransferQueue;
 import java.util.stream.Stream;
 
 import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitForAll;
@@ -19,8 +18,7 @@ public class FutureResultsStreamCreator extends AbstractStreamCreator {
 	private final ExecutorService adminExecutorService;
 
 	public <T> Stream<T> create(Stream<CompletableFuture<T>> futures) {
-		Stream<CompletableFuture<?>> voidFutures = attachFuturesOutcomeCollector(futures);
-		asyncWaitForFuturesOutcome(queue, voidFutures);
+		asyncWaitForFuturesOutcome(attachFuturesOutcomeCollector(futures));
 		return toStream();
 	}
 
@@ -36,13 +34,11 @@ public class FutureResultsStreamCreator extends AbstractStreamCreator {
 		}
 	}
 
-	protected void asyncWaitForFuturesOutcome(
-			LinkedTransferQueue<Object> queue, Stream<CompletableFuture<?>> futures) {
-		adminExecutorService.execute(() -> waitForFuturesOutcome(queue, futures));
+	protected void asyncWaitForFuturesOutcome(Stream<CompletableFuture<?>> futures) {
+		adminExecutorService.execute(() -> waitForFuturesOutcome(futures));
 	}
 
-	protected void waitForFuturesOutcome(
-			LinkedTransferQueue<Object> queue, Stream<CompletableFuture<?>> futures) {
+	protected void waitForFuturesOutcome(Stream<CompletableFuture<?>> futures) {
 		waitForAll(futures);
 		queueStopMarker();
 	}

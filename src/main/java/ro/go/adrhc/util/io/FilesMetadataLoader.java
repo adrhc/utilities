@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.util.concurrency.FutureResultsStreamCreator;
 
-import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
@@ -17,42 +15,33 @@ import java.util.stream.Stream;
 public class FilesMetadataLoader<M> {
 	private final ExecutorService metadataExecutorService;
 	private final FutureResultsStreamCreator futureResultsStreamCreator;
-	private final SimpleDirectory filesDirectory;
+	private final DirectoryPathsStreamCreator pathsStreamCreator;
 	private final Function<Path, M> metadataLoader;
 
 	public static <M> FilesMetadataLoader<M> create(
 			ExecutorService adminExecutorService, ExecutorService metadataExecutorService,
-			SimpleDirectory filesDirectory, Function<Path, M> metadataLoader) {
+			DirectoryPathsStreamCreator pathsStreamCreator, Function<Path, M> metadataLoader) {
 		return new FilesMetadataLoader<>(metadataExecutorService,
 				new FutureResultsStreamCreator(adminExecutorService),
-				filesDirectory, metadataLoader);
+				pathsStreamCreator, metadataLoader);
 	}
 
 	public Stream<M> loadByPaths(Stream<Path> ids) {
-		return ids.flatMap(this::safelyLoadByPath);
+		return ids.map(pathsStreamCreator::create).flatMap(this::loadPaths);
 	}
 
-	public Stream<M> loadAll() throws IOException {
-		return loadByStartPath(filesDirectory.getRoot());
+	public Stream<M> loadAll() {
+		return loadPaths(pathsStreamCreator.create());
 	}
 
-	protected Stream<M> safelyLoadByPath(Path startPath) {
-		try {
-			return loadByStartPath(startPath);
-		} catch (IOException e) {
-			log.error(e.getMessage(), e);
-			return Stream.empty();
-		}
-	}
-
-	protected Stream<M> loadByStartPath(Path startPath) throws IOException {
-		List<Path> filePaths = filesDirectory.getPaths(startPath);
-		Stream<CompletableFuture<M>> futures = filePaths.stream().map(this::loadMetadata);
+	protected Stream<M> loadPaths(Stream<Path> filePaths) {
+		Stream<CompletableFuture<M>> futures = filePaths.map(this::loadMetadata);
 		return futureResultsStreamCreator.create(futures);
 	}
 
 	protected CompletableFuture<M> loadMetadata(Path filePath) {
-		return CompletableFuture.supplyAsync(() -> doLoadMetadata(filePath), metadataExecutorService);
+		return CompletableFuture.supplyAsync(() ->
+				doLoadMetadata(filePath), metadataExecutorService);
 	}
 
 	protected M doLoadMetadata(Path path) {
