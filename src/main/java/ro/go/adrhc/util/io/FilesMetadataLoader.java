@@ -20,10 +20,11 @@ public class FilesMetadataLoader<M> {
 
 	public static <M> FilesMetadataLoader<M> create(
 			ExecutorService adminExecutorService, ExecutorService metadataExecutorService,
-			DirectoryPathsStreamCollector pathsStreamCreator, Function<Path, M> metadataLoader) {
+			SimpleDirectory directory, Function<Path, M> metadataLoader) {
 		return new FilesMetadataLoader<>(metadataExecutorService,
 				new FuturesOutcomeStreamCollector(adminExecutorService),
-				pathsStreamCreator, metadataLoader);
+				new DirectoryPathsStreamCollector(metadataExecutorService, directory),
+				metadataLoader);
 	}
 
 	public Stream<M> loadByPaths(Stream<Path> ids) {
