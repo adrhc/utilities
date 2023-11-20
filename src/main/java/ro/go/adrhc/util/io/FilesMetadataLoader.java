@@ -2,11 +2,11 @@ package ro.go.adrhc.util.io;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ro.go.adrhc.util.concurrency.CompletableFuturesToOutcomeStreamConverter;
+import ro.go.adrhc.util.concurrency.FutureResultsStreamCreator;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 @Slf4j
 public class FilesMetadataLoader<M> {
 	private final ExecutorService metadataExecutorService;
-	private final CompletableFuturesToOutcomeStreamConverter futuresToStreamConverter;
+	private final FutureResultsStreamCreator futureResultsStreamCreator;
 	private final SimpleDirectory filesDirectory;
 	private final Function<Path, M> metadataLoader;
 
@@ -24,7 +24,7 @@ public class FilesMetadataLoader<M> {
 			ExecutorService adminExecutorService, ExecutorService metadataExecutorService,
 			SimpleDirectory filesDirectory, Function<Path, M> metadataLoader) {
 		return new FilesMetadataLoader<>(metadataExecutorService,
-				new CompletableFuturesToOutcomeStreamConverter(adminExecutorService),
+				new FutureResultsStreamCreator(adminExecutorService),
 				filesDirectory, metadataLoader);
 	}
 
@@ -46,12 +46,9 @@ public class FilesMetadataLoader<M> {
 	}
 
 	protected Stream<M> loadByStartPath(Path startPath) throws IOException {
-		return toFileMetadataStream(filesDirectory.getPaths(startPath));
-	}
-
-	protected Stream<M> toFileMetadataStream(Collection<Path> filePaths) {
-		return futuresToStreamConverter
-				.toStream(filePaths.stream().map(this::loadMetadata));
+		List<Path> filePaths = filesDirectory.getPaths(startPath);
+		Stream<CompletableFuture<M>> futures = filePaths.stream().map(this::loadMetadata);
+		return futureResultsStreamCreator.create(futures);
 	}
 
 	protected CompletableFuture<M> loadMetadata(Path filePath) {

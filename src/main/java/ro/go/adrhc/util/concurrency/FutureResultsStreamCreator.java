@@ -16,14 +16,11 @@ import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitForAll;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class CompletableFuturesToOutcomeStreamConverter {
+public class FutureResultsStreamCreator {
 	private final LinkedTransferQueue<Object> queue = new LinkedTransferQueue<>();
 	private final ExecutorService adminExecutorService;
 
-	/**
-	 * Consumer<T> is the asynchronous processing outcome collector.
-	 */
-	public <T> Stream<T> toStream(Stream<CompletableFuture<T>> futures) {
+	public <T> Stream<T> create(Stream<CompletableFuture<T>> futures) {
 		Stream<CompletableFuture<?>> voidFutures = futures
 				.map(cf -> cf.whenComplete(this::doWhenComplete));
 		return collect(voidFutures).map(ObjectUtils::cast);
