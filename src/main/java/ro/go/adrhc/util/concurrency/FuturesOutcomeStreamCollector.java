@@ -14,7 +14,7 @@ import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitForAll;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class FutureResultsStreamCreator extends AbstractStreamCreator {
+public class FuturesOutcomeStreamCollector extends AbstractStreamCreator {
 	private final ExecutorService adminExecutorService;
 
 	public <T> Stream<T> create(Stream<CompletableFuture<T>> futures) {

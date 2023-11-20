@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Slf4j
-public class DirectoryPathsStreamCreator extends AbstractStreamCreator {
+public class DirectoryPathsStreamCollector extends AbstractStreamCreator {
 	private final ExecutorService executorService;
 	private final SimpleDirectory directory;
 

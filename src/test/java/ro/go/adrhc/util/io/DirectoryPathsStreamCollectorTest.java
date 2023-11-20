@@ -15,11 +15,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 @Slf4j
-class DirectoryPathsStreamCreatorTest {
+class DirectoryPathsStreamCollectorTest {
 	@Test
 	void create(@TempDir Path tmp) throws IOException {
 		FileSystemUtils fileSystemUtils = new FileSystemUtils();
-		DirectoryPathsStreamCreator pathsStreamCreator = new DirectoryPathsStreamCreator(
+		DirectoryPathsStreamCollector pathsStreamCreator = new DirectoryPathsStreamCollector(
 				Executors.newSingleThreadExecutor(),
 				SimpleDirectory.of(fileSystemUtils, () -> tmp, fileSystemUtils::isRegularFile));
 

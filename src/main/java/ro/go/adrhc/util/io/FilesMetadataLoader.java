@@ -2,7 +2,7 @@ package ro.go.adrhc.util.io;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ro.go.adrhc.util.concurrency.FutureResultsStreamCreator;
+import ro.go.adrhc.util.concurrency.FuturesOutcomeStreamCollector;
 
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
@@ -14,15 +14,15 @@ import java.util.stream.Stream;
 @Slf4j
 public class FilesMetadataLoader<M> {
 	private final ExecutorService metadataExecutorService;
-	private final FutureResultsStreamCreator futureResultsStreamCreator;
-	private final DirectoryPathsStreamCreator pathsStreamCreator;
+	private final FuturesOutcomeStreamCollector futuresOutcomeStreamCollector;
+	private final DirectoryPathsStreamCollector pathsStreamCreator;
 	private final Function<Path, M> metadataLoader;
 
 	public static <M> FilesMetadataLoader<M> create(
 			ExecutorService adminExecutorService, ExecutorService metadataExecutorService,
-			DirectoryPathsStreamCreator pathsStreamCreator, Function<Path, M> metadataLoader) {
+			DirectoryPathsStreamCollector pathsStreamCreator, Function<Path, M> metadataLoader) {
 		return new FilesMetadataLoader<>(metadataExecutorService,
-				new FutureResultsStreamCreator(adminExecutorService),
+				new FuturesOutcomeStreamCollector(adminExecutorService),
 				pathsStreamCreator, metadataLoader);
 	}
 
@@ -36,7 +36,7 @@ public class FilesMetadataLoader<M> {
 
 	protected Stream<M> loadPaths(Stream<Path> filePaths) {
 		Stream<CompletableFuture<M>> futures = filePaths.map(this::loadMetadata);
-		return futureResultsStreamCreator.create(futures);
+		return futuresOutcomeStreamCollector.create(futures);
 	}
 
 	protected CompletableFuture<M> loadMetadata(Path filePath) {
