@@ -22,6 +22,17 @@ public class SimpleDirectory {
 	protected final Supplier<Path> rootPathSupplier;
 	protected final Predicate<Path> pathsFilter;
 
+	/**
+	 * Using no paths filter!
+	 */
+	public static SimpleDirectory fixedRootPath(Path path) {
+		return fixedRootPath(path, p -> true);
+	}
+
+	public static SimpleDirectory fixedRootPath(Path path, Predicate<Path> pathsFilter) {
+		return of(new FileSystemUtils(), () -> path, pathsFilter);
+	}
+
 	public static SimpleDirectory of(FileSystemUtils fsUtils,
 			Supplier<Path> rootPathSupplier, Predicate<Path> pathsFilter) {
 		return new SimpleDirectory(FOLLOW_LINKS, fsUtils, rootPathSupplier, pathsFilter);
