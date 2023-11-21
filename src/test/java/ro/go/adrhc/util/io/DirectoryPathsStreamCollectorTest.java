@@ -19,7 +19,7 @@ class DirectoryPathsStreamCollectorTest {
 	@Test
 	void create(@TempDir Path tmp) throws IOException {
 		FileSystemUtils fileSystemUtils = new FileSystemUtils();
-		DirectoryPathsStreamCollector pathsStreamCreator = new DirectoryPathsStreamCollector(
+		PathsStreamer pathsStreamCreator = new PathsStreamer(
 				Executors.newSingleThreadExecutor(),
 				SimpleDirectory.of(fileSystemUtils, () -> tmp, fileSystemUtils::isRegularFile));
 

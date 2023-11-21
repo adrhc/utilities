@@ -10,10 +10,10 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Slf4j
-public abstract class AbstractStreamCreator {
+public class AsyncSourceStreamer {
 	private final LinkedTransferQueue<Object> queue = new LinkedTransferQueue<>();
 
-	protected <T> Stream<T> receivedElementsStream() {
+	protected <T> Stream<T> streamElements() {
 		return Stream.generate(() -> null)
 				.map(it -> takeElement().orElse(this))
 				.takeWhile(it -> it != this)
@@ -35,7 +35,7 @@ public abstract class AbstractStreamCreator {
 		}
 	}
 
-	protected void elementsAddingCompleted() {
+	protected void markStreamEnd() {
 		queue.put(this);
 	}
 }

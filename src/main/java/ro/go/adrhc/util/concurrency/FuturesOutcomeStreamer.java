@@ -14,12 +14,12 @@ import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitAll;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class FuturesOutcomeStreamCollector extends AbstractStreamCreator {
+public class FuturesOutcomeStreamer extends AsyncSourceStreamer {
 	private final ExecutorService adminExecutorService;
 
 	public <T> Stream<T> toStream(Stream<CompletableFuture<T>> futures) {
 		asyncWaitAll(attachFuturesOutcomeCollector(futures));
-		return receivedElementsStream();
+		return streamElements();
 	}
 
 	protected Stream<CompletableFuture<?>> attachFuturesOutcomeCollector(
@@ -33,6 +33,6 @@ public class FuturesOutcomeStreamCollector extends AbstractStreamCreator {
 
 	protected void waitAllAndSignalCollectionCompletion(Stream<CompletableFuture<?>> futures) {
 		waitAll(futures);
-		elementsAddingCompleted();
+		markStreamEnd();
 	}
 }

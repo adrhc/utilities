@@ -2,7 +2,7 @@ package ro.go.adrhc.util.io;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ro.go.adrhc.util.concurrency.AbstractStreamCreator;
+import ro.go.adrhc.util.concurrency.AsyncSourceStreamer;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Slf4j
-public class DirectoryPathsStreamCollector extends AbstractStreamCreator {
+public class PathsStreamer extends AsyncSourceStreamer {
 	private final ExecutorService executorService;
 	private final SimpleDirectory directory;
 
@@ -21,7 +21,7 @@ public class DirectoryPathsStreamCollector extends AbstractStreamCreator {
 
 	public Stream<Path> toStream(Path startPath) {
 		asyncPathsCollect(startPath);
-		return receivedElementsStream();
+		return streamElements();
 	}
 
 	protected void asyncPathsCollect(Path startPath) {
@@ -34,6 +34,6 @@ public class DirectoryPathsStreamCollector extends AbstractStreamCreator {
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 		}
-		elementsAddingCompleted();
+		markStreamEnd();
 	}
 }
