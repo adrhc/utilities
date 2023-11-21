@@ -3,7 +3,6 @@ package ro.go.adrhc.util.concurrency.streamer;
 import lombok.RequiredArgsConstructor;
 import ro.go.adrhc.util.collection.ForEachIterator;
 
-import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
@@ -11,7 +10,7 @@ import java.util.stream.Stream;
 public class SimpleAsyncSourceStreamer<T> extends AsyncSourceStreamer {
 	private final ExecutorService executorService;
 
-	public Stream<Path> toStream(ForEachIterator<T> forEachIterator) {
+	public Stream<T> toStream(ForEachIterator<T> forEachIterator) {
 		asyncCollect(forEachIterator);
 		return streamElements();
 	}

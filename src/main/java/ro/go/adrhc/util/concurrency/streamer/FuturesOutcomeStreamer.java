@@ -11,8 +11,8 @@ import java.util.stream.Stream;
 
 import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitAll;
 
-@Slf4j
 @RequiredArgsConstructor
+@Slf4j
 public class FuturesOutcomeStreamer {
 	private final SimpleAsyncSourceStreamer<Object> streamer;
 
@@ -34,12 +34,15 @@ public class FuturesOutcomeStreamer {
 
 	protected Stream<CompletableFuture<?>> attachFuturesOutcomeCollector(
 			Consumer<Object> elemCollector, Stream<? extends CompletableFuture<?>> futures) {
-		return futures.map(cf -> cf.whenComplete((t, e) -> doWhenComplete(elemCollector, t, e)));
+		return futures.map(cf -> cf.handle((t, e) -> doHandle(elemCollector, t, e)));
 	}
 
-	protected void doWhenComplete(Consumer<Object> elemCollector, Object t, Throwable e) {
+	protected Object doHandle(Consumer<Object> elemCollector, Object t, Throwable e) {
 		if (e == null) {
 			elemCollector.accept(t);
+		} else {
+			log.error(e.getMessage(), e);
 		}
+		return t;
 	}
 }

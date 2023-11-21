@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 @Slf4j
-class DirectoryPathsStreamCollectorTest {
+class PathsStreamerTest {
 	@Test
 	void create(@TempDir Path tmp) throws IOException {
 		PathsStreamer pathsStreamCreator = PathsStreamer.create(
