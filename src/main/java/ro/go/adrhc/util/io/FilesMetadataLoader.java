@@ -18,11 +18,15 @@ public class FilesMetadataLoader<M> {
 	private final PathsStreamer pathsStreamCreator;
 	private final Function<Path, M> metadataLoader;
 
+	/**
+	 * @param adminExecutorService    is used to transform the CompletableFuture<M> collection into a stream
+	 * @param metadataExecutorService is used to load the metadata from files
+	 */
 	public static <M> FilesMetadataLoader<M> create(
 			ExecutorService adminExecutorService, ExecutorService metadataExecutorService,
 			SimpleDirectory directory, Function<Path, M> metadataLoader) {
 		return new FilesMetadataLoader<>(metadataExecutorService,
-				new FuturesOutcomeStreamer(adminExecutorService),
+				FuturesOutcomeStreamer.create(adminExecutorService),
 				PathsStreamer.create(metadataExecutorService, directory),
 				metadataLoader);
 	}
