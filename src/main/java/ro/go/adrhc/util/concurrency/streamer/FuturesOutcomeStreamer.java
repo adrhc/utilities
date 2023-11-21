@@ -30,7 +30,6 @@ public class FuturesOutcomeStreamer {
 			Consumer<Object> elemCollector,
 			Stream<? extends CompletableFuture<?>> futures) {
 		waitAll(attachFuturesOutcomeCollector(elemCollector, futures));
-		streamer.markStreamEnd();
 	}
 
 	protected Stream<CompletableFuture<?>> attachFuturesOutcomeCollector(

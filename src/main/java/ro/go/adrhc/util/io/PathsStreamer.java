@@ -34,6 +34,5 @@ public class PathsStreamer {
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 		}
-		streamer.markStreamEnd();
 	}
 }
