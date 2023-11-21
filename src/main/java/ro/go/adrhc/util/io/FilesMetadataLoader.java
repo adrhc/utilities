@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 public class FilesMetadataLoader<M> {
 	private final ExecutorService metadataExecutorService;
 	private final FuturesOutcomeStreamer futuresOutcomeStreamCollector;
-	private final PathsStreamer pathsStreamCreator;
+	private final PathsStreamer pathsStreamer;
 	private final Function<Path, M> metadataLoader;
 
 	/**
@@ -32,11 +32,11 @@ public class FilesMetadataLoader<M> {
 	}
 
 	public Stream<M> loadByPaths(Stream<Path> ids) {
-		return ids.map(pathsStreamCreator::toStream).flatMap(this::loadPaths);
+		return ids.map(pathsStreamer::toStream).flatMap(this::loadPaths);
 	}
 
 	public Stream<M> loadAll() {
-		return loadPaths(pathsStreamCreator.toStream());
+		return loadPaths(pathsStreamer.toStream());
 	}
 
 	protected Stream<M> loadPaths(Stream<Path> filePaths) {
