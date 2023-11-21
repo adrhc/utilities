@@ -2,7 +2,7 @@ package ro.go.adrhc.util.io;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ro.go.adrhc.util.concurrency.FuturesOutcomeStreamer;
+import ro.go.adrhc.util.concurrency.streamer.FuturesOutcomeStreamer;
 
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;

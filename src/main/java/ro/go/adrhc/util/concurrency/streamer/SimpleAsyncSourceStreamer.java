@@ -1,4 +1,4 @@
-package ro.go.adrhc.util.concurrency;
+package ro.go.adrhc.util.concurrency.streamer;
 
 import lombok.RequiredArgsConstructor;
 import ro.go.adrhc.util.collection.ForEachIterator;

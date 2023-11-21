@@ -2,7 +2,7 @@ package ro.go.adrhc.util.io;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ro.go.adrhc.util.concurrency.SimpleAsyncSourceStreamer;
+import ro.go.adrhc.util.concurrency.streamer.SimpleAsyncSourceStreamer;
 
 import java.io.IOException;
 import java.nio.file.Path;
