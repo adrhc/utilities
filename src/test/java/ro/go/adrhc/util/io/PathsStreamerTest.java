@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ro.go.adrhc.util.concurrency.streamer.PathsStreamer;
 
 import java.io.IOException;
 import java.nio.file.Files;
