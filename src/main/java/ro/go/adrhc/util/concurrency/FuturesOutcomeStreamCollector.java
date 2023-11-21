@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
-import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitForAll;
+import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitAll;
 
 /**
  * not thread-safe but reusable in the same thread
@@ -17,29 +17,22 @@ import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitForAll;
 public class FuturesOutcomeStreamCollector extends AbstractStreamCreator {
 	private final ExecutorService adminExecutorService;
 
-	public <T> Stream<T> create(Stream<CompletableFuture<T>> futures) {
-		asyncWaitForFuturesOutcome(attachFuturesOutcomeCollector(futures));
-		return toStream();
+	public <T> Stream<T> toStream(Stream<CompletableFuture<T>> futures) {
+		asyncWaitAll(attachFuturesOutcomeCollector(futures));
+		return receivedElementsStream();
 	}
 
 	protected Stream<CompletableFuture<?>> attachFuturesOutcomeCollector(
 			Stream<? extends CompletableFuture<?>> futures) {
-		return futures
-				.map(cf -> cf.whenComplete(this::collectFutureOutcome));
+		return futures.map(cf -> cf.whenComplete((t, e) -> addElement(t)));
 	}
 
-	protected void collectFutureOutcome(Object t, Throwable e) {
-		if (t != null) {
-			queue.put(t);
-		}
+	protected void asyncWaitAll(Stream<CompletableFuture<?>> futures) {
+		adminExecutorService.execute(() -> waitAllAndSignalCollectionCompletion(futures));
 	}
 
-	protected void asyncWaitForFuturesOutcome(Stream<CompletableFuture<?>> futures) {
-		adminExecutorService.execute(() -> waitForFuturesOutcome(futures));
-	}
-
-	protected void waitForFuturesOutcome(Stream<CompletableFuture<?>> futures) {
-		waitForAll(futures);
-		queueStopMarker();
+	protected void waitAllAndSignalCollectionCompletion(Stream<CompletableFuture<?>> futures) {
+		waitAll(futures);
+		elementsAddingCompleted();
 	}
 }

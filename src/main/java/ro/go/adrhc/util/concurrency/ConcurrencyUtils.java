@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 public class ConcurrencyUtils {
-	public static void waitForAll(Stream<CompletableFuture<?>> futures) {
+	public static void waitAll(Stream<CompletableFuture<?>> futures) {
 		CompletableFuture<?>[] futuresArray = futures.toArray(CompletableFuture[]::new);
 		CompletableFuture.allOf(futuresArray).join();
 	}

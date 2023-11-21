@@ -28,16 +28,16 @@ public class FilesMetadataLoader<M> {
 	}
 
 	public Stream<M> loadByPaths(Stream<Path> ids) {
-		return ids.map(pathsStreamCreator::create).flatMap(this::loadPaths);
+		return ids.map(pathsStreamCreator::toStream).flatMap(this::loadPaths);
 	}
 
 	public Stream<M> loadAll() {
-		return loadPaths(pathsStreamCreator.create());
+		return loadPaths(pathsStreamCreator.toStream());
 	}
 
 	protected Stream<M> loadPaths(Stream<Path> filePaths) {
 		Stream<CompletableFuture<M>> futures = filePaths.map(this::loadMetadata);
-		return futuresOutcomeStreamCollector.create(futures);
+		return futuresOutcomeStreamCollector.toStream(futures);
 	}
 
 	protected CompletableFuture<M> loadMetadata(Path filePath) {

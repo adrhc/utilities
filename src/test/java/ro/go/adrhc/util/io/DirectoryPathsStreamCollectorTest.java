@@ -25,7 +25,7 @@ class DirectoryPathsStreamCollectorTest {
 
 		Files.createFile(tmp.resolve("test-file.txt"));
 
-		assertThat(pathsStreamCreator.create()
+		assertThat(pathsStreamCreator.toStream()
 				.map(Path::getFileName).map(Path::toString))
 				.containsOnly("test-file.txt");
 	}

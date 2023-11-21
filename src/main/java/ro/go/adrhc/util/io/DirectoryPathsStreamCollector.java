@@ -15,13 +15,13 @@ public class DirectoryPathsStreamCollector extends AbstractStreamCreator {
 	private final ExecutorService executorService;
 	private final SimpleDirectory directory;
 
-	public Stream<Path> create() {
-		return create(directory.getRoot());
+	public Stream<Path> toStream() {
+		return toStream(directory.getRoot());
 	}
 
-	public Stream<Path> create(Path startPath) {
+	public Stream<Path> toStream(Path startPath) {
 		asyncPathsCollect(startPath);
-		return toStream();
+		return receivedElementsStream();
 	}
 
 	protected void asyncPathsCollect(Path startPath) {
@@ -30,10 +30,10 @@ public class DirectoryPathsStreamCollector extends AbstractStreamCreator {
 
 	protected void collectPaths(Path startPath) {
 		try {
-			directory.doWithPathsStream(startPath, paths -> paths.forEach(queue::add));
+			directory.doWithPathsStream(startPath, paths -> paths.forEach(super::addElement));
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 		}
-		queueStopMarker();
+		elementsAddingCompleted();
 	}
 }

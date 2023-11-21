@@ -4,31 +4,38 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.util.ObjectUtils;
 
+import java.util.Optional;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Slf4j
 public abstract class AbstractStreamCreator {
-	protected final LinkedTransferQueue<Object> queue = new LinkedTransferQueue<>();
+	private final LinkedTransferQueue<Object> queue = new LinkedTransferQueue<>();
 
-	protected <T> Stream<T> toStream() {
+	protected <T> Stream<T> receivedElementsStream() {
 		return Stream.generate(() -> null)
-				.map(it -> safelyTake(queue, this))
+				.map(it -> takeElement().orElse(this))
 				.takeWhile(it -> it != this)
 				.map(ObjectUtils::cast);
 	}
 
-	protected Object safelyTake(LinkedTransferQueue<?> queue, Object defaultValue) {
+	protected Optional<Object> takeElement() {
 		try {
-			return queue.take();
+			return Optional.of(queue.take());
 		} catch (InterruptedException e) {
 			log.error(e.getMessage(), e);
 		}
-		return defaultValue;
+		return Optional.empty();
 	}
 
-	protected void queueStopMarker() {
+	protected void addElement(Object t) {
+		if (t != null) {
+			queue.put(t);
+		}
+	}
+
+	protected void elementsAddingCompleted() {
 		queue.put(this);
 	}
 }
