@@ -23,14 +23,15 @@ public class SimpleDirectory {
 	protected final Predicate<Path> pathsFilter;
 
 	/**
-	 * Using no paths filter!
+	 * Using fileSystemUtils::isRegularFile as pathsFilter!
 	 */
 	public static SimpleDirectory fixedRootPath(Path path) {
-		return fixedRootPath(path, p -> true);
+		return regularFiles(() -> path);
 	}
 
-	public static SimpleDirectory fixedRootPath(Path path, Predicate<Path> pathsFilter) {
-		return of(new FileSystemUtils(), () -> path, pathsFilter);
+	public static SimpleDirectory regularFiles(Supplier<Path> rootPathSupplier) {
+		FileSystemUtils fileSystemUtils = new FileSystemUtils();
+		return of(fileSystemUtils, rootPathSupplier, fileSystemUtils::isRegularFile);
 	}
 
 	public static SimpleDirectory of(FileSystemUtils fsUtils,

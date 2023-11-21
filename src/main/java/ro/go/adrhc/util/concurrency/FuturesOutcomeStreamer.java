@@ -9,9 +9,6 @@ import java.util.stream.Stream;
 
 import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitAll;
 
-/**
- * not thread-safe but reusable in the same thread
- */
 @Slf4j
 @RequiredArgsConstructor
 public class FuturesOutcomeStreamer extends AsyncSourceStreamer {

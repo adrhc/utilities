@@ -18,10 +18,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DirectoryPathsStreamCollectorTest {
 	@Test
 	void create(@TempDir Path tmp) throws IOException {
-		FileSystemUtils fileSystemUtils = new FileSystemUtils();
-		PathsStreamer pathsStreamCreator = new PathsStreamer(
+		PathsStreamer pathsStreamCreator = PathsStreamer.create(
 				Executors.newSingleThreadExecutor(),
-				SimpleDirectory.of(fileSystemUtils, () -> tmp, fileSystemUtils::isRegularFile));
+				SimpleDirectory.fixedRootPath(tmp));
 
 		Files.createFile(tmp.resolve("test-file.txt"));
 

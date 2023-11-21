@@ -8,19 +8,23 @@ import java.util.Optional;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.stream.Stream;
 
+/**
+ * not thread-safe but reusable in the same thread
+ */
 @RequiredArgsConstructor
 @Slf4j
 public class AsyncSourceStreamer {
+	private static final Object STREAM_END = AsyncSourceStreamer.class;
 	private final LinkedTransferQueue<Object> queue = new LinkedTransferQueue<>();
 
-	protected <T> Stream<T> streamElements() {
+	public <T> Stream<T> streamElements() {
 		return Stream.generate(() -> null)
-				.map(it -> takeElement().orElse(this))
-				.takeWhile(it -> it != this)
+				.map(it -> takeElement().orElse(STREAM_END))
+				.takeWhile(it -> it != STREAM_END)
 				.map(ObjectUtils::cast);
 	}
 
-	protected Optional<Object> takeElement() {
+	public Optional<Object> takeElement() {
 		try {
 			return Optional.of(queue.take());
 		} catch (InterruptedException e) {
@@ -29,13 +33,11 @@ public class AsyncSourceStreamer {
 		return Optional.empty();
 	}
 
-	protected void addElement(Object t) {
-		if (t != null) {
-			queue.put(t);
-		}
+	public void addElement(Object t) {
+		queue.put(t);
 	}
 
-	protected void markStreamEnd() {
-		queue.put(this);
+	public void markStreamEnd() {
+		queue.put(STREAM_END);
 	}
 }

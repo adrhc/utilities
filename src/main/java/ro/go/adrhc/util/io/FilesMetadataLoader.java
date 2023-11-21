@@ -23,7 +23,7 @@ public class FilesMetadataLoader<M> {
 			SimpleDirectory directory, Function<Path, M> metadataLoader) {
 		return new FilesMetadataLoader<>(metadataExecutorService,
 				new FuturesOutcomeStreamer(adminExecutorService),
-				new PathsStreamer(metadataExecutorService, directory),
+				PathsStreamer.create(metadataExecutorService, directory),
 				metadataLoader);
 	}
 
