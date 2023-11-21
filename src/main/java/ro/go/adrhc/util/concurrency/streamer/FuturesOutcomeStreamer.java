@@ -34,6 +34,12 @@ public class FuturesOutcomeStreamer {
 
 	protected Stream<CompletableFuture<?>> attachFuturesOutcomeCollector(
 			Consumer<Object> elemCollector, Stream<? extends CompletableFuture<?>> futures) {
-		return futures.map(cf -> cf.whenComplete((t, e) -> elemCollector.accept(t)));
+		return futures.map(cf -> cf.whenComplete((t, e) -> doWhenComplete(elemCollector, t, e)));
+	}
+
+	protected void doWhenComplete(Consumer<Object> elemCollector, Object t, Throwable e) {
+		if (e == null) {
+			elemCollector.accept(t);
+		}
 	}
 }
