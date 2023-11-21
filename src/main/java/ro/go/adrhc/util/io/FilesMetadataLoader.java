@@ -19,7 +19,7 @@ public class FilesMetadataLoader<M> {
 	private final Function<Path, M> metadataLoader;
 
 	/**
-	 * @param adminExecutorService    is used to transform the CompletableFuture<M> collection into a stream
+	 * @param adminExecutorService    is used to join the CompletableFuture<M> collection
 	 * @param metadataExecutorService is used to load the metadata from files
 	 */
 	public static <M> FilesMetadataLoader<M> create(

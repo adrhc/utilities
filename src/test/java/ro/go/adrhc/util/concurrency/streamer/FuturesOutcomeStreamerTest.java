@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.stream.Stream;
@@ -23,7 +22,7 @@ class FuturesOutcomeStreamerTest {
 				CompletableFuture.completedFuture("value1"),
 				CompletableFuture.failedFuture(new Exception("#error")),
 				CompletableFuture.completedFuture("value2"));
-		List<String> strings = streamer.<String>toStream(futuresStream).toList();
+		Stream<String> strings = streamer.toStream(futuresStream);
 		assertThat(strings).containsOnly("value1", "value2");
 	}
 }
