@@ -1,43 +1,27 @@
 package ro.go.adrhc.util.concurrency.streamer;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import ro.go.adrhc.util.ObjectUtils;
+import ro.go.adrhc.util.collection.ForEachIterator;
 
-import java.util.Optional;
-import java.util.concurrent.LinkedTransferQueue;
+import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
-/**
- * not thread-safe but reusable in the same thread
- */
 @RequiredArgsConstructor
-@Slf4j
-public class AsyncSourceStreamer {
-	private static final Object STREAM_END = AsyncSourceStreamer.class;
-	private final LinkedTransferQueue<Object> queue = new LinkedTransferQueue<>();
+public class AsyncSourceStreamer<T> {
+	private final ExecutorService executorService;
 
-	public <T> Stream<T> streamElements() {
-		return Stream.generate(() -> null)
-				.map(it -> takeElement().orElse(STREAM_END))
-				.takeWhile(it -> it != STREAM_END)
-				.map(ObjectUtils::cast);
+	public Stream<T> toStream(ForEachIterator<T> forEachIterator) {
+		ChunkStreamer queue = new ChunkStreamer();
+		asyncCollect(queue, forEachIterator);
+		return queue.streamChunk();
 	}
 
-	public Optional<Object> takeElement() {
-		try {
-			return Optional.of(queue.take());
-		} catch (InterruptedException e) {
-			log.error(e.getMessage(), e);
-		}
-		return Optional.empty();
+	protected void asyncCollect(ChunkStreamer queue, ForEachIterator<T> forEachIterator) {
+		executorService.execute(() -> collect(queue, forEachIterator));
 	}
 
-	public void addElement(Object t) {
-		queue.put(t);
-	}
-
-	public void markStreamEnd() {
-		queue.put(STREAM_END);
+	protected void collect(ChunkStreamer queue, ForEachIterator<T> forEachIterator) {
+		forEachIterator.forEach(queue::addElement);
+		queue.markChunkEnd();
 	}
 }

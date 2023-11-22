@@ -14,10 +14,10 @@ import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitAll;
 @RequiredArgsConstructor
 @Slf4j
 public class FuturesOutcomeStreamer {
-	private final SimpleAsyncSourceStreamer<Object> streamer;
+	private final AsyncSourceStreamer<Object> streamer;
 
 	public static FuturesOutcomeStreamer create(ExecutorService executorService) {
-		return new FuturesOutcomeStreamer(new SimpleAsyncSourceStreamer<>(executorService));
+		return new FuturesOutcomeStreamer(new AsyncSourceStreamer<>(executorService));
 	}
 
 	public <T> Stream<T> toStream(Stream<? extends CompletableFuture<?>> futures) {
