@@ -15,7 +15,6 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.awaitility.Awaitility.with;
 
 @ExtendWith(MockitoExtension.class)
 @Slf4j
@@ -35,9 +34,7 @@ class FuturesOutcomeStreamerTest {
 		try (Stream<String> stream = streamerStream()) {
 			optional = stream.findFirst();
 		}
-		assertThat(optional).isPresent();
 		assertThat(optional).hasValue("value1");
-		with().pollDelay(Duration.ofSeconds(5)).until(() -> true);
 	}
 
 	private static Stream<String> streamerStream() {
@@ -56,7 +53,6 @@ class FuturesOutcomeStreamerTest {
 	}
 
 	private static <T> T slow(T t) {
-		log.info("slowly providing {} ...", t);
 		await().pollDelay(Duration.ofMillis(250)).until(() -> true);
 		return t;
 	}

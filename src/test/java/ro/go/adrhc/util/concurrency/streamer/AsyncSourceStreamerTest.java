@@ -36,7 +36,6 @@ class AsyncSourceStreamerTest {
 		try (Stream<String> stream = streamerStream()) {
 			optional = stream.findFirst();
 		}
-		assertThat(optional).isPresent();
 		assertThat(optional).hasValue("value1");
 	}
 

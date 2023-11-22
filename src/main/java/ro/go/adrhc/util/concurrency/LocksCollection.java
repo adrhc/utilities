@@ -15,6 +15,15 @@ public class LocksCollection {
 		return new LocksCollection(Arrays.asList(addElementLock));
 	}
 
+	public void execute(Runnable action) {
+		lock();
+		try {
+			action.run();
+		} finally {
+			unlock();
+		}
+	}
+
 	public void lock() {
 		locks.forEach(Lock::lock);
 	}

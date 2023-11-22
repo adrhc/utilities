@@ -65,15 +65,14 @@ public class AsyncSourceStreamer<T> {
 
 		public void close() {
 //			log.info("closing ...");
-			locks.lock();
-			try {
-				this.closed = true;
-				chunkStreamer.clear();
-				stopTrigger.run();
-			} finally {
-				locks.unlock();
-			}
+			locks.execute(this::doClose);
 //			log.info("closed");
+		}
+
+		public void doClose() {
+			this.closed = true;
+			chunkStreamer.clear();
+			stopTrigger.run();
 		}
 
 		private void doIfNotClosed(Lock lock, Runnable runnable) {
