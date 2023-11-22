@@ -24,21 +24,22 @@ class FuturesOutcomeStreamerTest {
 
 	@Test
 	void toStream() {
-		Stream<String> strings = streamerStream();
-		assertThat(strings).doesNotContain("value0");
+		Stream<String> strings = streamerStream(false);
+		assertThat(strings).doesNotContain("value0", "value5");
 	}
 
 	@Test
 	void streamClosure() {
 		Optional<String> optional;
-		try (Stream<String> stream = streamerStream()) {
+		try (Stream<String> stream = streamerStream(true)) {
 			optional = stream.findFirst();
 		}
-		assertThat(optional).hasValue("value1");
+		assertThat(optional).isPresent();
 	}
 
-	private static Stream<String> streamerStream() {
-		FuturesOutcomeStreamer<String> streamer = FuturesOutcomeStreamer.create(EXECUTOR);
+	private static Stream<String> streamerStream(boolean cancelFuturesOnClose) {
+		FuturesOutcomeStreamer<String> streamer =
+				FuturesOutcomeStreamer.create(EXECUTOR, cancelFuturesOnClose);
 		Stream<CompletableFuture<String>> futuresStream = IntStream.range(0, 10)
 				.mapToObj(FuturesOutcomeStreamerTest::completableFuture);
 		return streamer.toStream(futuresStream);

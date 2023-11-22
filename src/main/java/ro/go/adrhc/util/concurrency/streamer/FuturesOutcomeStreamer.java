@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.util.collection.SimpleStoppableVisitable;
 
+import java.util.List;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
@@ -15,30 +17,46 @@ import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitAll;
 @Slf4j
 public class FuturesOutcomeStreamer<T> {
 	private final AsyncSourceStreamer<T> streamer;
+	private final boolean cancelFuturesOnStreamClose;
 
 	public static <T> FuturesOutcomeStreamer<T> create(ExecutorService executorService) {
-		return new FuturesOutcomeStreamer<>(new AsyncSourceStreamer<>(executorService));
+		return new FuturesOutcomeStreamer<>(
+				new AsyncSourceStreamer<>(executorService), false);
+	}
+
+	public static <T> FuturesOutcomeStreamer<T> create(
+			ExecutorService executorService, boolean cancelFuturesOnStreamClose) {
+		return new FuturesOutcomeStreamer<>(
+				new AsyncSourceStreamer<>(executorService), cancelFuturesOnStreamClose);
 	}
 
 	public Stream<T> toStream(Stream<? extends CompletableFuture<T>> futures) {
-		return streamer.toStream(new FuturesStoppableVisitable<>(futures));
+		return streamer.toStream(new FuturesStoppableVisitable(futures));
 	}
 
 	@RequiredArgsConstructor
-	private static class FuturesStoppableVisitable<T> extends SimpleStoppableVisitable<T> {
+	private class FuturesStoppableVisitable extends SimpleStoppableVisitable<T> {
 		private final Stream<? extends CompletableFuture<T>> futures;
+		private List<? extends CompletableFuture<T>> futureList;
 
 		public void accept(Consumer<? super T> elemCollector) {
-			waitAll(attachFuturesOutcomeCollector(elemCollector, futures));
+			if (FuturesOutcomeStreamer.this.cancelFuturesOnStreamClose) {
+				futureList = futures.toList();
+			}
+			waitAll(attachFuturesOutcomeCollector(elemCollector,
+					FuturesOutcomeStreamer.this.cancelFuturesOnStreamClose
+							? futureList.stream() : futures));
 		}
 
-		/*@Override
+		@Override
 		public void stop() {
 			super.stop();
-			log.error("cancelling futures ...");
-			futures.forEach(f -> f.cancel(true));
-			log.error("futures cancelled");
-		}*/
+			if (FuturesOutcomeStreamer.this.cancelFuturesOnStreamClose) {
+//				log.info("cancelling futures ...");
+				futureList.forEach(f -> f.cancel(true));
+//				log.info("futures cancelled");
+			}
+		}
 
 		protected Stream<CompletableFuture<T>> attachFuturesOutcomeCollector(
 				Consumer<? super T> elemCollector, Stream<? extends CompletableFuture<T>> futures) {
@@ -47,7 +65,9 @@ public class FuturesOutcomeStreamer<T> {
 
 		protected T doHandle(Consumer<? super T> elemCollector, T t, Throwable e) {
 			if (e != null) {
-				log.error(e.getMessage(), e);
+				if (!(e instanceof CancellationException)) {
+					log.error(e.getMessage(), e);
+				}
 			} else {
 				elemCollector.accept(t);
 			}

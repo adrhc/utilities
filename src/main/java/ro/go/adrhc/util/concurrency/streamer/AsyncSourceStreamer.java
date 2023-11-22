@@ -35,7 +35,7 @@ public class AsyncSourceStreamer<T> {
 		visitable.accept(chunkStreamer::addElement);
 //		log.info("elements collection completed");
 		chunkStreamer.markChunkEnd();
-//		log.info("end chunk marker added");
+//		log.info("after markChunkEnd");
 	}
 
 	@RequiredArgsConstructor
