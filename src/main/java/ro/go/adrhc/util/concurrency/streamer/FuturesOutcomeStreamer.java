@@ -1,12 +1,13 @@
 package ro.go.adrhc.util.concurrency.streamer;
 
+import com.rainerhahnekamp.sneakythrow.functional.SneakyConsumer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.util.ObjectUtils;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitAll;
@@ -27,19 +28,23 @@ public class FuturesOutcomeStreamer {
 	}
 
 	protected void collectFuturesOutcome(
-			Consumer<Object> elemCollector,
+			SneakyConsumer<Object, IOException> elemCollector,
 			Stream<? extends CompletableFuture<?>> futures) {
 		waitAll(attachFuturesOutcomeCollector(elemCollector, futures));
 	}
 
 	protected Stream<CompletableFuture<?>> attachFuturesOutcomeCollector(
-			Consumer<Object> elemCollector, Stream<? extends CompletableFuture<?>> futures) {
+			SneakyConsumer<Object, IOException> elemCollector, Stream<? extends CompletableFuture<?>> futures) {
 		return futures.map(cf -> cf.handle((t, e) -> doHandle(elemCollector, t, e)));
 	}
 
-	protected Object doHandle(Consumer<Object> elemCollector, Object t, Throwable e) {
+	protected Object doHandle(SneakyConsumer<Object, IOException> elemCollector, Object t, Throwable e) {
 		if (e == null) {
-			elemCollector.accept(t);
+			try {
+				elemCollector.accept(t);
+			} catch (IOException ex) {
+				log.error(ex.getMessage(), ex);
+			}
 		} else {
 			log.error(e.getMessage(), e);
 		}

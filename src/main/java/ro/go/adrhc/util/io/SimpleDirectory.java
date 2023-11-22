@@ -1,5 +1,7 @@
 package ro.go.adrhc.util.io;
 
+import com.rainerhahnekamp.sneakythrow.functional.SneakyConsumer;
+import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
@@ -7,8 +9,6 @@ import java.nio.file.CopyOption;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -39,21 +39,29 @@ public class SimpleDirectory {
 		return new SimpleDirectory(FOLLOW_LINKS, fsUtils, rootPathSupplier, pathsFilter);
 	}
 
-	public <R> R transformPathsStream(Function<Stream<Path>, R> pathsStreamProcessor) throws IOException {
-		return transformPathsStream(rootPathSupplier.get(), pathsStreamProcessor);
+	public <R, E extends Exception> R transformPathStream(
+			SneakyFunction<Stream<Path>, R, E>
+					pathsStreamProcessor) throws IOException, E {
+		return transformPathStream(rootPathSupplier.get(), pathsStreamProcessor);
 	}
 
-	public <R> R transformPathsStream(Path start, Function<Stream<Path>, R> pathsStreamProcessor) throws IOException {
+	public <R, E extends Exception> R transformPathStream(
+			Path start, SneakyFunction<Stream<Path>, R, E>
+			pathsStreamProcessor) throws IOException, E {
 		try (Stream<Path> paths = fsUtils.walk(resolvePath(start), fileVisitOption)) {
 			return pathsStreamProcessor.apply(paths.filter(pathsFilter));
 		}
 	}
 
-	public void doWithPathsStream(Consumer<Stream<Path>> pathsStreamConsumer) throws IOException {
-		doWithPathsStream(rootPathSupplier.get(), pathsStreamConsumer);
+	public <E extends Exception> void doWithPathStream(
+			SneakyConsumer<Stream<Path>, E>
+					pathsStreamConsumer) throws IOException, E {
+		doWithPathStream(rootPathSupplier.get(), pathsStreamConsumer);
 	}
 
-	public void doWithPathsStream(Path start, Consumer<Stream<Path>> pathsStreamConsumer) throws IOException {
+	public <E extends Exception> void doWithPathStream(Path start,
+			SneakyConsumer<Stream<Path>, E>
+					pathsStreamConsumer) throws IOException, E {
 		try (Stream<Path> paths = fsUtils.walk(resolvePath(start), fileVisitOption)) {
 			pathsStreamConsumer.accept(paths.filter(pathsFilter));
 		}
@@ -89,7 +97,7 @@ public class SimpleDirectory {
 	 * @param start is excluded from the result
 	 */
 	public List<Path> getPaths(Path start) throws IOException {
-		return transformPathsStream(start, Stream::toList);
+		return transformPathStream(start, Stream::toList);
 	}
 
 	public Path getRoot() {
