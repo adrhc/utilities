@@ -11,17 +11,17 @@ import java.util.stream.Stream;
 
 @Slf4j
 public class ConcurrencyUtils {
-	public static void waitAll(Stream<CompletableFuture<?>> futures) {
+	public static void waitAll(Stream<? extends CompletableFuture<?>> futures) {
 		CompletableFuture<?>[] futuresArray = futures.toArray(CompletableFuture[]::new);
 		CompletableFuture.allOf(futuresArray).join();
 	}
 
-	public static <T> Stream<T> safelyGetAll(Stream<CompletableFuture<T>> futures) {
+	public static <T> Stream<T> safelyGetAll(Stream<? extends CompletableFuture<T>> futures) {
 		return joinAll(futures).map(ConcurrencyUtils::safelyGet).flatMap(Optional::stream);
 	}
 
 	private static <T> Stream<CompletableFuture<T>>
-	joinAll(Stream<CompletableFuture<T>> futures) {
+	joinAll(Stream<? extends CompletableFuture<T>> futures) {
 		CompletableFuture<T>[] futuresArray = futures.toArray(CompletableFuture[]::new);
 		CompletableFuture.allOf(futuresArray).join();
 		return Arrays.stream(futuresArray);

@@ -1,16 +1,15 @@
 package ro.go.adrhc.util.concurrency.streamer;
 
-import com.rainerhahnekamp.sneakythrow.functional.SneakyConsumer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ro.go.adrhc.util.collection.SimpleStoppableVisitable;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
-
-import static ro.go.adrhc.util.collection.IterableUtils.iterable;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -27,23 +26,24 @@ public class PathsStreamer {
 	}
 
 	public Stream<Path> toStream(Path startPath) {
-		return streamer.toStream(elemCollector -> collectPaths(elemCollector, startPath));
-
+		return streamer.toStream(new PathsStoppableVisitable(startPath));
 	}
 
-	protected void collectPaths(SneakyConsumer<? super Path, IOException> elemCollector, Path startPath) {
-		try {
-			directory.doWithPathStream(startPath, paths -> doWithPathStream(elemCollector, paths));
-		} catch (IOException e) {
-			log.error(e.getMessage(), e);
+	@RequiredArgsConstructor
+	private class PathsStoppableVisitable extends SimpleStoppableVisitable<Path> {
+		private final Path startPath;
+
+		@Override
+		public void accept(Consumer<? super Path> elemCollector) {
+			try {
+				directory.doWithPathStream(startPath, paths -> collectPaths(elemCollector, paths));
+			} catch (IOException e) {
+				log.error(e.getMessage(), e);
+			}
 		}
-	}
 
-	protected void doWithPathStream(
-			SneakyConsumer<? super Path, IOException> elemCollector,
-			Stream<Path> pathStream) throws IOException {
-		for (Path p : iterable(pathStream)) {
-			elemCollector.accept(p);
+		private void collectPaths(Consumer<? super Path> elemCollector, Stream<Path> paths) {
+			paths.takeWhile(p -> !this.isStopped()).forEach(elemCollector);
 		}
 	}
 }

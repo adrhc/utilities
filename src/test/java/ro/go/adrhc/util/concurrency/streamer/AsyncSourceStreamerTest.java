@@ -1,24 +1,27 @@
 package ro.go.adrhc.util.concurrency.streamer;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ro.go.adrhc.util.collection.SimpleStoppableVisitable;
 
+import java.time.Duration;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 @ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Slf4j
 class AsyncSourceStreamerTest {
-	@SneakyThrows
-	public static void unsafeSleep(long millis) {
-		Thread.sleep(500);
-	}
+	private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
 	@Test
 	void toStream() {
@@ -28,31 +31,35 @@ class AsyncSourceStreamerTest {
 	}
 
 	@Test
-	void closeBeforeCompletingPopulation() {
+	void streamClosure() {
 		Optional<String> optional;
-		log.info("before stream creation");
 		try (Stream<String> stream = streamerStream()) {
-			log.info("after stream creation");
-			optional = stream.findAny();
-			log.info("before stream closing");
+			optional = stream.findFirst();
 		}
-		log.info("after stream closing");
+		assertThat(optional).isPresent();
 		assertThat(optional).hasValue("value1");
 	}
 
 	private static Stream<String> streamerStream() {
-		AsyncSourceStreamer<String> streamer =
-				new AsyncSourceStreamer<>(Executors.newSingleThreadExecutor());
+		AsyncSourceStreamer<String> streamer = new AsyncSourceStreamer<>(EXECUTOR);
 
-		return streamer.toStream(collector -> {
-			log.info("adding value1 ...");
-			collector.accept("value1");
-			unsafeSleep(500);
-			log.info("adding value2 ...");
-			collector.accept("value2");
-			unsafeSleep(500);
-			log.info("adding value3 ...");
-			collector.accept("value3");
+		return streamer.toStream(new SimpleStoppableVisitable<>() {
+			@Override
+			public void accept(Consumer<? super String> visitor) {
+				present(visitor, "value1");
+				present(visitor, "value2");
+				present(visitor, "value3");
+			}
+
+			private void present(Consumer<? super String> visitor, String value) {
+				if (isStopped()) {
+					log.info("skipping {} ...", value);
+					return;
+				}
+				log.info("adding {} ...", value);
+				visitor.accept(value);
+				await().pollDelay(Duration.ofMillis(500)).until(() -> true);
+			}
 		});
 	}
 }

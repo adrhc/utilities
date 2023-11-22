@@ -23,7 +23,7 @@ public class ChunkStreamer {
 	 * consumer which might be wrong if the next consumer expect to consumer a full new chunk!
 	 */
 	public <T> Stream<T> streamChunk() {
-		return Stream.generate(() -> null)
+		return Stream.iterate(null, it -> null)
 				.map(it -> takeElement().orElse(CHUNK_END))
 				.takeWhile(it -> it != CHUNK_END)
 				.map(ObjectUtils::cast);

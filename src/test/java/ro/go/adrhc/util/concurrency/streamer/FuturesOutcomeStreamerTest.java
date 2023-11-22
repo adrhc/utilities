@@ -5,24 +5,59 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Duration;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.awaitility.Awaitility.with;
 
 @ExtendWith(MockitoExtension.class)
 @Slf4j
 class FuturesOutcomeStreamerTest {
+	private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
+	private static final ExecutorService FIXED = Executors.newFixedThreadPool(2);
+
 	@Test
 	void toStream() {
-		FuturesOutcomeStreamer streamer = FuturesOutcomeStreamer
-				.create(Executors.newSingleThreadExecutor());
-		Stream<CompletableFuture<?>> futuresStream = Stream.of(
-				CompletableFuture.completedFuture("value1"),
-				CompletableFuture.failedFuture(new Exception("#error")),
-				CompletableFuture.completedFuture("value2"));
-		Stream<String> strings = streamer.toStream(futuresStream);
-		assertThat(strings).containsOnly("value1", "value2");
+		Stream<String> strings = streamerStream();
+		assertThat(strings).doesNotContain("value0");
+	}
+
+	@Test
+	void streamClosure() {
+		Optional<String> optional;
+		try (Stream<String> stream = streamerStream()) {
+			optional = stream.findFirst();
+		}
+		assertThat(optional).isPresent();
+		assertThat(optional).hasValue("value1");
+		with().pollDelay(Duration.ofSeconds(5)).until(() -> true);
+	}
+
+	private static Stream<String> streamerStream() {
+		FuturesOutcomeStreamer<String> streamer = FuturesOutcomeStreamer.create(EXECUTOR);
+		Stream<CompletableFuture<String>> futuresStream = IntStream.range(0, 10)
+				.mapToObj(FuturesOutcomeStreamerTest::completableFuture);
+		return streamer.toStream(futuresStream);
+	}
+
+	private static CompletableFuture<String> completableFuture(int i) {
+		if (i % 5 == 0) {
+			return CompletableFuture.failedFuture(new Exception("#error" + i));
+		} else {
+			return CompletableFuture.supplyAsync(() -> slow("value" + i), FIXED);
+		}
+	}
+
+	private static <T> T slow(T t) {
+		log.info("slowly providing {} ...", t);
+		await().pollDelay(Duration.ofMillis(250)).until(() -> true);
+		return t;
 	}
 }

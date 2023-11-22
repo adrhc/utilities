@@ -1,0 +1,28 @@
+package ro.go.adrhc.util.concurrency;
+
+import lombok.RequiredArgsConstructor;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.concurrent.locks.Lock;
+
+@RequiredArgsConstructor
+public class LocksCollection {
+	private final List<Lock> locks;
+
+	public static LocksCollection of(Lock... addElementLock) {
+		return new LocksCollection(Arrays.asList(addElementLock));
+	}
+
+	public void lock() {
+		locks.forEach(Lock::lock);
+	}
+
+	public void unlock() {
+		ListIterator<Lock> listIterator = locks.listIterator(locks.size());
+		while (listIterator.hasPrevious()) {
+			listIterator.previous().unlock();
+		}
+	}
+}

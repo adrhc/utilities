@@ -1,53 +1,57 @@
 package ro.go.adrhc.util.concurrency.streamer;
 
-import com.rainerhahnekamp.sneakythrow.functional.SneakyConsumer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ro.go.adrhc.util.ObjectUtils;
+import ro.go.adrhc.util.collection.SimpleStoppableVisitable;
 
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitAll;
 
 @RequiredArgsConstructor
 @Slf4j
-public class FuturesOutcomeStreamer {
-	private final AsyncSourceStreamer<Object> streamer;
+public class FuturesOutcomeStreamer<T> {
+	private final AsyncSourceStreamer<T> streamer;
 
-	public static FuturesOutcomeStreamer create(ExecutorService executorService) {
-		return new FuturesOutcomeStreamer(new AsyncSourceStreamer<>(executorService));
+	public static <T> FuturesOutcomeStreamer<T> create(ExecutorService executorService) {
+		return new FuturesOutcomeStreamer<>(new AsyncSourceStreamer<>(executorService));
 	}
 
-	public <T> Stream<T> toStream(Stream<? extends CompletableFuture<?>> futures) {
-		return streamer
-				.toStream(elemCollector -> collectFuturesOutcome(elemCollector, futures))
-				.map(ObjectUtils::cast);
+	public Stream<T> toStream(Stream<? extends CompletableFuture<T>> futures) {
+		return streamer.toStream(new FuturesStoppableVisitable<>(futures));
 	}
 
-	protected void collectFuturesOutcome(
-			SneakyConsumer<Object, IOException> elemCollector,
-			Stream<? extends CompletableFuture<?>> futures) {
-		waitAll(attachFuturesOutcomeCollector(elemCollector, futures));
-	}
+	@RequiredArgsConstructor
+	private static class FuturesStoppableVisitable<T> extends SimpleStoppableVisitable<T> {
+		private final Stream<? extends CompletableFuture<T>> futures;
 
-	protected Stream<CompletableFuture<?>> attachFuturesOutcomeCollector(
-			SneakyConsumer<Object, IOException> elemCollector, Stream<? extends CompletableFuture<?>> futures) {
-		return futures.map(cf -> cf.handle((t, e) -> doHandle(elemCollector, t, e)));
-	}
-
-	protected Object doHandle(SneakyConsumer<Object, IOException> elemCollector, Object t, Throwable e) {
-		if (e == null) {
-			try {
-				elemCollector.accept(t);
-			} catch (IOException ex) {
-				log.error(ex.getMessage(), ex);
-			}
-		} else {
-			log.error(e.getMessage(), e);
+		public void accept(Consumer<? super T> elemCollector) {
+			waitAll(attachFuturesOutcomeCollector(elemCollector, futures));
 		}
-		return t;
+
+		/*@Override
+		public void stop() {
+			super.stop();
+			log.error("cancelling futures ...");
+			futures.forEach(f -> f.cancel(true));
+			log.error("futures cancelled");
+		}*/
+
+		protected Stream<CompletableFuture<T>> attachFuturesOutcomeCollector(
+				Consumer<? super T> elemCollector, Stream<? extends CompletableFuture<T>> futures) {
+			return futures.map(cf -> cf.handle((t, e) -> doHandle(elemCollector, t, e)));
+		}
+
+		protected T doHandle(Consumer<? super T> elemCollector, T t, Throwable e) {
+			if (e != null) {
+				log.error(e.getMessage(), e);
+			} else {
+				elemCollector.accept(t);
+			}
+			return t;
+		}
 	}
 }
