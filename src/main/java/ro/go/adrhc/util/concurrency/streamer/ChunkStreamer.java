@@ -21,6 +21,14 @@ public class ChunkStreamer {
 				.map(ObjectUtils::cast);
 	}
 
+	public void addElement(Object t) {
+		queue.put(t);
+	}
+
+	public void markChunkEnd() {
+		queue.put(CHUNK_END);
+	}
+
 	protected Optional<Object> takeElement() {
 		try {
 			return Optional.of(queue.take());
@@ -28,13 +36,5 @@ public class ChunkStreamer {
 			log.error(e.getMessage(), e);
 		}
 		return Optional.empty();
-	}
-
-	public void addElement(Object t) {
-		queue.put(t);
-	}
-
-	public void markChunkEnd() {
-		queue.put(CHUNK_END);
 	}
 }
