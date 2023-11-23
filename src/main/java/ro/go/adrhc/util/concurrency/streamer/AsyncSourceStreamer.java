@@ -60,7 +60,7 @@ public class AsyncSourceStreamer<T> {
 		}
 
 		public <T> Stream<T> streamChunk() {
-			return queueSliceStreamer.currentSliceStream();
+			return queueSliceStreamer.streamCurrentSlice();
 		}
 
 		public void close() {

@@ -20,7 +20,7 @@ public class QueueSliceStreamer {
 	 * consumer which might be wrong if the next consumer expects to consume a full new
 	 * chunk instead of continuing from where the previous consumer left!
 	 */
-	public <T> Stream<T> currentSliceStream() {
+	public <T> Stream<T> streamCurrentSlice() {
 		return Stream.iterate(null, it -> null)
 				.map(it -> take().orElse(CHUNK_END))
 				.takeWhile(it -> it != CHUNK_END)
