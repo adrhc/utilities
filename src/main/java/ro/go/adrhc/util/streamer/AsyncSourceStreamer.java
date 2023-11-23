@@ -1,4 +1,4 @@
-package ro.go.adrhc.util.concurrency.streamer;
+package ro.go.adrhc.util.streamer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

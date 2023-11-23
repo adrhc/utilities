@@ -2,6 +2,7 @@ package ro.go.adrhc.util.concurrency;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -18,6 +19,14 @@ public class ConcurrencyUtils {
 
 	public static <T> Stream<T> safelyGetAll(Stream<? extends CompletableFuture<T>> futures) {
 		return joinAll(futures).map(ConcurrencyUtils::safelyGet).flatMap(Optional::stream);
+	}
+
+	public static void safelySleep(Duration duration) {
+		try {
+			Thread.sleep(duration);
+		} catch (InterruptedException e) {
+			log.error(e.getMessage(), e);
+		}
 	}
 
 	private static <T> Stream<CompletableFuture<T>>

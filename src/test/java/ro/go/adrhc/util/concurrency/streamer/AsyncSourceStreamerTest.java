@@ -6,6 +6,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ro.go.adrhc.util.collection.SimpleStoppableVisitable;
+import ro.go.adrhc.util.streamer.AsyncSourceStreamer;
 
 import java.time.Duration;
 import java.util.Optional;
