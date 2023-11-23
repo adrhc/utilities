@@ -6,7 +6,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ro.go.adrhc.util.collection.SimpleStoppableVisitable;
-import ro.go.adrhc.util.streamer.AsyncSourceStreamer;
+import ro.go.adrhc.util.streamer.VisitableStructureStreamer;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -21,7 +21,7 @@ import static org.awaitility.Awaitility.await;
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Slf4j
-class AsyncSourceStreamerTest {
+class VisitableStructureStreamerTest {
 	private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
 	@Test
@@ -41,7 +41,7 @@ class AsyncSourceStreamerTest {
 	}
 
 	private static Stream<String> streamerStream() {
-		AsyncSourceStreamer<String> streamer = new AsyncSourceStreamer<>(EXECUTOR);
+		VisitableStructureStreamer<String> streamer = new VisitableStructureStreamer<>(EXECUTOR);
 
 		return streamer.toStream(new SimpleStoppableVisitable<>() {
 			@Override

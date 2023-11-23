@@ -16,18 +16,18 @@ import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitAll;
 @RequiredArgsConstructor
 @Slf4j
 public class FuturesOutcomeStreamer<T> {
-	private final AsyncSourceStreamer<T> streamer;
+	private final VisitableStructureStreamer<T> streamer;
 	private final boolean cancelFuturesOnStreamClose;
 
 	public static <T> FuturesOutcomeStreamer<T> create(ExecutorService executorService) {
 		return new FuturesOutcomeStreamer<>(
-				new AsyncSourceStreamer<>(executorService), false);
+				new VisitableStructureStreamer<>(executorService), false);
 	}
 
 	public static <T> FuturesOutcomeStreamer<T> create(
 			ExecutorService executorService, boolean cancelFuturesOnStreamClose) {
 		return new FuturesOutcomeStreamer<>(
-				new AsyncSourceStreamer<>(executorService), cancelFuturesOnStreamClose);
+				new VisitableStructureStreamer<>(executorService), cancelFuturesOnStreamClose);
 	}
 
 	public Stream<T> toStream(Stream<? extends CompletableFuture<T>> futures) {

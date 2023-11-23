@@ -14,11 +14,11 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 @Slf4j
 public class PathsStreamer {
-	private final AsyncSourceStreamer<Path> streamer;
+	private final VisitableStructureStreamer<Path> streamer;
 	private final SimpleDirectory directory;
 
 	public static PathsStreamer create(ExecutorService executorService, SimpleDirectory directory) {
-		return new PathsStreamer(new AsyncSourceStreamer<>(executorService), directory);
+		return new PathsStreamer(new VisitableStructureStreamer<>(executorService), directory);
 	}
 
 	public Stream<Path> toStream() {

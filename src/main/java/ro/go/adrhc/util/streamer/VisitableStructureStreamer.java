@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Slf4j
-public class AsyncSourceStreamer<T> {
+public class VisitableStructureStreamer<T> {
 	private final ExecutorService executorService;
 
 	public Stream<T> toStream(StoppableVisitable<T> stoppableVisitable) {
