@@ -2,7 +2,6 @@ package ro.go.adrhc.util.streamer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ro.go.adrhc.util.collection.visitable.AbstractStoppableVisitable;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
 import java.io.IOException;
@@ -30,20 +29,21 @@ public class PathsStreamer {
 	}
 
 	@RequiredArgsConstructor
-	private class PathsStoppableVisitable extends AbstractStoppableVisitable<Path> {
+	private class PathsStoppableVisitable extends AbstractVisitorAwareStoppableVisitable<Path> {
 		private final Path startPath;
 
 		@Override
 		public void accept(Consumer<? super Path> elemCollector) {
+			this.visitor = elemCollector;
 			try {
-				directory.doWithPathStream(startPath, paths -> collectPaths(elemCollector, paths));
+				directory.doWithPathStream(startPath, this::collectPaths);
 			} catch (IOException e) {
 				log.error(e.getMessage(), e);
 			}
 		}
 
-		private void collectPaths(Consumer<? super Path> elemCollector, Stream<Path> paths) {
-			paths.takeWhile(p -> !this.isStopped()).forEach(elemCollector);
+		private void collectPaths(Stream<Path> paths) {
+			paths.takeWhile(p -> !this.isStopped()).forEach(visitor);
 		}
 	}
 }
