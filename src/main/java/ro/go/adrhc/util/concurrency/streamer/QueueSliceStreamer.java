@@ -8,43 +8,50 @@ import java.util.Optional;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.stream.Stream;
 
-/**
- * Chunk definition: all queue elements till CHUNK_END.
- */
 @RequiredArgsConstructor
 @Slf4j
-public class ChunkStreamer {
-	private static final Object CHUNK_END = ChunkStreamer.class;
+public class QueueSliceStreamer {
+	private static final Object CHUNK_END = QueueSliceStreamer.class;
 	private final LinkedTransferQueue<Object> queue = new LinkedTransferQueue<>();
 
 	/**
-	 * Multiple Stream(s) created with this method might concurrently consume from queue!
+	 * Multiple Stream(s) created by this method might concurrently consume from queue!
 	 * A consumer using Stream.findAny() might leave the rest of the chunk for the next
-	 * consumer which might be wrong if the next consumer expect to consumer a full new chunk!
+	 * consumer which might be wrong if the next consumer expects to consume a full new
+	 * chunk instead of continuing from where the previous consumer left!
 	 */
-	public <T> Stream<T> streamChunk() {
+	public <T> Stream<T> currentSliceStream() {
 		return Stream.iterate(null, it -> null)
-				.map(it -> takeElement().orElse(CHUNK_END))
+				.map(it -> take().orElse(CHUNK_END))
 				.takeWhile(it -> it != CHUNK_END)
 				.map(ObjectUtils::cast);
 	}
 
-	public void addElement(Object t) {
+	/**
+	 * see BlockingQueue#put
+	 */
+	public void put(Object t) {
 		queue.put(t);
 	}
 
-	public void markChunkEnd() {
+	/**
+	 * ends the current slice hence starting a new one
+	 */
+	public void startNewSlice() {
 		queue.put(CHUNK_END);
 	}
 
 	/**
-	 * remove current chunk's elements
+	 * clears the entire queue
 	 */
 	public void clear() {
 		queue.clear();
 	}
 
-	protected Optional<Object> takeElement() {
+	/**
+	 * returns empty when interrupted
+	 */
+	protected Optional<Object> take() {
 		try {
 			return Optional.of(queue.take());
 		} catch (InterruptedException e) {

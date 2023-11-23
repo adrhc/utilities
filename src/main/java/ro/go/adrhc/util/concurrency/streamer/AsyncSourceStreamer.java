@@ -43,24 +43,24 @@ public class AsyncSourceStreamer<T> {
 		private final Lock addElementLock = new ReentrantLock();
 		private final Lock markChunkEndLock = new ReentrantLock();
 		private final LocksCollection locks = LocksCollection.of(addElementLock, markChunkEndLock);
-		private final ChunkStreamer chunkStreamer;
+		private final QueueSliceStreamer queueSliceStreamer;
 		private final Runnable stopTrigger;
 		private boolean closed;
 
 		public static CloseAwareChunkStreamer create(Runnable stopTrigger) {
-			return new CloseAwareChunkStreamer(new ChunkStreamer(), stopTrigger);
+			return new CloseAwareChunkStreamer(new QueueSliceStreamer(), stopTrigger);
 		}
 
 		public void addElement(Object t) {
-			doIfNotClosed(addElementLock, () -> chunkStreamer.addElement(t));
+			doIfNotClosed(addElementLock, () -> queueSliceStreamer.put(t));
 		}
 
 		public void markChunkEnd() {
-			doIfNotClosed(markChunkEndLock, chunkStreamer::markChunkEnd);
+			doIfNotClosed(markChunkEndLock, queueSliceStreamer::startNewSlice);
 		}
 
 		public <T> Stream<T> streamChunk() {
-			return chunkStreamer.streamChunk();
+			return queueSliceStreamer.currentSliceStream();
 		}
 
 		public void close() {
@@ -71,7 +71,7 @@ public class AsyncSourceStreamer<T> {
 
 		public void doClose() {
 			this.closed = true;
-			chunkStreamer.clear();
+			queueSliceStreamer.clear();
 			stopTrigger.run();
 		}
 
