@@ -11,8 +11,8 @@ import java.util.stream.*;
 
 @RequiredArgsConstructor
 public class CloseAwareStream<T> implements Stream<T> {
-	private final Runnable afterStreamClose;
 	private final Stream<T> stream;
+	private final Runnable afterStreamClose;
 
 	@Override
 	public Stream<T> filter(Predicate<? super T> predicate) {

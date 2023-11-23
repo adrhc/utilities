@@ -2,7 +2,7 @@ package ro.go.adrhc.util.streamer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ro.go.adrhc.util.collection.SimpleStoppableVisitable;
+import ro.go.adrhc.util.collection.visitable.AbstractStoppableVisitable;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class PathsStreamer {
 	}
 
 	@RequiredArgsConstructor
-	private class PathsStoppableVisitable extends SimpleStoppableVisitable<Path> {
+	private class PathsStoppableVisitable extends AbstractStoppableVisitable<Path> {
 		private final Path startPath;
 
 		@Override

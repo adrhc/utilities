@@ -1,4 +1,4 @@
-package ro.go.adrhc.util.collection;
+package ro.go.adrhc.util.collection.visitable;
 
 import java.util.function.Consumer;
 

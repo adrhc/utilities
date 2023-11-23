@@ -2,7 +2,7 @@ package ro.go.adrhc.util.streamer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ro.go.adrhc.util.collection.SimpleStoppableVisitable;
+import ro.go.adrhc.util.collection.visitable.AbstractStoppableVisitable;
 
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -35,7 +35,7 @@ public class FuturesOutcomeStreamer<T> {
 	}
 
 	@RequiredArgsConstructor
-	private class FuturesStoppableVisitable extends SimpleStoppableVisitable<T> {
+	private class FuturesStoppableVisitable extends AbstractStoppableVisitable<T> {
 		private final Stream<? extends CompletableFuture<T>> futures;
 		private List<? extends CompletableFuture<T>> futureList;
 

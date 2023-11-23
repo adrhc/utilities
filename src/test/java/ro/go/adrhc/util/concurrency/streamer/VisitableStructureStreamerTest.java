@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ro.go.adrhc.util.collection.SimpleStoppableVisitable;
+import ro.go.adrhc.util.collection.visitable.AbstractStoppableVisitable;
 import ro.go.adrhc.util.streamer.VisitableStructureStreamer;
 
 import java.time.Duration;
@@ -43,15 +43,15 @@ class VisitableStructureStreamerTest {
 	private static Stream<String> streamerStream() {
 		VisitableStructureStreamer<String> streamer = new VisitableStructureStreamer<>(EXECUTOR);
 
-		return streamer.toStream(new SimpleStoppableVisitable<>() {
+		return streamer.toStream(new AbstractStoppableVisitable<>() {
 			@Override
 			public void accept(Consumer<? super String> visitor) {
-				present(visitor, "value1");
-				present(visitor, "value2");
-				present(visitor, "value3");
+				accept(visitor, "value1");
+				accept(visitor, "value2");
+				accept(visitor, "value3");
 			}
 
-			private void present(Consumer<? super String> visitor, String value) {
+			private void accept(Consumer<? super String> visitor, String value) {
 				if (isStopped()) {
 					log.info("skipping {} ...", value);
 					return;

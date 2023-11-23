@@ -1,92 +1,42 @@
 package ro.go.adrhc.util.streamer;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.util.collection.CloseAwareStream;
-import ro.go.adrhc.util.collection.StoppableVisitable;
-import ro.go.adrhc.util.collection.Visitable;
-import ro.go.adrhc.util.concurrency.LocksCollection;
+import ro.go.adrhc.util.collection.visitable.StoppableVisitable;
+import ro.go.adrhc.util.collection.visitable.Visitable;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
 
+import static ro.go.adrhc.util.collection.visitable.StoppableVisitable.ignoreStop;
+
+/**
+ * Not thread safe!
+ */
 @RequiredArgsConstructor
 @Slf4j
 public class VisitableStructureStreamer<T> {
 	private final ExecutorService executorService;
+	private CloseableQueueSliceStreamer closeableStreamer;
+	private StoppableVisitable<T> stoppableVisitable;
+
+	public Stream<T> toStream(Visitable<T> visitable) {
+		return toStream(ignoreStop(visitable));
+	}
 
 	public Stream<T> toStream(StoppableVisitable<T> stoppableVisitable) {
-		CloseAwareChunkStreamer chunkStreamer =
-				CloseAwareChunkStreamer.create(stoppableVisitable::stop);
-		asyncCollect(chunkStreamer, stoppableVisitable);
-		return new CloseAwareStream<>(chunkStreamer::close, chunkStreamer.streamChunk());
+		this.stoppableVisitable = stoppableVisitable;
+		this.closeableStreamer = CloseableQueueSliceStreamer.create(stoppableVisitable::stop);
+		executorService.execute(this::collect); // async collect
+		return new CloseAwareStream<>(closeableStreamer.streamChunk(), closeableStreamer::close);
 	}
 
-	protected void asyncCollect(CloseAwareChunkStreamer chunkStreamer, Visitable<T> visitable) {
-		executorService.execute(() -> collect(chunkStreamer, visitable));
-	}
-
-	@SneakyThrows
-	protected void collect(CloseAwareChunkStreamer chunkStreamer, Visitable<T> visitable) {
+	protected void collect() {
 //		log.info("begin elements collection");
-		visitable.accept(chunkStreamer::addElement);
+		stoppableVisitable.accept(closeableStreamer::addElement);
 //		log.info("elements collection completed");
-		chunkStreamer.markChunkEnd();
+		closeableStreamer.markChunkEnd();
 //		log.info("after markChunkEnd");
-	}
-
-	@RequiredArgsConstructor
-	private static class CloseAwareChunkStreamer implements AutoCloseable {
-		private final Lock addElementLock = new ReentrantLock();
-		private final Lock markChunkEndLock = new ReentrantLock();
-		private final LocksCollection locks = LocksCollection.of(addElementLock, markChunkEndLock);
-		private final QueueSliceStreamer queueSliceStreamer;
-		private final Runnable stopTrigger;
-		private boolean closed;
-
-		public static CloseAwareChunkStreamer create(Runnable stopTrigger) {
-			return new CloseAwareChunkStreamer(new QueueSliceStreamer(), stopTrigger);
-		}
-
-		public void addElement(Object t) {
-			doIfNotClosed(addElementLock, () -> queueSliceStreamer.put(t));
-		}
-
-		public void markChunkEnd() {
-			doIfNotClosed(markChunkEndLock, queueSliceStreamer::startNewSlice);
-		}
-
-		public <T> Stream<T> streamChunk() {
-			return queueSliceStreamer.streamCurrentSlice();
-		}
-
-		public void close() {
-//			log.info("closing ...");
-			locks.execute(this::doClose);
-//			log.info("closed");
-		}
-
-		public void doClose() {
-			this.closed = true;
-			queueSliceStreamer.clear();
-			stopTrigger.run();
-		}
-
-		private void doIfNotClosed(Lock lock, Runnable runnable) {
-			if (this.closed) {
-				return;
-			}
-			lock.lock();
-			try {
-				if (!this.closed) {
-					runnable.run();
-				}
-			} finally {
-				lock.unlock();
-			}
-		}
 	}
 }
