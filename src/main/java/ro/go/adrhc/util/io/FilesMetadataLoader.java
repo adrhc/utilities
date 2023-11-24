@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 @Slf4j
 public class FilesMetadataLoader<M> {
 	private final ExecutorService metadataExecutorService;
-	private final FuturesOutcomeStreamer futuresOutcomeStreamer;
+	private final FuturesOutcomeStreamer<M> futuresOutcomeStreamer;
 	private final PathsStreamer pathsStreamer;
 	private final Function<Path, M> metadataLoader;
 
@@ -32,12 +32,12 @@ public class FilesMetadataLoader<M> {
 				metadataLoader);
 	}
 
-	public Stream<M> loadByPaths(Stream<Path> ids) {
-		return ids.map(pathsStreamer::toStream).flatMap(this::loadPaths);
-	}
-
 	public Stream<M> loadAll() {
 		return loadPaths(pathsStreamer.toStream());
+	}
+
+	public Stream<M> loadByPaths(Stream<Path> paths) {
+		return paths.map(pathsStreamer::toStream).flatMap(this::loadPaths);
 	}
 
 	protected Stream<M> loadPaths(Stream<Path> filePaths) {
