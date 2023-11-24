@@ -43,7 +43,23 @@ public class PathsStreamer {
 		}
 
 		private void collectPaths(Stream<Path> paths) {
-			paths.takeWhile(p -> !this.isStopped()).forEach(visitor);
+			try {
+				paths.forEach(this::collectPath);
+			} catch (CollectionStoppedException e) {
+				// do nothing
+			}
+		}
+
+		private void collectPath(Path path) {
+			if (this.isStopped()) {
+//				log.info("\ncollection stop detected");
+				throw new CollectionStoppedException();
+			}
+//			log.info("\ncollected {}", path);
+			visitor.accept(path);
+		}
+
+		private static class CollectionStoppedException extends RuntimeException {
 		}
 	}
 }
