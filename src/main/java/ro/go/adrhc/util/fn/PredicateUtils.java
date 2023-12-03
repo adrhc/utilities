@@ -17,6 +17,11 @@ public class PredicateUtils {
 	}
 
 	@SafeVarargs
+	public static <T> Predicate<T> anyMatch(Predicate<T>... predicate) {
+		return t -> Arrays.stream(predicate).anyMatch(p -> p.test(t));
+	}
+
+	@SafeVarargs
 	public static <T> Predicate<T> noneMatch(Predicate<T>... predicate) {
 		return t -> Arrays.stream(predicate).noneMatch(p -> p.test(t));
 	}
