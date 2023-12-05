@@ -1,6 +1,7 @@
 package ro.go.adrhc.util.collection;
 
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -23,6 +24,15 @@ public class SetUtils {
 		return source.stream()
 				.filter(s -> toSubtract.stream()
 						.noneMatch(d -> Objects.equals(property.apply(s), property.apply(d))))
+				.collect(Collectors.toSet());
+	}
+
+	/**
+	 * @return from source (source minus toSubtract)
+	 */
+	public static <T> Set<T> diff(BiPredicate<T, T> matchRule, Set<T> source, Set<T> toSubtract) {
+		return source.stream()
+				.filter(s -> toSubtract.stream().noneMatch(r -> matchRule.test(s, r)))
 				.collect(Collectors.toSet());
 	}
 
