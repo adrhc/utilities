@@ -6,6 +6,26 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class SetUtils {
+	/**
+	 * @return from source
+	 */
+	public static <T, R> Set<T> common(Function<T, R> property, Set<T> source, Set<T> gauge) {
+		return source.stream()
+				.filter(s -> gauge.stream()
+						.anyMatch(d -> Objects.equals(property.apply(s), property.apply(d))))
+				.collect(Collectors.toSet());
+	}
+
+	/**
+	 * @return from source (source minus toSubtract)
+	 */
+	public static <T, R> Set<T> diff(Function<T, R> property, Set<T> source, Set<T> toSubtract) {
+		return source.stream()
+				.filter(s -> toSubtract.stream()
+						.noneMatch(d -> Objects.equals(property.apply(s), property.apply(d))))
+				.collect(Collectors.toSet());
+	}
+
 	public static <K, V> Set<V> valuesHashSet(Map<K, V> map) {
 		return new HashSet<>(map.values());
 	}
