@@ -7,18 +7,18 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class CounterHolder {
-	private int value;
+public class Counter {
+	private int count;
 
 	public void increment() {
-		value++;
+		count++;
 	}
 
 	public void decrement() {
-		value--;
+		count--;
 	}
 
 	public void reset() {
-		value = 0;
+		count = 0;
 	}
 }
