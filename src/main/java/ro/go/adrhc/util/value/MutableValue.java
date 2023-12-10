@@ -13,4 +13,8 @@ public class MutableValue<T> {
     public boolean hasValue() {
         return value != null;
     }
+
+    public boolean isEmpty() {
+        return value == null;
+    }
 }
