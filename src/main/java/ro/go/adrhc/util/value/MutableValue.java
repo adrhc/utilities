@@ -8,5 +8,9 @@ import lombok.*;
 @Setter
 @ToString
 public class MutableValue<T> {
-	private T value;
+    private T value;
+
+    public boolean hasValue() {
+        return value != null;
+    }
 }
