@@ -7,11 +7,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
 public class SmartLock extends ReentrantLock {
-    @Override
-    public SmartCondition newCondition() {
-        return new SmartCondition(this, super.newCondition());
-    }
-
     public void synchronize(Runnable runnable) {
         lock();
         try {
