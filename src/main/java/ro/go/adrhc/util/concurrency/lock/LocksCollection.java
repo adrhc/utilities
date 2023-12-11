@@ -1,4 +1,4 @@
-package ro.go.adrhc.util.concurrency;
+package ro.go.adrhc.util.concurrency.lock;
 
 import lombok.RequiredArgsConstructor;
 

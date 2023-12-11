@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class EnumUtils {
-	public static <E extends Enum<E>> Set<String> toNamesSet(Class<E> enumClass) {
-		return EnumSet.allOf(enumClass)
-				.stream()
-				.map(Enum::name)
-				.collect(Collectors.toSet());
-	}
+    public static <E extends Enum<E>> Set<String> toNamesSet(Class<E> enumClass) {
+        return EnumSet.allOf(enumClass)
+                .stream()
+                .map(Enum::name)
+                .collect(Collectors.toSet());
+    }
 }

@@ -17,46 +17,46 @@ import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitAll;
 @RequiredArgsConstructor
 @Slf4j
 public class FuturesStoppableVisitable<T> extends AbstractVisitorAwareStoppableVisitable<T> {
-	private final Stream<? extends CompletableFuture<T>> futures;
-	private final List<? extends CompletableFuture<T>> cancellableFutures;
+    private final Stream<? extends CompletableFuture<T>> futures;
+    private final List<? extends CompletableFuture<T>> cancellableFutures;
 
-	public static <T> FuturesStoppableVisitable<T> create(
-			Stream<? extends CompletableFuture<T>> futures, boolean cancelFuturesOnStreamClose) {
-		if (cancelFuturesOnStreamClose) {
-			List<? extends CompletableFuture<T>> futureList = futures.toList();
-			return new FuturesStoppableVisitable<>(futureList.stream(), futureList);
-		} else {
-			return new FuturesStoppableVisitable<>(futures, null);
-		}
-	}
+    public static <T> FuturesStoppableVisitable<T> create(
+            Stream<? extends CompletableFuture<T>> futures, boolean cancelFuturesOnStreamClose) {
+        if (cancelFuturesOnStreamClose) {
+            List<? extends CompletableFuture<T>> futureList = futures.toList();
+            return new FuturesStoppableVisitable<>(futureList.stream(), futureList);
+        } else {
+            return new FuturesStoppableVisitable<>(futures, null);
+        }
+    }
 
-	public void accept(Consumer<? super T> elemCollector) {
-		this.visitor = elemCollector;
-		waitAll(attachFuturesOutcomeCollector());
-	}
+    public void accept(Consumer<? super T> elemCollector) {
+        this.visitor = elemCollector;
+        waitAll(attachFuturesOutcomeCollector());
+    }
 
-	protected Stream<CompletableFuture<T>> attachFuturesOutcomeCollector() {
-		return futures.map(cf -> cf.handle(this::collectFutureOutcome));
-	}
+    protected Stream<CompletableFuture<T>> attachFuturesOutcomeCollector() {
+        return futures.map(cf -> cf.handle(this::collectFutureOutcome));
+    }
 
-	protected T collectFutureOutcome(T t, Throwable e) {
-		if (e != null) {
-			if (!(e instanceof CancellationException)) {
-				log.error(e.getMessage(), e);
-			}
-		} else {
-			visitor.accept(t);
-		}
-		return t;
-	}
+    protected T collectFutureOutcome(T t, Throwable e) {
+        if (e != null) {
+            if (!(e instanceof CancellationException)) {
+                log.error(e.getMessage(), e);
+            }
+        } else {
+            visitor.accept(t);
+        }
+        return t;
+    }
 
-	@Override
-	public void stop() {
-		super.stop();
-		if (cancellableFutures != null) {
+    @Override
+    public void stop() {
+        super.stop();
+        if (cancellableFutures != null) {
 //			log.info("cancelling futures ...");
-			cancellableFutures.forEach(f -> f.cancel(true));
+            cancellableFutures.forEach(f -> f.cancel(true));
 //			log.info("futures cancelled");
-		}
-	}
+        }
+    }
 }

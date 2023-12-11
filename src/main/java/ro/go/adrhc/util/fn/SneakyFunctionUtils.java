@@ -8,8 +8,8 @@ import java.util.function.Function;
 
 @UtilityClass
 public class SneakyFunctionUtils {
-	public static <T, R, E extends Exception>
-	SneakyFunction<T, Optional<R>, E> toOptionalResult(Function<T, R> fn) {
-		return t -> Optional.ofNullable(fn.apply(t));
-	}
+    public static <T, R, E extends Exception>
+    SneakyFunction<T, Optional<R>, E> toOptionalResult(Function<T, R> fn) {
+        return t -> Optional.ofNullable(fn.apply(t));
+    }
 }

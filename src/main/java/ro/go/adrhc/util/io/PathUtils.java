@@ -24,56 +24,56 @@ import static java.nio.file.attribute.PosixFilePermission.*;
  */
 @Slf4j
 public class PathUtils {
-	public static final EnumSet<PosixFilePermission> RWX =
-			EnumSet.of(OWNER_EXECUTE, OWNER_READ, OWNER_WRITE);
+    public static final EnumSet<PosixFilePermission> RWX =
+            EnumSet.of(OWNER_EXECUTE, OWNER_READ, OWNER_WRITE);
 
-	/**
-	 * @return path if referencePath is null otherwise resolve path against referencePath
-	 */
-	public static Path resolve(Path referencePath, Path path) {
-		return referencePath == null ? path : referencePath.resolve(path);
-	}
+    /**
+     * @return path if referencePath is null otherwise resolve path against referencePath
+     */
+    public static Path resolve(Path referencePath, Path path) {
+        return referencePath == null ? path : referencePath.resolve(path);
+    }
 
-	/**
-	 * @return path if is an absolute path otherwise relativize path against referencePath
-	 */
-	public static Path relativize(Path referencePath, Path path) {
-		return path.isAbsolute() ? referencePath.relativize(path) : path;
-	}
+    /**
+     * @return path if is an absolute path otherwise relativize path against referencePath
+     */
+    public static Path relativize(Path referencePath, Path path) {
+        return path.isAbsolute() ? referencePath.relativize(path) : path;
+    }
 
-	public static Set<Path> relativize(Path referencePath, Collection<Path> paths) {
-		Assert.isTrue(referencePath.isAbsolute(), "referencePath must be absolute!");
-		Assert.isTrue(paths.stream().allMatch(p -> p.startsWith(referencePath)),
-				"All paths must have referencePath as parent!");
-		return paths.stream().map(referencePath::relativize).collect(Collectors.toSet());
-	}
+    public static Set<Path> relativize(Path referencePath, Collection<Path> paths) {
+        Assert.isTrue(referencePath.isAbsolute(), "referencePath must be absolute!");
+        Assert.isTrue(paths.stream().allMatch(p -> p.startsWith(referencePath)),
+                "All paths must have referencePath as parent!");
+        return paths.stream().map(referencePath::relativize).collect(Collectors.toSet());
+    }
 
-	/**
-	 * here .local is considered a file without a name but with only extension
-	 */
-	public static boolean hasFilename(Path path) {
-		return !path.getFileName().toString().trim().startsWith(".");
-	}
+    /**
+     * here .local is considered a file without a name but with only extension
+     */
+    public static boolean hasFilename(Path path) {
+        return !path.getFileName().toString().trim().startsWith(".");
+    }
 
-	public static boolean isPathEndingWith(String filenameEnding, Path path) {
-		return FilenameUtils.getBaseName(path.toString()).endsWith(filenameEnding);
-	}
+    public static boolean isPathEndingWith(String filenameEnding, Path path) {
+        return FilenameUtils.getBaseName(path.toString()).endsWith(filenameEnding);
+    }
 
-	public static boolean isNullOrRelative(Path path) {
-		return path == null || !path.isAbsolute();
-	}
+    public static boolean isNullOrRelative(Path path) {
+        return path == null || !path.isAbsolute();
+    }
 
-	public static Optional<Path> setPosixFilePermissions(
-			EnumSet<PosixFilePermission> permissions, Path path) {
-		try {
-			return Optional.of(Files.setPosixFilePermissions(path, permissions));
-		} catch (Exception e) {
-			log.error("\nCan't set permissions on {}!", path);
-		}
-		return Optional.empty();
-	}
+    public static Optional<Path> setPosixFilePermissions(
+            EnumSet<PosixFilePermission> permissions, Path path) {
+        try {
+            return Optional.of(Files.setPosixFilePermissions(path, permissions));
+        } catch (Exception e) {
+            log.error("\nCan't set permissions on {}!", path);
+        }
+        return Optional.empty();
+    }
 
-	public static Optional<Path> parentOf(Path path) {
-		return path == null ? Optional.empty() : Optional.of(path.getParent());
-	}
+    public static Optional<Path> parentOf(Path path) {
+        return path == null ? Optional.empty() : Optional.of(path.getParent());
+    }
 }

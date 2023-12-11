@@ -14,47 +14,47 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 @Slf4j
 public class FilesMetadataLoader<M> {
-	private final ExecutorService metadataExecutorService;
-	private final FuturesOutcomeStreamer<M> futuresOutcomeStreamer;
-	private final PathsStreamer pathsStreamer;
-	private final Function<Path, M> metadataLoader;
+    private final ExecutorService metadataExecutorService;
+    private final FuturesOutcomeStreamer<M> futuresOutcomeStreamer;
+    private final PathsStreamer pathsStreamer;
+    private final Function<Path, M> metadataLoader;
 
-	/**
-	 * @param adminExecutorService    is used to join the CompletableFuture<M> collection
-	 * @param metadataExecutorService is used to load the metadata from files
-	 */
-	public static <M> FilesMetadataLoader<M> create(
-			ExecutorService adminExecutorService, ExecutorService metadataExecutorService,
-			SimpleDirectory directory, Function<Path, M> metadataLoader) {
-		return new FilesMetadataLoader<>(metadataExecutorService,
-				FuturesOutcomeStreamer.create(adminExecutorService),
-				PathsStreamer.create(metadataExecutorService, directory),
-				metadataLoader);
-	}
+    /**
+     * @param adminExecutorService    is used to join the CompletableFuture<M> collection
+     * @param metadataExecutorService is used to load the metadata from files
+     */
+    public static <M> FilesMetadataLoader<M> create(
+            ExecutorService adminExecutorService, ExecutorService metadataExecutorService,
+            SimpleDirectory directory, Function<Path, M> metadataLoader) {
+        return new FilesMetadataLoader<>(metadataExecutorService,
+                FuturesOutcomeStreamer.create(adminExecutorService),
+                PathsStreamer.create(metadataExecutorService, directory),
+                metadataLoader);
+    }
 
-	public Stream<M> loadAll() {
-		return loadPaths(pathsStreamer.toStream());
-	}
+    public Stream<M> loadAll() {
+        return loadPaths(pathsStreamer.toStream());
+    }
 
-	public Stream<M> loadByPaths(Stream<Path> paths) {
-		return paths.map(pathsStreamer::toStream).flatMap(this::loadPaths);
-	}
+    public Stream<M> loadByPaths(Stream<Path> paths) {
+        return paths.map(pathsStreamer::toStream).flatMap(this::loadPaths);
+    }
 
-	protected Stream<M> loadPaths(Stream<Path> filePaths) {
-		Stream<CompletableFuture<M>> futures = filePaths.map(this::loadMetadata);
-		return futuresOutcomeStreamer.toStream(futures);
-	}
+    protected Stream<M> loadPaths(Stream<Path> filePaths) {
+        Stream<CompletableFuture<M>> futures = filePaths.map(this::loadMetadata);
+        return futuresOutcomeStreamer.toStream(futures);
+    }
 
-	protected CompletableFuture<M> loadMetadata(Path filePath) {
-		return CompletableFuture.supplyAsync(() ->
-				doLoadMetadata(filePath), metadataExecutorService);
-	}
+    protected CompletableFuture<M> loadMetadata(Path filePath) {
+        return CompletableFuture.supplyAsync(() ->
+                doLoadMetadata(filePath), metadataExecutorService);
+    }
 
-	protected M doLoadMetadata(Path path) {
-		try {
-			return metadataLoader.apply(path);
-		} finally {
-			log.debug("\nmetadata loaded for: {}", path);
-		}
-	}
+    protected M doLoadMetadata(Path path) {
+        try {
+            return metadataLoader.apply(path);
+        } finally {
+            log.debug("\nmetadata loaded for: {}", path);
+        }
+    }
 }

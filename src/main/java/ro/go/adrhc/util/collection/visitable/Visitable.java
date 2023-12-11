@@ -4,5 +4,5 @@ import java.util.function.Consumer;
 
 @FunctionalInterface
 public interface Visitable<T> {
-	void accept(Consumer<? super T> visitor);
+    void accept(Consumer<? super T> visitor);
 }

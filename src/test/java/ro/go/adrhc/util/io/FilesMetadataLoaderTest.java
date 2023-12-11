@@ -17,16 +17,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 @Slf4j
 class FilesMetadataLoaderTest {
-	@Test
-	void loadAll(@TempDir Path tmp) throws IOException {
-		FilesMetadataLoader<String> metadataLoader = FilesMetadataLoader.create(
-				Executors.newSingleThreadExecutor(), Executors.newCachedThreadPool(),
-				SimpleDirectory.fixedRootPath(tmp), p -> p.getFileName().toString());
+    @Test
+    void loadAll(@TempDir Path tmp) throws IOException {
+        FilesMetadataLoader<String> metadataLoader = FilesMetadataLoader.create(
+                Executors.newSingleThreadExecutor(), Executors.newCachedThreadPool(),
+                SimpleDirectory.fixedRootPath(tmp), p -> p.getFileName().toString());
 
-		Files.createFile(tmp.resolve("test-file1.txt"));
-		Files.createFile(tmp.resolve("test-file2.txt"));
+        Files.createFile(tmp.resolve("test-file1.txt"));
+        Files.createFile(tmp.resolve("test-file2.txt"));
 
-		Stream<String> strings = metadataLoader.loadAll();
-		assertThat(strings).containsOnly("test-file1.txt", "test-file2.txt");
-	}
+        Stream<String> strings = metadataLoader.loadAll();
+        assertThat(strings).containsOnly("test-file1.txt", "test-file2.txt");
+    }
 }

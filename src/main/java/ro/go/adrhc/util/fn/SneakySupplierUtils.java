@@ -7,13 +7,13 @@ import java.util.List;
 
 @Slf4j
 public class SneakySupplierUtils {
-	public static <T, E extends Exception> List<T>
-	failToEmptyList(SneakySupplier<List<T>, E> sneakySupplier) {
-		try {
-			return sneakySupplier.get();
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-		}
-		return List.of();
-	}
+    public static <T, E extends Exception> List<T>
+    failToEmptyList(SneakySupplier<List<T>, E> sneakySupplier) {
+        try {
+            return sneakySupplier.get();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return List.of();
+    }
 }

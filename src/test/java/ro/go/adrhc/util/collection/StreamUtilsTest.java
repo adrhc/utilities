@@ -14,9 +14,9 @@ import static ro.go.adrhc.util.collection.StreamUtils.stream;
 @ExtendWith(MockitoExtension.class)
 @Slf4j
 class StreamUtilsTest {
-	@Test
-	void streamTest() {
-		Optional<String> optional = stream(List.of("value1", "value2")).findFirst();
-		assertThat(optional).hasValue("value1");
-	}
+    @Test
+    void streamTest() {
+        Optional<String> optional = stream(List.of("value1", "value2")).findFirst();
+        assertThat(optional).hasValue("value1");
+    }
 }

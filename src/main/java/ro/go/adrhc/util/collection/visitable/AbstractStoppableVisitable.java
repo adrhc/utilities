@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public abstract class AbstractStoppableVisitable<T> implements StoppableVisitable<T> {
-	private boolean stopped;
+    private boolean stopped;
 
-	@Override
-	public void stop() {
-		this.stopped = true;
-	}
+    @Override
+    public void stop() {
+        this.stopped = true;
+    }
 }
