@@ -75,4 +75,8 @@ public class SetUtils {
     public static <T> boolean anyMatch(Predicate<? super T> predicate, Set<T> set) {
         return set.stream().anyMatch(predicate);
     }
+
+    public static <T> boolean allMatch(Predicate<? super T> predicate, Set<T> set) {
+        return set.stream().allMatch(predicate);
+    }
 }
