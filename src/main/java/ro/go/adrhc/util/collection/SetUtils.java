@@ -72,7 +72,7 @@ public class SetUtils {
         return set.stream().limit(maxSize).collect(Collectors.toCollection(TreeSet::new));
     }
 
-    public static <T> boolean anyMatch(Set<T> set, Predicate<? super T> predicate) {
+    public static <T> boolean anyMatch(Predicate<? super T> predicate, Set<T> set) {
         return set.stream().anyMatch(predicate);
     }
 }
