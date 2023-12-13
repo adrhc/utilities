@@ -3,6 +3,7 @@ package ro.go.adrhc.util.collection;
 import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -69,5 +70,9 @@ public class SetUtils {
 
     public static <T> Set<T> limit(int maxSize, Collection<T> set) {
         return set.stream().limit(maxSize).collect(Collectors.toCollection(TreeSet::new));
+    }
+
+    public static <T> boolean anyMatch(Set<T> set, Predicate<? super T> predicate) {
+        return set.stream().anyMatch(predicate);
     }
 }
