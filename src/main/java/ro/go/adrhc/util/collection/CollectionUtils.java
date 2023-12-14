@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -53,6 +54,14 @@ public class CollectionUtils {
             P newPartition = createAndAddAll(partitionFactory, partition.elements());
             return add(result, newPartition);
         }
+    }
+
+    public static <T> boolean anyMatch(Predicate<? super T> predicate, Collection<T> set) {
+        return set.stream().anyMatch(predicate);
+    }
+
+    public static <T> boolean allMatch(Predicate<? super T> predicate, Collection<T> set) {
+        return set.stream().allMatch(predicate);
     }
 
     private static <E, C extends Collection<E>> C createAndAddAll(
