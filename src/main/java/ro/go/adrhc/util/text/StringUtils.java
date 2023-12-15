@@ -15,28 +15,36 @@ public class StringUtils {
         return text == null || text.isBlank();
     }
 
-    public static <T> String concat(Stream<T> stream) {
-        return concat("\n", Function.identity(), stream::iterator);
-    }
-
-    public static <T> String concat(String separator, Stream<T> stream) {
-        return concat(separator, Function.identity(), stream::iterator);
-    }
-
     public static <T> String concat(Iterable<T> iterable) {
-        return concat("\n", Function.identity(), iterable);
+        return concat(stream(iterable));
     }
 
     public static <T, R> String concat(Function<T, R> mapper, Iterable<T> iterable) {
-        return concat("\n", mapper, iterable);
+        return concat(mapper, stream(iterable));
     }
 
     public static <T> String concat(String separator, Iterable<T> iterable) {
-        return concat(separator, Function.identity(), iterable);
+        return concat(separator, stream(iterable));
     }
 
     public static <T, R> String concat(String separator, Function<T, R> mapper, Iterable<T> iterable) {
-        return stream(iterable)
+        return concat(separator, mapper, stream(iterable));
+    }
+
+    public static <T> String concat(Stream<T> stream) {
+        return concat("\n", Function.identity(), stream);
+    }
+
+    public static <T, R> String concat(Function<T, R> mapper, Stream<T> stream) {
+        return concat("\n", mapper, stream);
+    }
+
+    public static <T> String concat(String separator, Stream<T> stream) {
+        return concat(separator, Function.identity(), stream);
+    }
+
+    public static <T, R> String concat(String separator, Function<T, R> mapper, Stream<T> stream) {
+        return stream
                 .map(mapper)
                 .map(Object::toString)
                 .collect(Collectors.joining(separator));
