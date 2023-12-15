@@ -13,8 +13,8 @@ import java.util.function.Function;
 @Getter
 @Accessors(fluent = true)
 public class Pair<K, V> {
-    private final K key;
-    private final V value;
+    protected final K key;
+    protected final V value;
 
     public static <K, V> Pair<K, V> ofMapEntry(Map.Entry<K, V> mapEntry) {
         return new Pair<>(mapEntry.getKey(), mapEntry.getValue());
