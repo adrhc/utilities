@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static ro.go.adrhc.util.collection.StreamUtils.stream;
+import static ro.go.adrhc.util.stream.StreamUtils.stream;
 
 @ExtendWith(MockitoExtension.class)
 @Slf4j

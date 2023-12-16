@@ -22,18 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
 @Slf4j
 class PathsStreamerTest {
-    private static void initFS(Path tmp) throws IOException {
-        Files.createFile(tmp.resolve("test-file1.txt"));
-        Files.createFile(tmp.resolve("test-file2.txt"));
-        Files.createFile(tmp.resolve("test-file3.txt"));
-    }
-
-    private static PathsStreamer pathsStreamer(Path tmp) {
-        return PathsStreamer.create(
-                Executors.newSingleThreadExecutor(),
-                SimpleDirectory.fixedRootPath(tmp));
-    }
-
     @Test
     void toStream(@TempDir Path tmp) throws IOException {
         PathsStreamer pathsStreamer = pathsStreamer(tmp);
@@ -53,5 +41,17 @@ class PathsStreamerTest {
             optional = stream.findFirst();
         }
         assertThat(optional).isPresent();
+    }
+
+    private static void initFS(Path tmp) throws IOException {
+        Files.createFile(tmp.resolve("test-file1.txt"));
+        Files.createFile(tmp.resolve("test-file2.txt"));
+        Files.createFile(tmp.resolve("test-file3.txt"));
+    }
+
+    private static PathsStreamer pathsStreamer(Path tmp) {
+        return PathsStreamer.create(
+                Executors.newSingleThreadExecutor(),
+                SimpleDirectory.fixedRootPath(tmp));
     }
 }

@@ -44,7 +44,7 @@ public class SetUtils {
      * @return a LinkedHashSet preserving the Iterable order
      */
     public static <T, R> Set<R> mapToSet(Iterable<T> iterable,
-            Function<? super T, ? extends R> mapper) {
+                                         Function<? super T, ? extends R> mapper) {
         return StreamSupport.stream(iterable.spliterator(), false)
                 .map(mapper)
                 .collect(Collectors.toSet());

@@ -24,6 +24,22 @@ import static org.awaitility.Awaitility.await;
 class VisitableStructureStreamerTest {
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
+    @Test
+    void toStream() {
+        Stream<String> stream = streamerStream();
+
+        assertThat(stream.count()).isEqualTo(3);
+    }
+
+    @Test
+    void streamClosure() {
+        Optional<String> optional;
+        try (Stream<String> stream = streamerStream()) {
+            optional = stream.findFirst();
+        }
+        assertThat(optional).hasValue("value1");
+    }
+
     private static Stream<String> streamerStream() {
         VisitableStructureStreamer<String> streamer = new VisitableStructureStreamer<>(EXECUTOR);
 
@@ -45,21 +61,5 @@ class VisitableStructureStreamerTest {
                 await().pollDelay(Duration.ofMillis(500)).until(() -> true);
             }
         });
-    }
-
-    @Test
-    void toStream() {
-        Stream<String> stream = streamerStream();
-
-        assertThat(stream.count()).isEqualTo(3);
-    }
-
-    @Test
-    void streamClosure() {
-        Optional<String> optional;
-        try (Stream<String> stream = streamerStream()) {
-            optional = stream.findFirst();
-        }
-        assertThat(optional).hasValue("value1");
     }
 }

@@ -15,7 +15,7 @@ public class LockUtils {
     }
 
     public static void safelyAwait(Condition condition,
-            Consumer<InterruptedException> interruptedExceptionConsumer) {
+                                   Consumer<InterruptedException> interruptedExceptionConsumer) {
         try {
             condition.await();
         } catch (InterruptedException e) {
@@ -24,7 +24,7 @@ public class LockUtils {
     }
 
     public static boolean safelyAwait(long time, TimeUnit unit, Condition condition,
-            Consumer<InterruptedException> interruptedExceptionConsumer) {
+                                      Consumer<InterruptedException> interruptedExceptionConsumer) {
         try {
             return condition.await(time, unit);
         } catch (InterruptedException e) {

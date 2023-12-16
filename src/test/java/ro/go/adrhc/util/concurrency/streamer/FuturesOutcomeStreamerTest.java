@@ -23,6 +23,21 @@ class FuturesOutcomeStreamerTest {
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
     private static final ExecutorService FIXED = Executors.newFixedThreadPool(2);
 
+    @Test
+    void toStream() {
+        Stream<String> strings = streamerStream(false);
+        assertThat(strings).doesNotContain("value0", "value5");
+    }
+
+    @Test
+    void streamClosure() {
+        Optional<String> optional;
+        try (Stream<String> stream = streamerStream(true)) {
+            optional = stream.findFirst();
+        }
+        assertThat(optional).isPresent();
+    }
+
     private static Stream<String> streamerStream(boolean cancelFuturesOnClose) {
         FuturesOutcomeStreamer<String> streamer =
                 FuturesOutcomeStreamer.create(EXECUTOR, cancelFuturesOnClose);
@@ -42,20 +57,5 @@ class FuturesOutcomeStreamerTest {
     private static <T> T slow(T t) {
         await().pollDelay(Duration.ofMillis(250)).until(() -> true);
         return t;
-    }
-
-    @Test
-    void toStream() {
-        Stream<String> strings = streamerStream(false);
-        assertThat(strings).doesNotContain("value0", "value5");
-    }
-
-    @Test
-    void streamClosure() {
-        Optional<String> optional;
-        try (Stream<String> stream = streamerStream(true)) {
-            optional = stream.findFirst();
-        }
-        assertThat(optional).isPresent();
     }
 }

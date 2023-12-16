@@ -1,4 +1,4 @@
-package ro.go.adrhc.util.collection;
+package ro.go.adrhc.util.stream;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

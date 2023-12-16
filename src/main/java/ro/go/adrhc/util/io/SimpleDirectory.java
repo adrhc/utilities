@@ -35,7 +35,7 @@ public class SimpleDirectory {
     }
 
     public static SimpleDirectory of(FileSystemUtils fsUtils,
-            Supplier<Path> rootPathSupplier, Predicate<Path> pathsFilter) {
+                                     Supplier<Path> rootPathSupplier, Predicate<Path> pathsFilter) {
         return new SimpleDirectory(FOLLOW_LINKS, fsUtils, rootPathSupplier, pathsFilter);
     }
 
@@ -60,8 +60,8 @@ public class SimpleDirectory {
     }
 
     public <E extends Exception> void doWithPathStream(Path start,
-            SneakyConsumer<Stream<Path>, E>
-                    pathsStreamConsumer) throws IOException, E {
+                                                       SneakyConsumer<Stream<Path>, E>
+                                                               pathsStreamConsumer) throws IOException, E {
         try (Stream<Path> paths = fsUtils.walk(resolvePath(start), fileVisitOption)) {
             pathsStreamConsumer.accept(paths.filter(pathsFilter));
         }

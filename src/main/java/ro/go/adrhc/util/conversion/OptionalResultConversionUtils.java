@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static ro.go.adrhc.util.collection.StreamUtils.stream;
+import static ro.go.adrhc.util.stream.StreamUtils.stream;
 
 public class OptionalResultConversionUtils {
     public static <T, R, E extends Exception> List<R> convertAllSneaky(
