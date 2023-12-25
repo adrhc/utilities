@@ -15,4 +15,12 @@ public class IntHolder {
     public boolean isPositive() {
         return value > 0;
     }
+
+    public boolean isNegative() {
+        return value < 0;
+    }
+
+    public boolean isZero() {
+        return value == 0;
+    }
 }
