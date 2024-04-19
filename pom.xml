@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <!-- https://github.com/spring-projects/spring-shell/issues/324 -->
-        <version>3.1.0</version>
+        <version>3.2.4</version>
         <!--
             Spring Boot [2.7.0] is not compatible with this Spring Cloud release train',
             action = 'Change Spring Boot version to one of the following versions [2.4.x, 2.5.x].
@@ -30,7 +30,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
-        <commons-io-version>2.11.0</commons-io-version>
+        <commons-io-version>2.16.1</commons-io-version>
         <sneakythrow-version>1.2.0</sneakythrow-version>
     </properties>
 
