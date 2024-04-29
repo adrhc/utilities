@@ -7,11 +7,6 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <!-- https://github.com/spring-projects/spring-shell/issues/324 -->
         <version>3.2.4</version>
-        <!--
-            Spring Boot [2.7.0] is not compatible with this Spring Cloud release train',
-            action = 'Change Spring Boot version to one of the following versions [2.4.x, 2.5.x].
-        -->
-        <!--<version>2.7.0</version>-->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -84,7 +79,6 @@
         <dependency>
             <groupId>org.awaitility</groupId>
             <artifactId>awaitility</artifactId>
-            <!--            <version>4.2.0</version>-->
             <scope>test</scope>
         </dependency>
 
