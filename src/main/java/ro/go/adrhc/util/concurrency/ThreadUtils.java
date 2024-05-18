@@ -23,4 +23,12 @@ public class ThreadUtils {
             log.error(e.getMessage(), e);
         }
     }
+
+    private void safelyJoin(Thread thread) {
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
 }
