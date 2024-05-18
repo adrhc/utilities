@@ -24,7 +24,7 @@ public class ThreadUtils {
 		}
 	}
 
-	private void safelyJoin(Thread thread) {
+	public static void safelyJoin(Thread thread) {
 		try {
 			thread.join();
 		} catch (InterruptedException e) {
