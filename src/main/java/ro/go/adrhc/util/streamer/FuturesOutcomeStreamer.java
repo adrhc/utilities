@@ -10,26 +10,26 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 @Slf4j
 public class FuturesOutcomeStreamer<T> {
-    private final VisitableStructureStreamer<T> streamer;
-    /**
-     * "true" requires that FuturesStoppableVisitable must
-     * cache the futures stream which is very inefficient!
-     */
-    private final boolean cancelFuturesOnStreamClose;
+	private final VisitableStructureStreamer<T> streamer;
+	/**
+	 * "true" requires that FuturesStoppableVisitable must
+	 * cache the futures stream which is very inefficient!
+	 */
+	private final boolean cancelFuturesOnStreamClose;
 
-    public static <T> FuturesOutcomeStreamer<T> create(ExecutorService executorService) {
-        return new FuturesOutcomeStreamer<>(
-                new VisitableStructureStreamer<>(executorService), false);
-    }
+	public static <T> FuturesOutcomeStreamer<T> create(ExecutorService executorService) {
+		return new FuturesOutcomeStreamer<>(
+				new VisitableStructureStreamer<>(executorService), false);
+	}
 
-    public static <T> FuturesOutcomeStreamer<T> create(
-            ExecutorService executorService, boolean cancelFuturesOnStreamClose) {
-        return new FuturesOutcomeStreamer<>(
-                new VisitableStructureStreamer<>(executorService), cancelFuturesOnStreamClose);
-    }
+	public static <T> FuturesOutcomeStreamer<T> create(
+			ExecutorService executorService, boolean cancelFuturesOnStreamClose) {
+		return new FuturesOutcomeStreamer<>(
+				new VisitableStructureStreamer<>(executorService), cancelFuturesOnStreamClose);
+	}
 
-    public Stream<T> toStream(Stream<? extends CompletableFuture<T>> futures) {
-        return streamer.toStream(FuturesStoppableVisitable
-                .create(futures, cancelFuturesOnStreamClose));
-    }
+	public Stream<T> toStream(Stream<? extends CompletableFuture<T>> futures) {
+		return streamer.toStream(FuturesStoppableVisitable
+				.create(futures, cancelFuturesOnStreamClose));
+	}
 }

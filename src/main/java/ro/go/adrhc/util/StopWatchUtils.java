@@ -5,9 +5,9 @@ import org.apache.commons.lang3.time.StopWatch;
 
 @UtilityClass
 public class StopWatchUtils {
-    public static StopWatch start() {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        return stopWatch;
-    }
+	public static StopWatch start() {
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		return stopWatch;
+	}
 }

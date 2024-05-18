@@ -13,14 +13,14 @@ import static ro.go.adrhc.util.io.PathUtils.hasFilename;
 @RequiredArgsConstructor
 @ToString
 public class SupportedExtensions {
-    private final Set<String> supportedExtensions;
+	private final Set<String> supportedExtensions;
 
-    public boolean supports(Path path) {
-        return isRegularFile(path) && hasFilename(path) && isSupportedFile(path);
-    }
+	public boolean supports(Path path) {
+		return isRegularFile(path) && hasFilename(path) && isSupportedFile(path);
+	}
 
-    private boolean isSupportedFile(Path path) {
-        return supportedExtensions.contains(
-                getExtension(path.getFileName().toString()).toLowerCase());
-    }
+	private boolean isSupportedFile(Path path) {
+		return supportedExtensions.contains(
+				getExtension(path.getFileName().toString()).toLowerCase());
+	}
 }

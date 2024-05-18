@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 @UtilityClass
 public class IterableUtils {
-    public static <T> Iterable<T> iterable(Stream<T> stream) {
-        return stream::iterator;
-    }
+	public static <T> Iterable<T> iterable(Stream<T> stream) {
+		return stream::iterator;
+	}
 }

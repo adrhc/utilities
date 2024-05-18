@@ -6,21 +6,21 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class IntHolder {
-    private int value;
+	private int value;
 
-    public void subtract(int other) {
-        this.value -= other;
-    }
+	public void subtract(int other) {
+		this.value -= other;
+	}
 
-    public boolean isPositive() {
-        return value > 0;
-    }
+	public boolean isPositive() {
+		return value > 0;
+	}
 
-    public boolean isNegative() {
-        return value < 0;
-    }
+	public boolean isNegative() {
+		return value < 0;
+	}
 
-    public boolean isZero() {
-        return value == 0;
-    }
+	public boolean isZero() {
+		return value == 0;
+	}
 }

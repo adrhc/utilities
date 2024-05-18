@@ -9,29 +9,29 @@ import java.util.concurrent.locks.Lock;
 
 @RequiredArgsConstructor
 public class LocksCollection {
-    private final List<Lock> locks;
+	private final List<Lock> locks;
 
-    public static LocksCollection of(Lock... addElementLock) {
-        return new LocksCollection(Arrays.asList(addElementLock));
-    }
+	public static LocksCollection of(Lock... addElementLock) {
+		return new LocksCollection(Arrays.asList(addElementLock));
+	}
 
-    public void execute(Runnable action) {
-        lock();
-        try {
-            action.run();
-        } finally {
-            unlock();
-        }
-    }
+	public void execute(Runnable action) {
+		lock();
+		try {
+			action.run();
+		} finally {
+			unlock();
+		}
+	}
 
-    public void lock() {
-        locks.forEach(Lock::lock);
-    }
+	public void lock() {
+		locks.forEach(Lock::lock);
+	}
 
-    public void unlock() {
-        ListIterator<Lock> listIterator = locks.listIterator(locks.size());
-        while (listIterator.hasPrevious()) {
-            listIterator.previous().unlock();
-        }
-    }
+	public void unlock() {
+		ListIterator<Lock> listIterator = locks.listIterator(locks.size());
+		while (listIterator.hasPrevious()) {
+			listIterator.previous().unlock();
+		}
+	}
 }

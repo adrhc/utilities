@@ -17,26 +17,26 @@ import static ro.go.adrhc.util.collection.visitable.StoppableVisitable.ignoreSto
 @RequiredArgsConstructor
 @Slf4j
 public class VisitableStructureStreamer<T> {
-    private final ExecutorService executorService;
-    private CloseableQueueSliceStreamer closeableStreamer;
-    private StoppableVisitable<T> stoppableVisitable;
+	private final ExecutorService executorService;
+	private CloseableQueueSliceStreamer closeableStreamer;
+	private StoppableVisitable<T> stoppableVisitable;
 
-    public Stream<T> toStream(Visitable<T> visitable) {
-        return toStream(ignoreStop(visitable));
-    }
+	public Stream<T> toStream(Visitable<T> visitable) {
+		return toStream(ignoreStop(visitable));
+	}
 
-    public Stream<T> toStream(StoppableVisitable<T> stoppableVisitable) {
-        this.stoppableVisitable = stoppableVisitable;
-        this.closeableStreamer = CloseableQueueSliceStreamer.create(stoppableVisitable::stop);
-        executorService.execute(this::collect); // async collect
-        return new CloseAwareStream<>(closeableStreamer.streamChunk(), closeableStreamer::close);
-    }
+	public Stream<T> toStream(StoppableVisitable<T> stoppableVisitable) {
+		this.stoppableVisitable = stoppableVisitable;
+		this.closeableStreamer = CloseableQueueSliceStreamer.create(stoppableVisitable::stop);
+		executorService.execute(this::collect); // async collect
+		return new CloseAwareStream<>(closeableStreamer.streamChunk(), closeableStreamer::close);
+	}
 
-    protected void collect() {
+	protected void collect() {
 //		log.info("begin elements collection");
-        stoppableVisitable.accept(closeableStreamer::addElement);
+		stoppableVisitable.accept(closeableStreamer::addElement);
 //		log.info("elements collection completed");
-        closeableStreamer.markChunkEnd();
+		closeableStreamer.markChunkEnd();
 //		log.info("after markChunkEnd");
-    }
+	}
 }

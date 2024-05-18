@@ -10,26 +10,26 @@ import java.util.function.Consumer;
 @UtilityClass
 @Slf4j
 public class LockUtils {
-    public static void safelyAwait(Condition condition) {
-        safelyAwait(condition, e -> log.error(e.getMessage(), e));
-    }
+	public static void safelyAwait(Condition condition) {
+		safelyAwait(condition, e -> log.error(e.getMessage(), e));
+	}
 
-    public static void safelyAwait(Condition condition,
-            Consumer<InterruptedException> interruptedExceptionConsumer) {
-        try {
-            condition.await();
-        } catch (InterruptedException e) {
-            interruptedExceptionConsumer.accept(e);
-        }
-    }
+	public static void safelyAwait(Condition condition,
+			Consumer<InterruptedException> interruptedExceptionConsumer) {
+		try {
+			condition.await();
+		} catch (InterruptedException e) {
+			interruptedExceptionConsumer.accept(e);
+		}
+	}
 
-    public static boolean safelyAwait(long time, TimeUnit unit, Condition condition,
-            Consumer<InterruptedException> interruptedExceptionConsumer) {
-        try {
-            return condition.await(time, unit);
-        } catch (InterruptedException e) {
-            interruptedExceptionConsumer.accept(e);
-        }
-        return true;
-    }
+	public static boolean safelyAwait(long time, TimeUnit unit, Condition condition,
+			Consumer<InterruptedException> interruptedExceptionConsumer) {
+		try {
+			return condition.await(time, unit);
+		} catch (InterruptedException e) {
+			interruptedExceptionConsumer.accept(e);
+		}
+		return true;
+	}
 }

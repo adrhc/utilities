@@ -10,17 +10,17 @@ import java.util.Optional;
 @Setter
 @ToString
 public class MutableValue<T> {
-    private T value;
+	private T value;
 
-    public Optional<T> getOptionalValue() {
-        return Optional.ofNullable(value);
-    }
+	public Optional<T> getOptionalValue() {
+		return Optional.ofNullable(value);
+	}
 
-    public boolean hasValue() {
-        return value != null;
-    }
+	public boolean hasValue() {
+		return value != null;
+	}
 
-    public boolean isEmpty() {
-        return value == null;
-    }
+	public boolean isEmpty() {
+		return value == null;
+	}
 }

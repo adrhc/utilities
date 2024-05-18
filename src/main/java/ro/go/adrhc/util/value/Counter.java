@@ -8,21 +8,21 @@ import lombok.*;
 @Setter
 @ToString
 public class Counter {
-    private int count;
+	private int count;
 
-    public void increment() {
-        count++;
-    }
+	public void increment() {
+		count++;
+	}
 
-    public void decrement() {
-        count--;
-    }
+	public void decrement() {
+		count--;
+	}
 
-    public void reset() {
-        count = 0;
-    }
+	public void reset() {
+		count = 0;
+	}
 
-    public boolean isPositive() {
-        return count > 0;
-    }
+	public boolean isPositive() {
+		return count > 0;
+	}
 }
