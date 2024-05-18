@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static ro.go.adrhc.util.concurrency.ConcurrencyUtils.waitAll;
+import static ro.go.adrhc.util.concurrency.FutureUtils.waitAll;
 
 /**
  * Not thread safe!
