@@ -29,12 +29,12 @@ public class ComparisonUtils {
 	}
 
 	public static <T extends Comparable<T>> int compareLists(List<T> list,
-			List<T> other, boolean sameElementsMeansEqualListsNoMatterTheOrder) {
+			List<T> other, boolean equalContentMeansEqualListsNoMatterTheOrder) {
 		if (list.size() > other.size()) {
 			return 1;
 		} else if (list.size() < other.size()) {
 			return -1;
-		} else if (sameElementsMeansEqualListsNoMatterTheOrder
+		} else if (equalContentMeansEqualListsNoMatterTheOrder
 				&& new HashSet<>(list).containsAll(other)) {
 			return 0;
 		}
