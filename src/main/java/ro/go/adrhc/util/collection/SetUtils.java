@@ -36,13 +36,10 @@ public class SetUtils {
 				.collect(Collectors.toSet());
 	}
 
-	public static <K, V> Set<V> valuesHashSet(Map<K, V> map) {
+	public static <K, V> Set<V> valuesToHashSet(Map<K, V> map) {
 		return new HashSet<>(map.values());
 	}
 
-	/**
-	 * @return a LinkedHashSet preserving the Iterable order
-	 */
 	public static <T, R> Set<R> mapToSet(Iterable<T> iterable,
 			Function<? super T, ? extends R> mapper) {
 		return StreamSupport.stream(iterable.spliterator(), false)
