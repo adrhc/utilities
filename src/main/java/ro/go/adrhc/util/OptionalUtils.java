@@ -12,6 +12,10 @@ import static ro.go.adrhc.util.Slf4jUtils.logError;
 @UtilityClass
 @Slf4j
 public class OptionalUtils {
+	public <T> Optional<T> of(Supplier<? extends T> supplier) {
+		return Optional.of(supplier.get());
+	}
+
 	public <T> Optional<T> ofNullable(Supplier<? extends T> supplier) {
 		return Optional.ofNullable(supplier.get());
 	}
