@@ -26,11 +26,13 @@ public class ConversionUtils {
 		return tStream.map(converter);
 	}
 
-	public static <T, R> List<R> convertCollection(Function<T, R> converter, Collection<T> tCollection) {
+	public static <T, R> List<R> convertCollection(Function<T, R> converter,
+			Collection<T> tCollection) {
 		return tCollection.stream().map(converter).toList();
 	}
 
-	public static <T, R> List<R> convertCollection(Function<T, R> converter, Iterable<T> tIterable) {
+	public static <T, R> List<R> convertCollection(Function<T, R> converter,
+			Iterable<T> tIterable) {
 		return stream(tIterable).map(converter).toList();
 	}
 }

@@ -21,7 +21,8 @@ public class OptionalResultConversionUtils {
 		return result;
 	}
 
-	public static <T, R> Stream<R> convertStream(Function<T, Optional<R>> converter, Stream<T> tStream) {
+	public static <T, R> Stream<R> convertStream(Function<T, Optional<R>> converter,
+			Stream<T> tStream) {
 		return tStream.map(converter).flatMap(Optional::stream);
 	}
 
@@ -30,7 +31,8 @@ public class OptionalResultConversionUtils {
 		return tCollection.stream().map(converter).flatMap(Optional::stream).toList();
 	}
 
-	public static <T, R> List<R> convertIterable(Function<T, Optional<R>> converter, Iterable<T> tIterable) {
+	public static <T, R> List<R> convertIterable(Function<T, Optional<R>> converter,
+			Iterable<T> tIterable) {
 		return stream(tIterable).map(converter).flatMap(Optional::stream).toList();
 	}
 }

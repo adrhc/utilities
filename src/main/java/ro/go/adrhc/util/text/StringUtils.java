@@ -27,7 +27,8 @@ public class StringUtils {
 		return concat(separator, stream(iterable));
 	}
 
-	public static <T, R> String concat(String separator, Function<T, R> mapper, Iterable<T> iterable) {
+	public static <T, R> String concat(String separator, Function<T, R> mapper,
+			Iterable<T> iterable) {
 		return concat(separator, mapper, stream(iterable));
 	}
 

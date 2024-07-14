@@ -120,7 +120,8 @@ public class CloseAwareStream<T> implements Stream<T> {
 	}
 
 	@Override
-	public <U> U reduce(U identity, BiFunction<U, ? super T, U> accumulator, BinaryOperator<U> combiner) {
+	public <U> U reduce(U identity, BiFunction<U, ? super T, U> accumulator,
+			BinaryOperator<U> combiner) {
 		return stream.reduce(identity, accumulator, combiner);
 	}
 
