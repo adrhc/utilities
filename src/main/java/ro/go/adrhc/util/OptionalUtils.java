@@ -7,8 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static ro.go.adrhc.util.Slf4jUtils.logError;
-
 @UtilityClass
 @Slf4j
 public class OptionalUtils {
@@ -25,7 +23,7 @@ public class OptionalUtils {
 		try {
 			return Optional.of(supplier.get());
 		} catch (Exception e) {
-			logError(log, e);
+			log.error(e.getMessage(), e);
 		}
 		return Optional.empty();
 	}
