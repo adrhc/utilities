@@ -4,21 +4,27 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
-public class OptionalStreamImpl<T> extends OptionalStatusImpl implements OptionalStream<T> {
+public class OptionalStreamImpl<T> extends OptionalCollectionStatusImpl
+		implements OptionalStream<T> {
 	private final Stream<T> stream;
 
-	public OptionalStreamImpl(boolean isMissing, Stream<T> stream) {
-		super(isMissing);
+	public OptionalStreamImpl(boolean isMissing, boolean incomplete, Stream<T> stream) {
+		super(isMissing, incomplete);
 		this.stream = stream;
 	}
 
 	public static <T> OptionalStream<T> of(Stream<T> stream) {
 		return stream instanceof OptionalStream ? (OptionalStream) stream
-				: new OptionalStreamImpl<>(false, stream);
+				: new OptionalStreamImpl<>(false, false, stream);
+	}
+
+	public static <T> OptionalStream<T> ofIncomplete(Stream<T> stream) {
+		return stream instanceof OptionalStream ? (OptionalStream) stream
+				: new OptionalStreamImpl<>(false, true, stream);
 	}
 
 	public static <T> OptionalStream<T> ofMissing() {
-		return new OptionalStreamImpl<>(true, Stream.of());
+		return new OptionalStreamImpl<>(true, true, Stream.of());
 	}
 
 	@Override

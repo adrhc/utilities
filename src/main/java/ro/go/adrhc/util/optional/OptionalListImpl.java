@@ -9,21 +9,26 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
-public class OptionalListImpl<T> extends OptionalStatusImpl implements OptionalList<T> {
+public class OptionalListImpl<T> extends OptionalCollectionStatusImpl implements OptionalList<T> {
 	private final List<T> list;
 
-	public OptionalListImpl(boolean isMissing, List<T> list) {
-		super(isMissing);
+	public OptionalListImpl(boolean isMissing, boolean incomplete, List<T> list) {
+		super(isMissing, incomplete);
 		this.list = list;
 	}
 
 	public static <T> OptionalList<T> of(List<T> list) {
 		return list instanceof OptionalList ? (OptionalList) list
-				: new OptionalListImpl<>(false, list);
+				: new OptionalListImpl<>(false, false, list);
+	}
+
+	public static <T> OptionalList<T> ofIncomplete(List<T> list) {
+		return list instanceof OptionalList ? (OptionalList) list
+				: new OptionalListImpl<>(false, true, list);
 	}
 
 	public static <T> OptionalList<T> ofMissing() {
-		return new OptionalListImpl<>(true, List.of());
+		return new OptionalListImpl<>(true, true, List.of());
 	}
 
 	@Override

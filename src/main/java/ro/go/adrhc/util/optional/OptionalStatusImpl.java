@@ -10,6 +10,6 @@ public class OptionalStatusImpl implements OptionalStatus {
 
 	@Override
 	public boolean isPresent() {
-		return false;
+		return !missing;
 	}
 }

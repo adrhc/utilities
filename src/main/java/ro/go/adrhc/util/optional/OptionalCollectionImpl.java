@@ -11,21 +11,27 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class OptionalCollectionImpl<T>
-		extends OptionalStatusImpl implements OptionalCollection<T> {
+		extends OptionalCollectionStatusImpl implements OptionalCollection<T> {
 	private final Collection<T> collection;
 
-	public OptionalCollectionImpl(boolean isMissing, Collection<T> collection) {
-		super(isMissing);
+	public OptionalCollectionImpl(boolean isMissing,
+			boolean incomplete, Collection<T> collection) {
+		super(isMissing, incomplete);
 		this.collection = collection;
 	}
 
 	public static <T> OptionalCollection<T> of(Collection<T> collection) {
 		return collection instanceof OptionalCollection ? (OptionalCollection) collection
-				: new OptionalCollectionImpl<>(false, collection);
+				: new OptionalCollectionImpl<>(false, false, collection);
+	}
+
+	public static <T> OptionalCollection<T> ofIncomplete(Collection<T> collection) {
+		return collection instanceof OptionalCollection ? (OptionalCollection) collection
+				: new OptionalCollectionImpl<>(false, true, collection);
 	}
 
 	public static <T> OptionalCollection<T> ofMissing(Collection<T> collection) {
-		return new OptionalCollectionImpl<>(true, collection);
+		return new OptionalCollectionImpl<>(true, true, collection);
 	}
 
 	@Override

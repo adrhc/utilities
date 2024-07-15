@@ -11,21 +11,26 @@ import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class OptionalSetImpl<T> extends OptionalStatusImpl implements OptionalSet<T> {
+public class OptionalSetImpl<T> extends OptionalCollectionStatusImpl implements OptionalSet<T> {
 	private final Set<T> set;
 
-	public OptionalSetImpl(boolean isMissing, Set<T> set) {
-		super(isMissing);
+	public OptionalSetImpl(boolean isMissing, boolean incomplete, Set<T> set) {
+		super(isMissing, incomplete);
 		this.set = set;
 	}
 
 	public static <T> OptionalSet<T> of(Set<T> set) {
 		return set instanceof OptionalSet ? (OptionalSet) set
-				: new OptionalSetImpl<>(false, set);
+				: new OptionalSetImpl<>(false, false, set);
+	}
+
+	public static <T> OptionalSet<T> ofIncomplete(Set<T> set) {
+		return set instanceof OptionalSet ? (OptionalSet) set
+				: new OptionalSetImpl<>(false, true, set);
 	}
 
 	public static <T> OptionalSet<T> ofMissing() {
-		return new OptionalSetImpl<>(true, Set.of());
+		return new OptionalSetImpl<>(true, true, Set.of());
 	}
 
 	@Override
