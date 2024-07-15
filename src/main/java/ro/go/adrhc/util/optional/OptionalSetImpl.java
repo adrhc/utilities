@@ -19,11 +19,12 @@ public class OptionalSetImpl<T> extends OptionalStatusImpl implements OptionalSe
 		this.set = set;
 	}
 
-	public static <T> OptionalSetImpl<T> of(Set<T> set) {
-		return new OptionalSetImpl<>(false, set);
+	public static <T> OptionalSet<T> of(Set<T> set) {
+		return set instanceof OptionalSet ? (OptionalSet) set
+				: new OptionalSetImpl<>(false, set);
 	}
 
-	public static <T> OptionalSetImpl<T> ofMissing() {
+	public static <T> OptionalSet<T> ofMissing() {
 		return new OptionalSetImpl<>(true, Set.of());
 	}
 

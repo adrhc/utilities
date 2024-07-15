@@ -12,16 +12,13 @@ public class OptionalStreamImpl<T> extends OptionalStatusImpl implements Optiona
 		this.stream = stream;
 	}
 
-	public static <T> OptionalStreamImpl<T> of(Stream<T> stream) {
-		return new OptionalStreamImpl<>(false, stream);
+	public static <T> OptionalStream<T> of(Stream<T> stream) {
+		return stream instanceof OptionalStream ? (OptionalStream) stream
+				: new OptionalStreamImpl<>(false, stream);
 	}
 
-	public static <T> OptionalStreamImpl<T> ofMissing() {
+	public static <T> OptionalStream<T> ofMissing() {
 		return new OptionalStreamImpl<>(true, Stream.of());
-	}
-
-	public static <T1> Builder<T1> builder() {
-		return Stream.builder();
 	}
 
 	@Override
@@ -56,18 +53,18 @@ public class OptionalStreamImpl<T> extends OptionalStatusImpl implements Optiona
 	}
 
 	@Override
-	public Stream<T> distinct() {
-		return stream.distinct();
+	public OptionalStream<T> distinct() {
+		return of(stream.distinct());
 	}
 
 	@Override
-	public Stream<T> dropWhile(Predicate<? super T> predicate) {
-		return stream.dropWhile(predicate);
+	public OptionalStream<T> dropWhile(Predicate<? super T> predicate) {
+		return of(stream.dropWhile(predicate));
 	}
 
 	@Override
-	public Stream<T> filter(Predicate<? super T> predicate) {
-		return stream.filter(predicate);
+	public OptionalStream<T> filter(Predicate<? super T> predicate) {
+		return of(stream.filter(predicate));
 	}
 
 	@Override
@@ -81,8 +78,9 @@ public class OptionalStreamImpl<T> extends OptionalStatusImpl implements Optiona
 	}
 
 	@Override
-	public <R> Stream<R> flatMap(Function<? super T, ? extends Stream<? extends R>> mapper) {
-		return stream.flatMap(mapper);
+	public <R> OptionalStream<R> flatMap(
+			Function<? super T, ? extends Stream<? extends R>> mapper) {
+		return of(stream.flatMap(mapper));
 	}
 
 	@Override
@@ -111,18 +109,18 @@ public class OptionalStreamImpl<T> extends OptionalStatusImpl implements Optiona
 	}
 
 	@Override
-	public Stream<T> limit(long maxSize) {
-		return stream.limit(maxSize);
+	public OptionalStream<T> limit(long maxSize) {
+		return of(stream.limit(maxSize));
 	}
 
 	@Override
-	public <R> Stream<R> map(Function<? super T, ? extends R> mapper) {
-		return stream.map(mapper);
+	public <R> OptionalStream<R> map(Function<? super T, ? extends R> mapper) {
+		return of(stream.map(mapper));
 	}
 
 	@Override
-	public <R> Stream<R> mapMulti(BiConsumer<? super T, ? super Consumer<R>> mapper) {
-		return stream.mapMulti(mapper);
+	public <R> OptionalStream<R> mapMulti(BiConsumer<? super T, ? super Consumer<R>> mapper) {
+		return of(stream.mapMulti(mapper));
 	}
 
 	@Override
@@ -171,8 +169,8 @@ public class OptionalStreamImpl<T> extends OptionalStatusImpl implements Optiona
 	}
 
 	@Override
-	public Stream<T> peek(Consumer<? super T> action) {
-		return stream.peek(action);
+	public OptionalStream<T> peek(Consumer<? super T> action) {
+		return of(stream.peek(action));
 	}
 
 	@Override
@@ -192,23 +190,23 @@ public class OptionalStreamImpl<T> extends OptionalStatusImpl implements Optiona
 	}
 
 	@Override
-	public Stream<T> skip(long n) {
-		return stream.skip(n);
+	public OptionalStream<T> skip(long n) {
+		return of(stream.skip(n));
 	}
 
 	@Override
-	public Stream<T> sorted() {
-		return stream.sorted();
+	public OptionalStream<T> sorted() {
+		return of(stream.sorted());
 	}
 
 	@Override
-	public Stream<T> sorted(Comparator<? super T> comparator) {
-		return stream.sorted(comparator);
+	public OptionalStream<T> sorted(Comparator<? super T> comparator) {
+		return of(stream.sorted(comparator));
 	}
 
 	@Override
-	public Stream<T> takeWhile(Predicate<? super T> predicate) {
-		return stream.takeWhile(predicate);
+	public OptionalStream<T> takeWhile(Predicate<? super T> predicate) {
+		return of(stream.takeWhile(predicate));
 	}
 
 	@Override
@@ -242,18 +240,18 @@ public class OptionalStreamImpl<T> extends OptionalStatusImpl implements Optiona
 	}
 
 	@Override
-	public Stream<T> onClose(Runnable closeHandler) {
-		return stream.onClose(closeHandler);
+	public OptionalStream<T> onClose(Runnable closeHandler) {
+		return of(stream.onClose(closeHandler));
 	}
 
 	@Override
-	public Stream<T> parallel() {
-		return stream.parallel();
+	public OptionalStream<T> parallel() {
+		return of(stream.parallel());
 	}
 
 	@Override
-	public Stream<T> sequential() {
-		return stream.sequential();
+	public OptionalStream<T> sequential() {
+		return of(stream.sequential());
 	}
 
 	@Override
@@ -262,7 +260,7 @@ public class OptionalStreamImpl<T> extends OptionalStatusImpl implements Optiona
 	}
 
 	@Override
-	public Stream<T> unordered() {
-		return stream.unordered();
+	public OptionalStream<T> unordered() {
+		return of(stream.unordered());
 	}
 }

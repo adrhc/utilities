@@ -17,11 +17,12 @@ public class OptionalListImpl<T> extends OptionalStatusImpl implements OptionalL
 		this.list = list;
 	}
 
-	public static <T> OptionalListImpl<T> of(List<T> list) {
-		return new OptionalListImpl<>(false, list);
+	public static <T> OptionalList<T> of(List<T> list) {
+		return list instanceof OptionalList ? (OptionalList) list
+				: new OptionalListImpl<>(false, list);
 	}
 
-	public static <T> OptionalListImpl<T> ofMissing() {
+	public static <T> OptionalList<T> ofMissing() {
 		return new OptionalListImpl<>(true, List.of());
 	}
 
@@ -169,8 +170,8 @@ public class OptionalListImpl<T> extends OptionalStatusImpl implements OptionalL
 	}
 
 	@Override
-	public List<T> reversed() {
-		return list.reversed();
+	public OptionalList<T> reversed() {
+		return of(list.reversed());
 	}
 
 	@Override
@@ -195,8 +196,8 @@ public class OptionalListImpl<T> extends OptionalStatusImpl implements OptionalL
 
 	@NonNull
 	@Override
-	public List<T> subList(int fromIndex, int toIndex) {
-		return list.subList(fromIndex, toIndex);
+	public OptionalList<T> subList(int fromIndex, int toIndex) {
+		return of(list.subList(fromIndex, toIndex));
 	}
 
 	@Override

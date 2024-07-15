@@ -20,7 +20,8 @@ public class OptionalCollectionImpl<T>
 	}
 
 	public static <T> OptionalCollection<T> of(Collection<T> collection) {
-		return new OptionalCollectionImpl<>(false, collection);
+		return collection instanceof OptionalCollection ? (OptionalCollection) collection
+				: new OptionalCollectionImpl<>(false, collection);
 	}
 
 	public static <T> OptionalCollection<T> ofMissing(Collection<T> collection) {
