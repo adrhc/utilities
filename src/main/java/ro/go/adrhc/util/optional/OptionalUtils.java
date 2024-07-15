@@ -1,4 +1,4 @@
-package ro.go.adrhc.util;
+package ro.go.adrhc.util.optional;
 
 import com.rainerhahnekamp.sneakythrow.functional.SneakySupplier;
 import lombok.experimental.UtilityClass;

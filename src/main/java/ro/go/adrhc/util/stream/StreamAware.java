@@ -11,6 +11,10 @@ public interface StreamAware<T> {
 		rawStream().forEach(consumer);
 	}
 
+	default Optional<T> findAny(Predicate<? super T> predicate) {
+		return rawFilter(predicate).findAny();
+	}
+
 	default Optional<T> findFirst(Predicate<? super T> predicate) {
 		return rawFilter(predicate).findFirst();
 	}
