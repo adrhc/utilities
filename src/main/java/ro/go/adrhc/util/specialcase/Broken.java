@@ -20,6 +20,13 @@ public interface Broken<T> {
 		return Optional.ofNullable(isBroken() ? resultForBrokenInput : mapper.apply((T) this));
 	}
 
+	default <R> Optional<R> map(
+			Function<? super T, R> brokenMapper,
+			Function<? super T, R> okMapper) {
+		Function<? super T, R> mapper = isBroken() ? brokenMapper : okMapper;
+		return Optional.ofNullable(mapper.apply((T) this));
+	}
+
 	default Optional<T> toOptional() {
 		return isBroken() ? Optional.empty() : Optional.of((T) this);
 	}
