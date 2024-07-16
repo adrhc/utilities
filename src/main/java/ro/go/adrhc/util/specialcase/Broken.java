@@ -1,7 +1,7 @@
 package ro.go.adrhc.util.specialcase;
 
 @FunctionalInterface
-public interface BrokenObject {
+public interface Broken {
 	boolean isBroken();
 
 	default boolean isCorrect() {
