@@ -4,7 +4,7 @@ package ro.go.adrhc.util.specialcase;
 public interface Broken {
 	boolean isBroken();
 
-	default boolean isCorrect() {
+	default boolean isOk() {
 		return !isBroken();
 	}
 }
