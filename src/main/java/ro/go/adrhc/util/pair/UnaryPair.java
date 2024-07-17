@@ -1,11 +1,11 @@
 package ro.go.adrhc.util.pair;
 
-public class UnaryPair<T> extends Pair<T, T> {
-	public UnaryPair(T left, T right) {
+public class UnaryPair<U> extends Pair<U, U> {
+	public UnaryPair(U left, U right) {
 		super(left, right);
 	}
 
-	public static <T> UnaryPair<T> ofLeft(T left) {
+	public static <U> UnaryPair<U> ofLeft(U left) {
 		return new UnaryPair<>(left, null);
 	}
 }
