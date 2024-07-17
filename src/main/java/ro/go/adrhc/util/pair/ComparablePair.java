@@ -4,17 +4,17 @@ import ro.go.adrhc.util.ComparisonUtils;
 
 import java.util.Objects;
 
-public class ComparablePair<K extends Comparable<K>, V extends Comparable<V>>
-		extends Pair<K, V> implements Comparable<Pair<K, V>> {
-	public ComparablePair(K key, V value) {
+public class ComparablePair<T1 extends Comparable<T1>, T2 extends Comparable<T2>>
+		extends Pair<T1, T2> implements Comparable<Pair<T1, T2>> {
+	public ComparablePair(T1 key, T2 value) {
 		super(key, value);
 	}
 
 	@Override
-	public int compareTo(Pair<K, V> another) {
-		if (!Objects.equals(this.key(), another.key())) {
-			return ComparisonUtils.compareComparable(this.key(), another.key());
+	public int compareTo(Pair<T1, T2> another) {
+		if (!Objects.equals(this.first(), another.first())) {
+			return ComparisonUtils.compareComparable(this.first(), another.first());
 		}
-		return ComparisonUtils.compareComparable(this.value(), another.value());
+		return ComparisonUtils.compareComparable(this.second(), another.second());
 	}
 }

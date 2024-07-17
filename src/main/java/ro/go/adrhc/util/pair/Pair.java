@@ -12,23 +12,24 @@ import java.util.function.Function;
 @EqualsAndHashCode
 @Getter
 @Accessors(fluent = true)
-public class Pair<K, V> {
-	protected final K key;
-	protected final V value;
+public class Pair<T1, T2> {
+	protected final T1 first;
+	protected final T2 second;
 
-	public static <K, V> Pair<K, V> ofMapEntry(Map.Entry<K, V> mapEntry) {
+	public static <T1, T2> Pair<T1, T2> ofMapEntry(Map.Entry<T1, T2> mapEntry) {
 		return new Pair<>(mapEntry.getKey(), mapEntry.getValue());
 	}
 
-	public static <K, V> Function<K, Pair<K, V>> ofValueFactory(Function<K, V> valueFactory) {
+	public static <T1, T2> Function<T1, Pair<T1, T2>> ofValueFactory(
+			Function<T1, T2> valueFactory) {
 		return key -> new Pair<>(key, valueFactory.apply(key));
 	}
 
-	public <R> Pair<K, R> transformValue(Function<V, R> valueTransformer) {
-		return new Pair<>(this.key, valueTransformer.apply(this.value));
+	public <R> Pair<T1, R> transformValue(Function<T2, R> valueTransformer) {
+		return new Pair<>(this.first, valueTransformer.apply(this.second));
 	}
 
 	public boolean hasValue() {
-		return value != null;
+		return second != null;
 	}
 }
