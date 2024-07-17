@@ -8,36 +8,36 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class PairsCollection<T1, T2> {
-	private final List<Pair<T1, T2>> pairs;
+public class PairsCollection<L, R> {
+	private final List<Pair<L, R>> pairs;
 
-	public static <T1, T2> PairsCollection<T1, T2> empty() {
+	public static <L, R> PairsCollection<L, R> empty() {
 		return new PairsCollection<>(new ArrayList<>());
 	}
 
-	public void add(Pair<T1, T2> pair) {
+	public void add(Pair<L, R> pair) {
 		pairs.add(pair);
 	}
 
-	public void addAll(PairsCollection<T1, T2> pairsCollection) {
+	public void addAll(PairsCollection<L, R> pairsCollection) {
 		pairs.addAll(pairsCollection.pairs);
 	}
 
-	public Optional<T2> getValueByKeyRef(T1 keyRef) {
-		return pairs.stream().filter(p -> p.first() == keyRef).map(Pair::second).findAny();
+	public Optional<R> getRightByLeftRef(L leftRef) {
+		return pairs.stream().filter(p -> p.left() == leftRef).map(Pair::right).findAny();
 	}
 
-	public HashMap<T1, T2> toHashMap() {
-		HashMap<T1, T2> map = new HashMap<>(pairs.size());
-		pairs.forEach(p -> map.put(p.first(), p.second()));
+	public HashMap<L, R> toHashMap() {
+		HashMap<L, R> map = new HashMap<>(pairs.size());
+		pairs.forEach(p -> map.put(p.left(), p.right()));
 		return map;
 	}
 
-	public List<T1> getKeys() {
-		return pairs.stream().map(Pair::first).toList();
+	public List<L> getLefts() {
+		return pairs.stream().map(Pair::left).toList();
 	}
 
-	public List<T2> getValues() {
-		return pairs.stream().map(Pair::second).toList();
+	public List<R> getRights() {
+		return pairs.stream().map(Pair::right).toList();
 	}
 }
