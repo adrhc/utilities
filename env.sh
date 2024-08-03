@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# export JAVA_HOME=$TOOLS/jdk1.8.0_141
-# export JAVA_HOME=/usr/lib/jvm/java-8-oracle
-# export JAVA_HOME=$HOME/.sdkman/candidates/java/11.0.2-open
-# export JAVA_HOME=$HOME/.sdkman/candidates/java/17.0.1-tem
+#export JAVA_HOME=$TOOLS/jdk1.8.0_141
+#export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+#export JAVA_HOME=$HOME/.sdkman/candidates/java/11.0.2-open
+#export JAVA_HOME=$HOME/.sdkman/candidates/java/17.0.1-tem
 #export JAVA_HOME=$HOME/.sdkman/candidates/java/18.0.1-oracle/
 #export JAVA_HOME=$HOME/.sdkman/candidates/java/19.0.2-oracle/
 #export JAVA_HOME=$HOME/.sdkman/candidates/java/20.0.1-oracle/
