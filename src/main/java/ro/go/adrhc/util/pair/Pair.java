@@ -31,4 +31,8 @@ public class Pair<K, V> {
     public boolean hasValue() {
         return value != null;
     }
+
+    public boolean isEmpty() {
+        return key == null && value == null;
+    }
 }
