@@ -17,7 +17,7 @@ public class StorageMeasureUnitUtils {
 		return gigaBytes * GIGA_BYTE;
 	}
 
-	public static double bytesToGb(int bytes) {
+	public static double bytesToGb(long bytes) {
 		return bytes / GIGA_BYTE_DOUBLE;
 	}
 
