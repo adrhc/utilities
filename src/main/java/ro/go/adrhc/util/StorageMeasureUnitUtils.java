@@ -17,11 +17,11 @@ public class StorageMeasureUnitUtils {
 		return gigaBytes * GIGA_BYTE;
 	}
 
-	public static String gbFormatted(long value) {
-		return "%.2f".formatted(value / GIGA_BYTE_DOUBLE);
+	public static String gbFormatted(long megaBytes) {
+		return "%.2f".formatted(megaBytes / GIGA_BYTE_DOUBLE);
 	}
 
-	public static String mbFormatted(long value) {
-		return "%.2f".formatted(value / MEGA_BYTE_DOUBLE);
+	public static String mbFormatted(long megaBytes) {
+		return "%.2f".formatted(megaBytes / MEGA_BYTE_DOUBLE);
 	}
 }
