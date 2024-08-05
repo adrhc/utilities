@@ -25,6 +25,10 @@ public class Pair<L, R> {
 		return left -> new Pair<>(left, rightFactory.apply(left));
 	}
 
+	public <T> Pair<T, R> transformLeft(Function<L, T> leftTransformer) {
+		return new Pair<>(leftTransformer.apply(this.left), this.right);
+	}
+
 	public <T> Pair<L, T> transformRight(Function<R, T> rightTransformer) {
 		return new Pair<>(this.left, rightTransformer.apply(this.right));
 	}
