@@ -28,4 +28,8 @@ public class StorageMeasureUnitUtils {
 	public static String mbFormatted(long megaBytes) {
 		return "%.2f".formatted(megaBytes / MEGA_BYTE_DOUBLE);
 	}
+
+	public static String formatByteCount(long byteCount) {
+		return "%s GB, %s MB, %d B".formatted(gbFormatted(byteCount), mbFormatted(byteCount), byteCount);
+	}
 }
