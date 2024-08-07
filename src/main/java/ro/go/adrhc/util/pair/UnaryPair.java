@@ -8,4 +8,8 @@ public class UnaryPair<U> extends Pair<U, U> {
 	public static <U> UnaryPair<U> ofLeft(U left) {
 		return new UnaryPair<>(left, null);
 	}
+
+	public static <U> UnaryPair<U> ofRight(U right) {
+		return new UnaryPair<>(null, right);
+	}
 }

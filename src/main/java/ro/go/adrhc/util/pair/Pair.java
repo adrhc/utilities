@@ -33,7 +33,15 @@ public class Pair<L, R> {
 		return new Pair<>(this.left, rightTransformer.apply(this.right));
 	}
 
+	public boolean hasLeft() {
+		return left != null;
+	}
+
 	public boolean hasRight() {
 		return right != null;
+	}
+
+	public boolean isEmpty() {
+		return left == null && right == null;
 	}
 }
