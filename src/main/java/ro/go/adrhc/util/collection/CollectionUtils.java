@@ -1,9 +1,6 @@
 package ro.go.adrhc.util.collection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -25,6 +22,18 @@ public class CollectionUtils {
 	public static <E, C extends Collection<E>> C addAll(C collection, Collection<E> elements) {
 		collection.addAll(elements);
 		return collection;
+	}
+
+	public static <T> Optional<T> removeFirst(Predicate<? super T> predicate, Collection<T> collection) {
+		Iterator<T> iterator = collection.iterator();
+		while (iterator.hasNext()) {
+			T t = iterator.next();
+			if (predicate.test(t)) {
+				iterator.remove();
+				return Optional.ofNullable(t);
+			}
+		}
+		return Optional.empty();
 	}
 
 	public static <E, P extends Collection<E>> List<P> partition(
