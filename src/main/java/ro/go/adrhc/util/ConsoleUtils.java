@@ -13,11 +13,11 @@ public class ConsoleUtils {
 	}
 
 	public static String green(String text) {
-		return STR."\u001B[32m\{text}\u001B[0m";
+		return STR."\033[32m\{text}\033[0m";
 	}
 
 	public static String yellow(String text) {
-		return STR."\u001B[33m\{text}\u001B[0m";
+		return STR."\033[33m\{text}\033[0m";
 	}
 
 	public static String blue(String text) {
