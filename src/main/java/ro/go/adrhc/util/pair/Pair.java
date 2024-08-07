@@ -16,6 +16,10 @@ public class Pair<L, R> {
 	protected final L left;
 	protected final R right;
 
+	public static <L, R> Pair<L, R> emptyPair() {
+		return new Pair<>(null, null);
+	}
+
 	public static <L, R> Pair<L, R> ofMapEntry(Map.Entry<L, R> mapEntry) {
 		return new Pair<>(mapEntry.getKey(), mapEntry.getValue());
 	}
