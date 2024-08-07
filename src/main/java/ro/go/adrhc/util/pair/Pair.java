@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
@@ -35,6 +36,10 @@ public class Pair<L, R> {
 
 	public <T> Pair<L, T> transformRight(Function<R, T> rightTransformer) {
 		return new Pair<>(this.left, rightTransformer.apply(this.right));
+	}
+
+	public void ifRightPresent(Consumer<R> consumer) {
+		consumer.accept(right);
 	}
 
 	public boolean hasLeft() {
