@@ -7,11 +7,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CollectionUtils {
+	/**
+	 * @return first not null
+	 */
 	public static <T> T firstValue(Collection<T> values) {
 		if (values == null) {
 			return null;
 		}
 		return values.stream().filter(Objects::nonNull).findFirst().orElse(null);
+	}
+
+	public static <T> Optional<T> findFirst(Collection<T> values, Predicate<? super T> predicate) {
+		if (values == null) {
+			return Optional.empty();
+		}
+		return values.stream().filter(predicate).findFirst();
 	}
 
 	public static <E, C extends Collection<E>> C add(C collection, E element) {
