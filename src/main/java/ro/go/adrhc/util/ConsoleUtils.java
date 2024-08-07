@@ -8,6 +8,10 @@ public class ConsoleUtils {
 		return STR."\033[1m\{text}\033[0m";
 	}
 
+	public static String bold(boolean value) {
+		return STR."\033[1m\{value}\033[0m";
+	}
+
 	public static String red(String text) {
 		return STR."\033[31m\{text}\033[0m";
 	}
