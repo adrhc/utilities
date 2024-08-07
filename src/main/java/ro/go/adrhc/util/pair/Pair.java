@@ -21,6 +21,14 @@ public class Pair<L, R> {
 		return new Pair<>(null, null);
 	}
 
+	public static <L, R> Pair<L, R> pairOfLeft(L left) {
+		return new Pair<>(left, null);
+	}
+
+	public static <L, R> Pair<L, R> pairOfRight(R right) {
+		return new Pair<>(null, right);
+	}
+
 	public static <L, R> Pair<L, R> ofMapEntry(Map.Entry<L, R> mapEntry) {
 		return new Pair<>(mapEntry.getKey(), mapEntry.getValue());
 	}
