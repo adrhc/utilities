@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ConsoleUtils {
 	public static String bold(String text) {
-		return STR."\u001B[1m\{text}\u001B[0m";
+		return STR."\033[1m\{text}\033[0m";
 	}
 
 	public static String red(String text) {
@@ -25,18 +25,18 @@ public class ConsoleUtils {
 	}
 
 	public static String boldRed(String text) {
-		return bold(red(text));
+		return STR."\033[1m\033[31m\{text}\033[0m";
 	}
 
 	public static String boldGreen(String text) {
-		return bold(green(text));
+		return STR."\033[1m\033[32m\{text}\033[0m";
 	}
 
 	public static String boldYellow(String text) {
-		return bold(yellow(text));
+		return STR."\033[1m\033[33m\{text}\033[0m";
 	}
 
 	public static String boldBlue(String text) {
-		return bold(blue(text));
+		return STR."\033[1m\033[34m\{text}\033[0m";
 	}
 }
