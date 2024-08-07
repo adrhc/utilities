@@ -2,10 +2,16 @@ package ro.go.adrhc.util;
 
 import lombok.experimental.UtilityClass;
 
+import java.nio.file.Path;
+
 @UtilityClass
 public class ConsoleUtils {
 	public static String bold(String text) {
 		return STR."\033[1m\{text}\033[0m";
+	}
+
+	public static String bold(Path path) {
+		return STR."\033[1m\{path}\033[0m";
 	}
 
 	public static String bold(boolean value) {
