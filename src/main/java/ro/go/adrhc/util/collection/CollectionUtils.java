@@ -24,7 +24,7 @@ public class CollectionUtils {
 		return collection;
 	}
 
-	public static <T> Optional<T> removeFirst(Predicate<? super T> predicate, Collection<T> collection) {
+	public static <T> Optional<T> removeFirst(Collection<T> collection, Predicate<? super T> predicate) {
 		Iterator<T> iterator = collection.iterator();
 		while (iterator.hasNext()) {
 			T t = iterator.next();
