@@ -5,6 +5,10 @@ public class UnaryPair<U> extends Pair<U, U> {
 		super(left, right);
 	}
 
+	public static <U> UnaryPair<U> empty() {
+		return new UnaryPair<>(null, null);
+	}
+
 	public static <U> UnaryPair<U> ofLeft(U left) {
 		return new UnaryPair<>(left, null);
 	}
