@@ -30,6 +30,10 @@ public class ConsoleUtils {
 		return STR."\033[31m\{text}\033[0m";
 	}
 
+	public static String red(Path path) {
+		return STR."\033[31m\{path}\033[0m";
+	}
+
 	public static String green(String text) {
 		return STR."\033[32m\{text}\033[0m";
 	}
