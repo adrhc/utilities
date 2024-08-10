@@ -66,7 +66,15 @@ public class ConsoleUtils {
 		return STR."\033[1m\033[33m\{text}\033[0m";
 	}
 
+	public static String boldYellow(Path path) {
+		return STR."\033[1m\033[33m\{path}\033[0m";
+	}
+
 	public static String boldBlue(String text) {
 		return STR."\033[1m\033[34m\{text}\033[0m";
+	}
+
+	public static String boldBlue(Path path) {
+		return STR."\033[1m\033[34m\{path}\033[0m";
 	}
 }
