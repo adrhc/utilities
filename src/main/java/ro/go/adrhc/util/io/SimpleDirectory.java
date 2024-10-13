@@ -89,6 +89,10 @@ public class SimpleDirectory {
 		return rootPathSupplier.get().resolve(path);
 	}
 
+	public Path resolvePath(String path) {
+		return rootPathSupplier.get().resolve(path);
+	}
+
 	public List<Path> getAllPaths() throws IOException {
 		return getPaths(getRoot());
 	}
