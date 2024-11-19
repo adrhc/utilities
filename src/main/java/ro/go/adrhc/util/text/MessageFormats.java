@@ -18,15 +18,19 @@ public class MessageFormats {
 		return new MessageFormats(patterns.stream().map(MessageFormat::new).toList());
 	}
 
-	public Optional<Object[]> parse(String source) {
+	public Optional<Object[]> parse(String text) {
 		for (MessageFormat format : messageFormats) {
 			try {
-				return Optional.of(format.parse(source));
+				return Optional.of(format.parse(text));
 			} catch (ParseException e) {
 				// do nothing
 			}
 		}
 		return Optional.empty();
+	}
+
+	public boolean matches(String text) {
+		return parse(text).isPresent();
 	}
 
 	@Override
