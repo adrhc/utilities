@@ -2,9 +2,20 @@ package ro.go.adrhc.util.io;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class FileSystemUtils {
+	public long fileCount(Predicate<Path> pathPredicate, Path directory) throws IOException {
+		try (Stream<Path> paths = Files.list(directory)) {
+			return paths.filter(pathPredicate).count();
+		}
+	}
+
+	public String readString(Path path) throws IOException {
+		return Files.readString(path);
+	}
+
 	public Stream<Path> walk(Path start, FileVisitOption... options) throws IOException {
 		return Files.walk(start, options);
 	}
