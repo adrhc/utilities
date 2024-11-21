@@ -19,8 +19,8 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public class ProcessExecutor {
 	private final Duration timeout;
 
-	public Optional<Void> run(List<String> processParams) {
-		return execute(_ -> Void.TYPE.cast(null), processParams);
+	public Optional<Boolean> run(List<String> processParams) {
+		return execute(_ -> Boolean.TRUE, processParams);
 	}
 
 	public Optional<String> execute(List<String> processParams) {
