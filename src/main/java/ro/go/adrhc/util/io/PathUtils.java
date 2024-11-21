@@ -27,6 +27,11 @@ public class PathUtils {
 	public static final EnumSet<PosixFilePermission> RWX =
 			EnumSet.of(OWNER_EXECUTE, OWNER_READ, OWNER_WRITE);
 
+	public static Path switchRoot(Path target, Path source, Path file) {
+		Path relativePath = source.relativize(file);
+		return target.resolve(relativePath);
+	}
+
 	/**
 	 * @return path if referencePath is null otherwise resolve path against referencePath
 	 */
