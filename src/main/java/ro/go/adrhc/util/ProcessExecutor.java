@@ -20,7 +20,7 @@ public class ProcessExecutor {
 	private final Duration timeout;
 
 	public Optional<Void> run(List<String> processParams) {
-		return execute(_ -> "", processParams).map(_ -> Void.TYPE.cast(null));
+		return execute(_ -> Void.TYPE.cast(null), processParams);
 	}
 
 	public Optional<String> execute(List<String> processParams) {
