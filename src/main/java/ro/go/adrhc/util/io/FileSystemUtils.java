@@ -2,10 +2,19 @@ package ro.go.adrhc.util.io;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.nio.file.attribute.FileAttribute;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class FileSystemUtils {
+	/**
+	 * Create the parent directory chain too!
+	 */
+	public void createFile(Path path, FileAttribute<?>... attrs) throws IOException {
+		createParentDirectories(path);
+		Files.createFile(path, attrs);
+	}
+
 	public long fileCount(Predicate<Path> pathPredicate, Path directory) throws IOException {
 		try (Stream<Path> paths = Files.list(directory)) {
 			return paths.filter(pathPredicate).count();
