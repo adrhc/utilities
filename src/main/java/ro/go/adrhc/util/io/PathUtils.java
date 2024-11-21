@@ -27,6 +27,22 @@ public class PathUtils {
 	public static final EnumSet<PosixFilePermission> RWX =
 			EnumSet.of(OWNER_EXECUTE, OWNER_READ, OWNER_WRITE);
 
+	public static Path replaceFileExtension(String newExtension, Path path) {
+		// Get the file name as a String
+		String fileName = path.getFileName().toString();
+
+		// Find the position of the last dot
+		int dotIndex = fileName.lastIndexOf('.');
+
+		// Construct the new file name with the replacement extension
+		String newFileName = (dotIndex == -1)
+				? fileName // No extension, do nothing
+				: fileName.substring(0, dotIndex) + "." + newExtension;
+
+		// Return the updated Path with the new file name
+		return path.resolveSibling(newFileName);
+	}
+
 	public static Path switchRoot(Path target, Path source, Path file) {
 		Path relativePath = source.relativize(file);
 		return target.resolve(relativePath);
