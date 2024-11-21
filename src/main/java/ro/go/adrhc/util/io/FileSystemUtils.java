@@ -53,7 +53,7 @@ public class FileSystemUtils {
 
 	private void createParentDirectories(Path target) throws IOException {
 		Path parent = target.getParent();
-		if (parent != null && !Files.exists(parent)) {
+		if (parent != null) {
 			Files.createDirectories(parent);
 		}
 	}
