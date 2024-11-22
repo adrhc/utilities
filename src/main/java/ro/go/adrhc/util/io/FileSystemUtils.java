@@ -1,11 +1,14 @@
 package ro.go.adrhc.util.io;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.FileAttribute;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+@Slf4j
 public class FileSystemUtils {
 	/**
 	 * Create the parent directory chain too!
@@ -45,6 +48,19 @@ public class FileSystemUtils {
 
 	public boolean exists(Path path, LinkOption... options) {
 		return Files.exists(path, options);
+	}
+
+	public long size(Path path) throws IOException {
+		return Files.size(path);
+	}
+
+	public long size(Path path, long sizeIfIOException) {
+		try {
+			return Files.size(path);
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+			return sizeIfIOException;
+		}
 	}
 
 	public boolean isRegularFile(Path path, LinkOption... options) {
