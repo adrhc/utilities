@@ -4,8 +4,14 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Assert {
-	public static void isTrue(boolean expression, String message) {
-		if (!expression) {
+	public static void isFalse(boolean value, String message) {
+		if (value) {
+			throw new IllegalArgumentException(message);
+		}
+	}
+
+	public static void isTrue(boolean value, String message) {
+		if (!value) {
 			throw new IllegalArgumentException(message);
 		}
 	}
