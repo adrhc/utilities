@@ -15,7 +15,7 @@ public class FileSystemUtils {
 	/**
 	 * Create the parent directory chain too!
 	 */
-	public void writeString(Path path, String utf8Text) throws IOException {
+	public void writeUtf8String(Path path, String utf8Text) throws IOException {
 		createParentDirectories(path);
 		Files.writeString(path, utf8Text, UTF_8);
 	}
