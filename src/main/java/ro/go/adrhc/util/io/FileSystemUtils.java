@@ -8,8 +8,18 @@ import java.nio.file.attribute.FileAttribute;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 @Slf4j
 public class FileSystemUtils {
+	/**
+	 * Create the parent directory chain too!
+	 */
+	public void writeString(Path path, String utf8Text) throws IOException {
+		createParentDirectories(path);
+		Files.writeString(path, utf8Text, UTF_8);
+	}
+
 	/**
 	 * Create the parent directory chain too!
 	 */
