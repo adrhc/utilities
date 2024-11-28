@@ -12,12 +12,33 @@ import java.util.function.Predicate;
 
 @Slf4j
 public class IOFailureUtils {
-	public static <T> Runnable toRunnable(SneakyConsumer<T, IOException> consumer, T t) {
+	public static <T> Runnable silenceIOConsumer(SneakyConsumer<T, IOException> consumer, T t) {
 		return () -> {
 			try {
 				consumer.accept(t);
 			} catch (IOException e) {
 				log.error(e.getMessage(), e);
+			}
+		};
+	}
+
+	public static <T> Consumer<T> silenceIOConsumer(SneakyConsumer<T, IOException> consumer) {
+		return t -> {
+			try {
+				consumer.accept(t);
+			} catch (IOException e) {
+				log.error(e.getMessage(), e);
+			}
+		};
+	}
+
+	public static <T, R> Function<T, R> silenceIOFunction(SneakyFunction<T, R, IOException> function) {
+		return t -> {
+			try {
+				return function.apply(t);
+			} catch (IOException e) {
+				log.error(e.getMessage(), e);
+				return null;
 			}
 		};
 	}
@@ -28,27 +49,6 @@ public class IOFailureUtils {
 				function.apply(t);
 			} catch (IOException e) {
 				log.error(e.getMessage(), e);
-			}
-		};
-	}
-
-	public static <T> Consumer<T> toSafeConsumer(SneakyConsumer<T, IOException> consumer) {
-		return t -> {
-			try {
-				consumer.accept(t);
-			} catch (IOException e) {
-				log.error(e.getMessage(), e);
-			}
-		};
-	}
-
-	public static <T, R> Function<T, R> failToNull(SneakyFunction<T, R, IOException> function) {
-		return t -> {
-			try {
-				return function.apply(t);
-			} catch (IOException e) {
-				log.error(e.getMessage(), e);
-				return null;
 			}
 		};
 	}
