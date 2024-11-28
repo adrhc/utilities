@@ -22,7 +22,7 @@ public class IOFailureUtils {
 		};
 	}
 
-	public static <T> Consumer<T> silenceIOConsumer(SneakyConsumer<T, IOException> consumer) {
+	public static <T> Consumer<T> toSafeIOConsumer(SneakyConsumer<T, IOException> consumer) {
 		return t -> {
 			try {
 				consumer.accept(t);
@@ -32,7 +32,7 @@ public class IOFailureUtils {
 		};
 	}
 
-	public static <T, R> Function<T, R> silenceIOFunction(SneakyFunction<T, R, IOException> function) {
+	public static <T, R> Function<T, R> toSafeIOFunction(SneakyFunction<T, R, IOException> function) {
 		return t -> {
 			try {
 				return function.apply(t);
