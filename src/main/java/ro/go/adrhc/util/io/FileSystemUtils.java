@@ -13,8 +13,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
 public class FileSystemUtils {
-	public void cleanDirectory(Path path) throws IOException {
-		FileUtils.cleanDirectory(path.toFile());
+	public void cleanDirectory(Path dir) throws IOException {
+		FileUtils.cleanDirectory(dir.toFile());
 	}
 
 	/**
