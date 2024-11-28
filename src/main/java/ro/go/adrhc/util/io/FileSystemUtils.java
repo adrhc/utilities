@@ -1,6 +1,7 @@
 package ro.go.adrhc.util.io;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -12,6 +13,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
 public class FileSystemUtils {
+	public void cleanDirectory(Path path) throws IOException {
+		FileUtils.cleanDirectory(path.toFile());
+	}
+
 	/**
 	 * Create the parent directory chain too!
 	 */
