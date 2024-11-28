@@ -1,5 +1,6 @@
 package ro.go.adrhc.util.io;
 
+import com.rainerhahnekamp.sneakythrow.functional.SneakyConsumer;
 import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
 import com.rainerhahnekamp.sneakythrow.functional.SneakyPredicate;
 import lombok.extern.slf4j.Slf4j;
@@ -11,10 +12,30 @@ import java.util.function.Predicate;
 
 @Slf4j
 public class IOFailureUtils {
+	public static <T> Runnable toRunnable(SneakyConsumer<T, IOException> consumer, T t) {
+		return () -> {
+			try {
+				consumer.accept(t);
+			} catch (IOException e) {
+				log.error(e.getMessage(), e);
+			}
+		};
+	}
+
 	public static <T> Consumer<T> toSafeConsumer(SneakyFunction<T, ?, IOException> function) {
 		return t -> {
 			try {
 				function.apply(t);
+			} catch (IOException e) {
+				log.error(e.getMessage(), e);
+			}
+		};
+	}
+
+	public static <T> Consumer<T> toSafeConsumer(SneakyConsumer<T, IOException> consumer) {
+		return t -> {
+			try {
+				consumer.accept(t);
 			} catch (IOException e) {
 				log.error(e.getMessage(), e);
 			}
