@@ -25,4 +25,8 @@ public class PathsStreamer {
 	public Stream<Path> toStream(Path startPath) {
 		return streamer.toStream(new PathsStoppableVisitable(simpleDirectory, startPath));
 	}
+
+	public Path getRoot() {
+		return simpleDirectory.getRoot();
+	}
 }
