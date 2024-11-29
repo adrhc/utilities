@@ -18,12 +18,12 @@ public class OptionalListImpl<T> extends OptionalCollectionStatusImpl implements
 	}
 
 	public static <T> OptionalList<T> of(List<T> list) {
-		return list instanceof OptionalList ? (OptionalList) list
+		return list instanceof OptionalList<T> ? (OptionalList<T>) list
 				: new OptionalListImpl<>(false, false, list);
 	}
 
 	public static <T> OptionalList<T> ofIncomplete(List<T> list) {
-		return list instanceof OptionalList ? (OptionalList) list
+		return list instanceof OptionalList<T> ? (OptionalList<T>) list
 				: new OptionalListImpl<>(false, true, list);
 	}
 
