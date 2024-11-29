@@ -1,11 +1,13 @@
 package ro.go.adrhc.util.fn;
 
 import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
 import java.util.function.Function;
 
+@UtilityClass
 @Slf4j
 public class FunctionFactory {
 	public static <T, R, E extends Exception> Function<T, R>
