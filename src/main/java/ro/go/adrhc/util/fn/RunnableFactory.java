@@ -6,9 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @UtilityClass
 @Slf4j
-public class RunnableUtils {
+public class RunnableFactory {
 	public static <T, E extends Exception> Runnable
-	silenceConsumer(SneakyConsumer<T, E> sneakyConsumer, T t) {
+	of(SneakyConsumer<T, E> sneakyConsumer, T t) {
 		return () -> {
 			try {
 				sneakyConsumer.accept(t);

@@ -9,9 +9,8 @@ import java.util.function.Consumer;
 
 @UtilityClass
 @Slf4j
-public class ConsumerUtils {
-	public static <T, E extends Exception> Consumer<T>
-	toSafeConsumer(SneakyFunction<T, ?, E> sneakyFn) {
+public class ConsumerFactory {
+	public static <T, E extends Exception> Consumer<T> of(SneakyFunction<T, ?, E> sneakyFn) {
 		return t -> {
 			try {
 				sneakyFn.apply(t);
@@ -21,8 +20,7 @@ public class ConsumerUtils {
 		};
 	}
 
-	public static <T, E extends Exception> Consumer<T>
-	toSafeConsumer(SneakyConsumer<T, E> sneakyConsumer) {
+	public static <T, E extends Exception> Consumer<T> of(SneakyConsumer<T, E> sneakyConsumer) {
 		return t -> {
 			try {
 				sneakyConsumer.accept(t);

@@ -7,9 +7,9 @@ import java.util.Optional;
 import java.util.function.Function;
 
 @Slf4j
-public class FunctionUtils {
+public class FunctionFactory {
 	public static <T, R, E extends Exception> Function<T, R>
-	toSafeFn(SneakyFunction<T, R, E> sneakyFn) {
+	of(SneakyFunction<T, R, E> sneakyFn) {
 		return t -> {
 			try {
 				return sneakyFn.apply(t);
@@ -21,7 +21,7 @@ public class FunctionUtils {
 	}
 
 	public static <T, R, E extends Exception>
-	Function<T, Optional<R>> toEmptyFailResultFn(SneakyFunction<T, R, E> sneakyFn) {
+	Function<T, Optional<R>> emptyFailResultFn(SneakyFunction<T, R, E> sneakyFn) {
 		return t -> {
 			try {
 				return Optional.ofNullable(sneakyFn.apply(t));
@@ -33,7 +33,7 @@ public class FunctionUtils {
 	}
 
 	public static <T, R, E extends Exception> Function<T, R>
-	toNullFailResultFn(SneakyFunction<T, R, E> sneakyFn) {
+	nullFailResultFn(SneakyFunction<T, R, E> sneakyFn) {
 		return t -> {
 			try {
 				return sneakyFn.apply(t);
@@ -45,11 +45,11 @@ public class FunctionUtils {
 	}
 
 	public static <T, R>
-	Function<T, Optional<R>> toOptionalResultFn(Function<T, R> fn) {
+	Function<T, Optional<R>> optionalResultFn(Function<T, R> fn) {
 		return t -> Optional.of(fn.apply(t));
 	}
 
-	public static <T> Function<T, String> toStringResultFn(Function<T, ?> function) {
+	public static <T> Function<T, String> stringResultFn(Function<T, ?> function) {
 		return t -> {
 			Object value = function.apply(t);
 			return value == null ? null : value.toString();
