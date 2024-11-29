@@ -9,7 +9,13 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 class CloseableQueueSliceStreamer implements AutoCloseable {
+	/**
+	 * addElementLock is necessary to prevent an addElement() and close() clash!
+	 */
 	private final Lock addElementLock = new ReentrantLock();
+	/**
+	 * markChunkEndLock is necessary to prevent a markChunkEnd() and close() clash!
+	 */
 	private final Lock markChunkEndLock = new ReentrantLock();
 	private final LocksCollection locks = LocksCollection.of(addElementLock, markChunkEndLock);
 	private final QueueSliceStreamer queueSliceStreamer;
@@ -20,16 +26,22 @@ class CloseableQueueSliceStreamer implements AutoCloseable {
 		return new CloseableQueueSliceStreamer(new QueueSliceStreamer(), stopTrigger);
 	}
 
+	/**
+	 * addElement invoked in parallel with markChunkEnd is NOT supported!
+	 */
 	public void addElement(Object t) {
 		doIfNotClosed(addElementLock, () -> queueSliceStreamer.put(t));
 	}
 
+	/**
+	 * markChunkEnd invoked in parallel with addElement is NOT supported!
+	 */
 	public void markChunkEnd() {
 		doIfNotClosed(markChunkEndLock, queueSliceStreamer::startNewSlice);
 	}
 
 	public <T> Stream<T> streamChunk() {
-		return queueSliceStreamer.streamCurrentSlice();
+		return queueSliceStreamer.streamChunk();
 	}
 
 	public void close() {

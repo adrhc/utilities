@@ -15,12 +15,13 @@ public class QueueSliceStreamer {
 	private final LinkedTransferQueue<Object> queue = new LinkedTransferQueue<>();
 
 	/**
-	 * Multiple Stream(s) created by this method might concurrently consume from queue!
-	 * A consumer using Stream.findAny() might leave the rest of the chunk for the next
+	 * Limitations:
+	 * - multiple Stream(s) created by this method will concurrently consume from queue!
+	 * - a consumer using Stream.findAny() might leave the rest of the chunk for the next
 	 * consumer which might be wrong if the next consumer expects to consume a full new
 	 * chunk instead of continuing from where the previous consumer left!
 	 */
-	public <T> Stream<T> streamCurrentSlice() {
+	public <T> Stream<T> streamChunk() {
 		return Stream.iterate(null, _ -> null)
 				.map(_ -> take().orElse(CHUNK_END))
 				.takeWhile(it -> it != CHUNK_END)
