@@ -27,6 +27,43 @@ public class PathUtils {
 	public static final EnumSet<PosixFilePermission> RWX =
 			EnumSet.of(OWNER_EXECUTE, OWNER_READ, OWNER_WRITE);
 
+	public static Path getUniquePrefix(Path sourceFile, Path targetFile) {
+		// Normalize both paths to ensure consistency in comparisons
+		Path normalizedSource = sourceFile.normalize();
+		Path normalizedTarget = targetFile.normalize();
+
+		// Find the common suffix between the two paths
+		Path commonSuffix = findCommonSuffix(normalizedSource, normalizedTarget);
+
+		// If there's a common suffix, remove it from the source path
+		if (commonSuffix != null && !commonSuffix.toString().isEmpty()) {
+			int commonSuffixCount = commonSuffix.getNameCount();
+			int sourceCount = normalizedSource.getNameCount();
+			return normalizedSource.subpath(0, sourceCount - commonSuffixCount);
+		}
+
+		// If no common suffix exists, return the full source path
+		return normalizedSource;
+	}
+
+	public static Path findCommonSuffix(Path path1, Path path2) {
+		Path suffix1 = path1;
+		Path suffix2 = path2;
+
+		// Reverse traverse both paths
+		Path commonSuffix = Path.of("");
+		while (!suffix1.toString().isEmpty() && !suffix2.toString().isEmpty()) {
+			if (suffix1.getFileName().equals(suffix2.getFileName())) {
+				commonSuffix = suffix1.getFileName().resolve(commonSuffix);
+				suffix1 = suffix1.getParent() != null ? suffix1.getParent() : Path.of("");
+				suffix2 = suffix2.getParent() != null ? suffix2.getParent() : Path.of("");
+			} else {
+				break;
+			}
+		}
+		return commonSuffix;
+	}
+
 	public static Path removeFileExtension(Path path) {
 		// Get the file name as a String
 		String fileName = path.getFileName().toString();
