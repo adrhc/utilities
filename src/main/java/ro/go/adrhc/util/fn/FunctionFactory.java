@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Optional;
 import java.util.function.Function;
 
+import static ro.go.adrhc.util.fn.FunctionUtils.failToEmpty;
+
 @UtilityClass
 @Slf4j
 public class FunctionFactory {
@@ -20,26 +22,6 @@ public class FunctionFactory {
 				return null;
 			}
 		};
-	}
-
-	public static <R, E extends Exception>
-	Optional<R> failToEmpty(SneakyIntFunction<R, E> sneakyFn, Integer fnParam) {
-		try {
-			return Optional.ofNullable(sneakyFn.apply(fnParam));
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-		}
-		return Optional.empty();
-	}
-
-	public static <T, R, E extends Exception>
-	Optional<R> failToEmpty(SneakyFunction<T, R, E> sneakyFn, T t) {
-		try {
-			return Optional.ofNullable(sneakyFn.apply(t));
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-		}
-		return Optional.empty();
 	}
 
 	public static <T, R, E extends Exception>
