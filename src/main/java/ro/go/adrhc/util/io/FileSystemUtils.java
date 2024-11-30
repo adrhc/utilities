@@ -43,6 +43,16 @@ public class FileSystemUtils {
 		return Files.readString(path);
 	}
 
+	/**
+	 * This method must be used within a try-with-resources statement or similar control structure to ensure that the stream's open directory is closed promptly after the stream's operations have completed.
+	 */
+	public Stream<Path> list(Path start) throws IOException {
+		return Files.list(start);
+	}
+
+	/**
+	 * This method must be used within a try-with-resources statement or similar control structure to ensure that the stream's open directory is closed promptly after the stream's operations have completed.
+	 */
 	public Stream<Path> walk(Path start, FileVisitOption... options) throws IOException {
 		return Files.walk(start, options);
 	}
