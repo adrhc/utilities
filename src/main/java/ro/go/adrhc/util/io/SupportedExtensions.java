@@ -14,6 +14,15 @@ import static ro.go.adrhc.util.io.PathUtils.hasFilename;
 @ToString
 public class SupportedExtensions {
 	private final Set<String> supportedExtensions;
+	private final boolean caseSensitive;
+
+	public static SupportedExtensions ofCaseInsensitive(String... extension) {
+		return new SupportedExtensions(Set.of(extension), false);
+	}
+
+	public static SupportedExtensions ofCaseSensitive(String... extension) {
+		return new SupportedExtensions(Set.of(extension), true);
+	}
 
 	public boolean supports(Path path) {
 		return isRegularFile(path) && hasFilename(path) && isSupportedFile(path);
