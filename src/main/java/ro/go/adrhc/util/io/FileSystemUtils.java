@@ -14,7 +14,11 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @Slf4j
 public class FileSystemUtils {
 	public void cleanDirectory(Path dir) throws IOException {
-		FileUtils.cleanDirectory(dir.toFile());
+		if (this.exists(dir)) {
+			FileUtils.cleanDirectory(dir.toFile());
+		} else {
+			log.warn("\n{} can't be cleaned because is missing!", dir);
+		}
 	}
 
 	/**
