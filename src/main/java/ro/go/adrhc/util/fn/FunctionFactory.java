@@ -22,6 +22,16 @@ public class FunctionFactory {
 		};
 	}
 
+	public static <R, E extends Exception>
+	Optional<R> failToEmpty(SneakyIntFunction<R, E> sneakyFn, Integer fnParam) {
+		try {
+			return Optional.ofNullable(sneakyFn.apply(fnParam));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+		return Optional.empty();
+	}
+
 	public static <T, R, E extends Exception>
 	Optional<R> failToEmpty(SneakyFunction<T, R, E> sneakyFn, T t) {
 		try {
