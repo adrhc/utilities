@@ -23,15 +23,18 @@ public class FunctionFactory {
 	}
 
 	public static <T, R, E extends Exception>
+	Optional<R> failToEmpty(SneakyFunction<T, R, E> sneakyFn, T t) {
+		try {
+			return Optional.ofNullable(sneakyFn.apply(t));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+		return Optional.empty();
+	}
+
+	public static <T, R, E extends Exception>
 	Function<T, Optional<R>> emptyFailResultFn(SneakyFunction<T, R, E> sneakyFn) {
-		return t -> {
-			try {
-				return Optional.ofNullable(sneakyFn.apply(t));
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
-			}
-			return Optional.empty();
-		};
+		return t -> failToEmpty(sneakyFn, t);
 	}
 
 	public static <T, R, E extends Exception> Function<T, R>
