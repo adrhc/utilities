@@ -82,6 +82,10 @@ public class FileSystemUtils {
 		return Files.isRegularFile(path, options);
 	}
 
+	public Path createDirectories(Path dir, FileAttribute<?>... attrs) throws IOException {
+		return Files.createDirectories(dir, attrs);
+	}
+
 	private void createParentDirectories(Path target) throws IOException {
 		Path parent = target.getParent();
 		if (parent != null) {
