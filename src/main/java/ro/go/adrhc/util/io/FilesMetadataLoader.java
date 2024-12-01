@@ -32,10 +32,16 @@ public class FilesMetadataLoader<M> {
 				metadataLoader);
 	}
 
+	/**
+	 * This method must be used within a try-with-resources statement or similar control structure to ensure that the stream's open directory is closed promptly after the stream's operations have completed.
+	 */
 	public Stream<M> loadAll() {
 		return loadPaths(pathsStreamer.toStream());
 	}
 
+	/**
+	 * This method must be used within a try-with-resources statement or similar control structure to ensure that the stream's open directory is closed promptly after the stream's operations have completed.
+	 */
 	public Stream<M> loadByPaths(Stream<Path> paths) {
 		return paths.map(pathsStreamer::toStream).flatMap(this::loadPaths);
 	}
