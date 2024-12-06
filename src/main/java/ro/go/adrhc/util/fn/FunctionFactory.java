@@ -55,9 +55,11 @@ public class FunctionFactory {
 		};
 	}
 
-	public static <T, E extends Exception> Boolean
-	consumeWithTrueOutcome(SneakyConsumer<T, E> sneakyFn, T t) throws E {
-		sneakyFn.accept(t);
-		return TRUE;
+	public static <T, E extends Exception> SneakyFunction<T, Boolean, E>
+	finishWithTrue(SneakyConsumer<T, E> sneakyFn) throws E {
+		return t -> {
+			sneakyFn.accept(t);
+			return TRUE;
+		};
 	}
 }
