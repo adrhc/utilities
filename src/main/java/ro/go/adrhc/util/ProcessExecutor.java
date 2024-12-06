@@ -9,6 +9,7 @@ import ro.go.adrhc.util.text.StringUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,10 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 @Slf4j
 public class ProcessExecutor {
 	private final Duration timeout;
+
+	public static ProcessExecutor of() {
+		return new ProcessExecutor(ChronoUnit.FOREVER.getDuration());
+	}
 
 	public Optional<Boolean> run(List<String> processParams) {
 		return execute(_ -> Boolean.TRUE, processParams);
@@ -29,7 +34,7 @@ public class ProcessExecutor {
 				.filter(StringUtils::hasText);
 	}
 
-	private <T> Optional<T> execute(SneakyFunction<Process, T, IOException> resultMapper,
+	public <T> Optional<T> execute(SneakyFunction<Process, T, IOException> resultMapper,
 			List<String> processParams) {
 		ProcessBuilder processBuilder = createProcessBuilder(processParams);
 //		log.info("\nprocess command:\n{}", concat(" ", processBuilder.command()));
