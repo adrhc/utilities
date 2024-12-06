@@ -29,6 +29,7 @@
 
         <commons-io-version>2.16.1</commons-io-version>
         <sneakythrow-version>1.2.0</sneakythrow-version>
+        <lombok.version>1.18.36</lombok.version>
     </properties>
 
     <dependencyManagement>
@@ -47,7 +48,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
+            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
 
