@@ -1,7 +1,7 @@
 package ro.go.adrhc.util.fn;
 
+import com.rainerhahnekamp.sneakythrow.functional.SneakyConsumer;
 import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
-import com.rainerhahnekamp.sneakythrow.functional.SneakyRunnable;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,9 +55,9 @@ public class FunctionFactory {
 		};
 	}
 
-	public static <E extends Exception> Boolean
-	runWithTrueOutcome(SneakyRunnable<E> eSneakyRunnable) throws E {
-		eSneakyRunnable.run();
+	public static <T, E extends Exception> Boolean
+	consumeWithTrueOutcome(SneakyConsumer<T, E> sneakyFn, T t) throws E {
+		sneakyFn.accept(t);
 		return TRUE;
 	}
 }
