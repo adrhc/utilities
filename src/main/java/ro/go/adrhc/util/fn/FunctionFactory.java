@@ -1,12 +1,14 @@
 package ro.go.adrhc.util.fn;
 
 import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
+import com.rainerhahnekamp.sneakythrow.functional.SneakyRunnable;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
 import java.util.function.Function;
 
+import static java.lang.Boolean.TRUE;
 import static ro.go.adrhc.util.fn.FunctionUtils.failToEmpty;
 
 @UtilityClass
@@ -51,5 +53,11 @@ public class FunctionFactory {
 			Object value = function.apply(t);
 			return value == null ? null : value.toString();
 		};
+	}
+
+	public static <E extends Exception> Boolean
+	runWithTrueOutcome(SneakyRunnable<E> eSneakyRunnable) throws E {
+		eSneakyRunnable.run();
+		return TRUE;
 	}
 }
