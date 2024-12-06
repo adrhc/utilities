@@ -53,7 +53,7 @@ public class ProcessExecutor {
 
 	private ProcessBuilder createProcessBuilder(List<String> processParams) {
 		ProcessBuilder processBuilder = new ProcessBuilder(processParams);
-		processBuilder.redirectError(ProcessBuilder.Redirect.INHERIT);
+		processBuilder.redirectError(ProcessBuilder.Redirect.PIPE);
 		return processBuilder;
 	}
 }
