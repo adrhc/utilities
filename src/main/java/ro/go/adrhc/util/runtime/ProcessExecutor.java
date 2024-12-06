@@ -58,6 +58,7 @@ public class ProcessExecutor {
 
 	private ProcessBuilder createProcessBuilder(List<String> processParams) {
 		ProcessBuilder processBuilder = new ProcessBuilder(processParams);
+		processBuilder.redirectOutput(ProcessBuilder.Redirect.PIPE);
 		processBuilder.redirectError(ProcessBuilder.Redirect.PIPE);
 		return processBuilder;
 	}
