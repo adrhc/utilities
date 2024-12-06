@@ -1,4 +1,4 @@
-package ro.go.adrhc.util;
+package ro.go.adrhc.util.runtime;
 
 import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
 import lombok.RequiredArgsConstructor;
