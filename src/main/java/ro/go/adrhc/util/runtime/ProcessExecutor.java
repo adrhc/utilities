@@ -60,6 +60,7 @@ public class ProcessExecutor {
 		ProcessBuilder processBuilder = new ProcessBuilder(processParams);
 		processBuilder.redirectOutput(ProcessBuilder.Redirect.PIPE);
 		processBuilder.redirectError(ProcessBuilder.Redirect.PIPE);
+		processBuilder.redirectErrorStream(true);
 		return processBuilder;
 	}
 }

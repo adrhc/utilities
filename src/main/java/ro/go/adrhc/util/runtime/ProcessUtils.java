@@ -14,7 +14,7 @@ public class ProcessUtils {
 		BufferedReader outputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 		String line;
 		while ((line = outputReader.readLine()) != null) {
-			log.debug(line);
+			log.debug("\n{}", line);
 		}
 	}
 }
