@@ -92,7 +92,7 @@ public class PathUtils {
 		return path.resolveSibling(newFileName);
 	}
 
-	public static Path switchRoot(Path target, Path source, Path file) {
+	public static Path swapRoot(Path target, Path source, Path file) {
 		Path relativePath = source.relativize(file);
 		return target.resolve(relativePath);
 	}

@@ -1,5 +1,7 @@
 package ro.go.adrhc.util.io;
 
+import com.rainerhahnekamp.sneakythrow.functional.SneakyConsumer;
+import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 
@@ -10,9 +12,29 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static ro.go.adrhc.util.io.PathUtils.swapRoot;
 
 @Slf4j
 public class FileSystemUtils {
+	public <T> T readThroughTmp(Path targetRoot, Path tmpRoot, Path filePath,
+			SneakyFunction<Path, T, IOException> reader) throws IOException {
+		Path tmpFilePath = swapRoot(tmpRoot, targetRoot, filePath);
+		if (exists(tmpFilePath)) {
+			return reader.apply(tmpFilePath);
+		} else {
+			return reader.apply(filePath);
+		}
+	}
+
+	public Path writeThroughTmp(Path targetRoot, Path tmpRoot, Path filePath,
+			SneakyConsumer<Path, IOException> writer) throws IOException {
+		Path tmpFilePath = swapRoot(tmpRoot, targetRoot, filePath);
+		createParentDirectories(tmpFilePath);
+		writer.accept(tmpFilePath);
+		return move(tmpFilePath, targetRoot, REPLACE_EXISTING);
+	}
+
 	public void cleanDirectory(Path dir) throws IOException {
 		if (this.exists(dir)) {
 			FileUtils.cleanDirectory(dir.toFile());
