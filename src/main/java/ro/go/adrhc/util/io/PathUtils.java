@@ -98,7 +98,7 @@ public class PathUtils {
 	}
 
 	/**
-	 * @return path if referencePath is null otherwise resolve path against referencePath
+	 * @return path if rootPath is null otherwise resolve path against rootPath
 	 */
 	public static Path resolve(Path rootPath, Path path) {
 		return rootPath == null ? path : rootPath.resolve(path);
