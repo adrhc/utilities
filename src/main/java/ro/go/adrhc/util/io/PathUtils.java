@@ -100,22 +100,23 @@ public class PathUtils {
 	/**
 	 * @return path if referencePath is null otherwise resolve path against referencePath
 	 */
-	public static Path resolve(Path referencePath, Path path) {
-		return referencePath == null ? path : referencePath.resolve(path);
+	public static Path resolve(Path rootPath, Path path) {
+		return rootPath == null ? path : rootPath.resolve(path);
 	}
 
 	/**
 	 * @return path if is an absolute path otherwise relativize path against referencePath
 	 */
-	public static Path relativize(Path referencePath, Path path) {
-		return path.isAbsolute() ? referencePath.relativize(path) : path;
+	public static Path relativize(Path rootPath, Path path) {
+		Assert.isTrue(rootPath.isAbsolute(), "referencePath must be absolute!");
+		return path.isAbsolute() ? rootPath.relativize(path) : path;
 	}
 
-	public static Set<Path> relativize(Path referencePath, Collection<Path> paths) {
-		Assert.isTrue(referencePath.isAbsolute(), "referencePath must be absolute!");
-		Assert.isTrue(paths.stream().allMatch(p -> p.startsWith(referencePath)),
-				"All paths must have referencePath as parent!");
-		return paths.stream().map(referencePath::relativize).collect(Collectors.toSet());
+	public static Set<Path> relativize(Path rootPath, Collection<Path> paths) {
+		Assert.isTrue(rootPath.isAbsolute(), "referencePath must be absolute!");
+//		Assert.isTrue(absolutePaths.stream().allMatch(p -> p.startsWith(rootPath)),
+//				"All paths must have referencePath as parent!");
+		return paths.stream().map(rootPath::relativize).collect(Collectors.toSet());
 	}
 
 	/**
