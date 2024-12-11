@@ -37,6 +37,10 @@ public class FileSystemUtils {
 		return move(tmpFilePath, targetRoot, REPLACE_EXISTING);
 	}
 
+	public boolean isReadable(Path path) {
+		return Files.isReadable(path);
+	}
+
 	public List<String> readLines(Path path) throws IOException {
 		return Files.readAllLines(path, StandardCharsets.UTF_8);
 	}
