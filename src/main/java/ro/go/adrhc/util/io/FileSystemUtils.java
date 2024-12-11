@@ -115,7 +115,7 @@ public class FileSystemUtils {
 		return Files.size(path);
 	}
 
-	public long size(Path path, long sizeIfIOException) {
+	public long sizeOrDefault(Path path, long sizeIfIOException) {
 		try {
 			return Files.size(path);
 		} catch (IOException e) {
