@@ -6,8 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.FileAttribute;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -33,6 +35,10 @@ public class FileSystemUtils {
 		createParentDirectories(tmpFilePath);
 		writer.accept(tmpFilePath);
 		return move(tmpFilePath, targetRoot, REPLACE_EXISTING);
+	}
+
+	public List<String> readLines(Path path) throws IOException {
+		return Files.readAllLines(path, StandardCharsets.UTF_8);
 	}
 
 	public void cleanDirectory(Path dir) throws IOException {
