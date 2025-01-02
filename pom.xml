@@ -99,7 +99,12 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <release>${java.version}</release>
-                    <compilerArgs>--enable-preview</compilerArgs>
+                    <compilerArgs>
+                        <!-- https://docs.oracle.com/en/java/javase/20/docs/specs/man/javac.html#standard-options -->
+                        <arg>--enable-preview</arg>
+                        <arg>-parameters</arg>
+                        <arg>-g</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
