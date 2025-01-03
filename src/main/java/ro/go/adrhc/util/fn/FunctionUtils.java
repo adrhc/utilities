@@ -1,5 +1,6 @@
 package ro.go.adrhc.util.fn;
 
+import com.rainerhahnekamp.sneakythrow.functional.SneakyBiFunction;
 import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,16 @@ public class FunctionUtils {
 	Optional<R> failToEmpty(SneakyFunction<T, R, E> sneakyFn, T t) {
 		try {
 			return Optional.ofNullable(sneakyFn.apply(t));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+		return Optional.empty();
+	}
+
+	public static <T, U, R, E extends Exception>
+	Optional<R> failToEmpty(SneakyBiFunction<T, U, R, E> sneakyFn, T t, U u) {
+		try {
+			return Optional.ofNullable(sneakyFn.apply(t, u));
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
