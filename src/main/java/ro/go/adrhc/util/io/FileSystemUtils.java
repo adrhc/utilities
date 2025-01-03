@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.FileTime;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -19,6 +20,10 @@ import static ro.go.adrhc.util.io.PathUtils.swapRoot;
 
 @Slf4j
 public class FileSystemUtils {
+	public FileTime getLastModifiedTime(Path path) throws IOException {
+		return Files.getLastModifiedTime(path);
+	}
+
 	public <T> T readThroughTmp(Path targetRoot, Path tmpRoot, Path filePath,
 			SneakyFunction<Path, T, IOException> reader) throws IOException {
 		Path tmpFilePath = swapRoot(tmpRoot, targetRoot, filePath);
