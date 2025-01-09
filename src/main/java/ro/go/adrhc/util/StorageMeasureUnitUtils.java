@@ -21,6 +21,10 @@ public class StorageMeasureUnitUtils {
 		return bytes / GIGA_BYTE_DOUBLE;
 	}
 
+	public static double bytesToMb(long bytes) {
+		return bytes / MEGA_BYTE_DOUBLE;
+	}
+
 	public static String gbFormatted(long megaBytes) {
 		return "%.2f".formatted(megaBytes / GIGA_BYTE_DOUBLE);
 	}
