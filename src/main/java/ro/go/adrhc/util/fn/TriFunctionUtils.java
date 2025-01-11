@@ -9,6 +9,16 @@ import java.util.Optional;
 @Slf4j
 public class TriFunctionUtils {
 	public static <T, U, V, R, E extends Exception>
+	R failToNull(SneakyTriFunction<T, U, V, R, E> sneakyFn, T t, U u, V v) {
+		try {
+			return sneakyFn.apply(t, u, v);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+		return null;
+	}
+
+	public static <T, U, V, R, E extends Exception>
 	Optional<R> failToEmpty(SneakyTriFunction<T, U, V, R, E> sneakyFn, T t, U u, V v) {
 		try {
 			return Optional.ofNullable(sneakyFn.apply(t, u, v));
