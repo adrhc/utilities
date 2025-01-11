@@ -1,6 +1,5 @@
 package ro.go.adrhc.util.fn;
 
-import com.rainerhahnekamp.sneakythrow.functional.SneakyBiFunction;
 import com.rainerhahnekamp.sneakythrow.functional.SneakyConsumer;
 import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
 import lombok.experimental.UtilityClass;
@@ -30,11 +29,6 @@ public class FunctionFactory {
 	public static <T, R, E extends Exception>
 	Function<T, Optional<R>> emptyFailResultFn(SneakyFunction<T, R, E> sneakyFn) {
 		return t -> failToEmpty(sneakyFn, t);
-	}
-
-	public static <T, U, R, E extends Exception>
-	Function<U, Optional<R>> emptyFailResultFn(SneakyBiFunction<T, U, R, E> sneakyBiFn, T t) {
-		return u -> failToEmpty(sneakyBiFn, t, u);
 	}
 
 	public static <T, R, E extends Exception> Function<T, R>
