@@ -20,6 +20,15 @@ public class FunctionUtils {
 		return Optional.empty();
 	}
 
+	public static <T, R, E extends Exception> R failToNull(SneakyFunction<T, R, E> sneakyFn, T t) {
+		try {
+			return sneakyFn.apply(t);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+		return null;
+	}
+
 	public static <T, R, E extends Exception>
 	Optional<R> failToEmpty(SneakyFunction<T, R, E> sneakyFn, T t) {
 		try {
