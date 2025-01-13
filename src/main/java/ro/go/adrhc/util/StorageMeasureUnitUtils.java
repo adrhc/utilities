@@ -32,11 +32,15 @@ public class StorageMeasureUnitUtils {
 	}
 
 	public static String gbFormatted(long megaBytes) {
-		return "%.2f".formatted(megaBytes / GIGA_BYTE_DOUBLE);
+		return "%.2f".formatted(bytesToGB(megaBytes));
 	}
 
 	public static String mbFormatted(long megaBytes) {
-		return "%.2f".formatted(megaBytes / MEGA_BYTE_DOUBLE);
+		return "%.2f".formatted(bytesToMB(megaBytes));
+	}
+
+	public static String kbFormatted(long megaBytes) {
+		return "%.2f".formatted(bytesToKB(megaBytes));
 	}
 
 	public static String formatByteCount(long byteCount) {
