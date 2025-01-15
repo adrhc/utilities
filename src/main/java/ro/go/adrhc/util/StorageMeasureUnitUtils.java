@@ -11,6 +11,10 @@ public class StorageMeasureUnitUtils {
 	public static final long GIGA_BYTE = 1024 * MEGA_BYTE;
 	public static final double GIGA_BYTE_DOUBLE = 1d * GIGA_BYTE;
 
+	public static long kbToBytes(int megaBytes) {
+		return megaBytes * KILO_BYTE;
+	}
+
 	public static long mbToBytes(int megaBytes) {
 		return megaBytes * MEGA_BYTE;
 	}
@@ -19,31 +23,41 @@ public class StorageMeasureUnitUtils {
 		return gigaBytes * GIGA_BYTE;
 	}
 
-	public static double bytesToGB(long bytes) {
-		return bytes / GIGA_BYTE_DOUBLE;
+	public static double bytesToKB(long bytes) {
+		return bytes / KILO_BYTE_DOUBLE;
 	}
 
 	public static double bytesToMB(long bytes) {
 		return bytes / MEGA_BYTE_DOUBLE;
 	}
 
-	public static double bytesToKB(long bytes) {
-		return bytes / KILO_BYTE_DOUBLE;
-	}
-
-	public static String gbFormatted(long megaBytes) {
-		return "%.2f".formatted(bytesToGB(megaBytes));
-	}
-
-	public static String mbFormatted(long megaBytes) {
-		return "%.2f".formatted(bytesToMB(megaBytes));
+	public static double bytesToGB(long bytes) {
+		return bytes / GIGA_BYTE_DOUBLE;
 	}
 
 	public static String kbFormatted(long megaBytes) {
 		return "%.2f".formatted(bytesToKB(megaBytes));
 	}
 
-	public static String formatByteCount(long byteCount) {
+	public static String mbFormatted(long megaBytes) {
+		return "%.2f".formatted(bytesToMB(megaBytes));
+	}
+
+	public static String gbFormatted(long megaBytes) {
+		return "%.2f".formatted(bytesToGB(megaBytes));
+	}
+
+	/*public static String formatByteCount(long byteCount) {
 		return "%s GB, %s MB, %d B".formatted(gbFormatted(byteCount), mbFormatted(byteCount), byteCount);
+	}*/
+
+	public static String formatByteCount(long size) {
+		if (size < KILO_BYTE) {
+			return "%s KB".formatted(kbFormatted(size));
+		} else if (size < MEGA_BYTE) {
+			return "%s MB".formatted(mbFormatted(size));
+		} else {
+			return "%s GB".formatted(gbFormatted(size));
+		}
 	}
 }
