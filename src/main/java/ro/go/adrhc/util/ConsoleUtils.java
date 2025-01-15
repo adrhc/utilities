@@ -6,6 +6,10 @@ import java.nio.file.Path;
 
 @UtilityClass
 public class ConsoleUtils {
+	public static String italic(String text) {
+		return STR."\u001B[3m\{text}\u001B[0m";
+	}
+
 	public static String bold(String text) {
 		return STR."\033[1m\{text}\033[0m";
 	}
