@@ -70,6 +70,10 @@ public class ConsoleUtils {
 		return STR."\033[1m\033[32m\{text}\033[0m";
 	}
 
+	public static String underlineGreen(String text) {
+		return STR."\u001B[4m\033[32m\{text}\033[0m\u001B[0m";
+	}
+
 	public static String boldYellow(String text) {
 		return STR."\033[1m\033[33m\{text}\033[0m";
 	}
