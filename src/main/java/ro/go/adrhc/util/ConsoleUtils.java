@@ -6,6 +6,10 @@ import java.nio.file.Path;
 
 @UtilityClass
 public class ConsoleUtils {
+	public static String underline(String text) {
+		return STR."\u001B[4m\{text}\u001B[0m";
+	}
+
 	public static String italic(String text) {
 		return STR."\u001B[3m\{text}\u001B[0m";
 	}
