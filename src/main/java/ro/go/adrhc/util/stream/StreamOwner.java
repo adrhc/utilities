@@ -6,6 +6,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 public interface StreamOwner<T> {
@@ -33,32 +34,39 @@ public interface StreamOwner<T> {
 		return stream().anyMatch(predicate);
 	}
 
-	default <R> List<R> mapOptionalToList(Function<? super T, Optional<? extends R>> mapper) {
-		return mapOptional(mapper).toList();
+	default <M, A, R> R mapCollect(
+			Function<? super T, ? extends M> mapper,
+			Collector<? super M, A, R> collector
+	) {
+		return map(mapper).collect(collector);
 	}
 
 	default <R> List<R> flatMapToList(Function<? super T, ? extends Stream<? extends R>> mapper) {
 		return flatMap(mapper).toList();
 	}
 
+	default <R> List<R> mapOptionalsToList(Function<? super T, Optional<? extends R>> mapper) {
+		return mapOptionals(mapper).toList();
+	}
+
 	default <R> List<R> mapToList(Function<? super T, R> mapper) {
 		return map(mapper).toList();
 	}
 
-	default <R> Stream<R> mapOptional(Function<? super T, Optional<? extends R>> mapper) {
-		return stream().flatMap(o -> mapper.apply(o).stream());
+	default <R> Stream<R> mapMulti(BiConsumer<? super T, ? super Consumer<R>> mapper) {
+		return stream().mapMulti(mapper);
 	}
 
 	default <R> Stream<R> flatMap(Function<? super T, ? extends Stream<? extends R>> mapper) {
 		return stream().flatMap(mapper);
 	}
 
-	default <R> Stream<R> map(Function<? super T, ? extends R> mapper) {
-		return stream().map(mapper);
+	default <R> Stream<R> mapOptionals(Function<? super T, Optional<? extends R>> mapper) {
+		return stream().flatMap(o -> mapper.apply(o).stream());
 	}
 
-	default <R> Stream<R> mapMulti(BiConsumer<? super T, Consumer<? super R>> mapper) {
-		return stream().mapMulti(mapper);
+	default <R> Stream<R> map(Function<? super T, ? extends R> mapper) {
+		return stream().map(mapper);
 	}
 
 	default Stream<T> filter(Predicate<? super T> predicate) {
