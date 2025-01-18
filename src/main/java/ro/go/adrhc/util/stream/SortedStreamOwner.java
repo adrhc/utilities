@@ -9,24 +9,24 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 public interface SortedStreamOwner<T> extends StreamOwner<T> {
-	default <R> List<R> sortedMapOptionalsToList(
+	default <R> List<R> sortMapOptionalsToList(
 			Function<? super T, Optional<? extends R>> mapper) {
-		return sortedMapOptionals(mapper).toList();
+		return sortMapOptionals(mapper).toList();
 	}
 
-	default <R> Stream<R> sortedMapOptionals(Function<? super T, Optional<? extends R>> mapper) {
-		return sortedFlatMap(o -> mapper.apply(o).stream());
+	default <R> Stream<R> sortMapOptionals(Function<? super T, Optional<? extends R>> mapper) {
+		return sortFlatMap(o -> mapper.apply(o).stream());
 	}
 
-	default <R> Stream<R> sortedFlatMap(Function<? super T, ? extends Stream<? extends R>> mapper) {
+	default <R> Stream<R> sortFlatMap(Function<? super T, ? extends Stream<? extends R>> mapper) {
 		return sortedStream().flatMap(mapper);
 	}
 
-	default <R> Stream<R> sortedMapMulti(BiConsumer<? super T, ? super Consumer<R>> mapper) {
+	default <R> Stream<R> sortMapMulti(BiConsumer<? super T, ? super Consumer<R>> mapper) {
 		return sortedStream().mapMulti(mapper);
 	}
 
-	default <R> Stream<R> sortedMap(Function<? super T, ? extends R> mapper) {
+	default <R> Stream<R> sortMap(Function<? super T, ? extends R> mapper) {
 		return sortedStream().map(mapper);
 	}
 
