@@ -10,11 +10,11 @@ import java.util.stream.Stream;
 
 public interface SortedStreamOwner<T> extends StreamOwner<T> {
 	default <R> List<R> sortMapOptionalsToList(
-			Function<? super T, Optional<? extends R>> mapper) {
+			Function<? super T, Optional<R>> mapper) {
 		return sortMapOptionals(mapper).toList();
 	}
 
-	default <R> Stream<R> sortMapOptionals(Function<? super T, Optional<? extends R>> mapper) {
+	default <R> Stream<R> sortMapOptionals(Function<? super T, Optional<R>> mapper) {
 		return sortFlatMap(o -> mapper.apply(o).stream());
 	}
 

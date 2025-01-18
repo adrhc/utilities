@@ -45,7 +45,7 @@ public interface StreamOwner<T> {
 		return flatMap(mapper).toList();
 	}
 
-	default <R> List<R> mapOptionalsToList(Function<? super T, Optional<? extends R>> mapper) {
+	default <R> List<R> mapOptionalsToList(Function<? super T, Optional<R>> mapper) {
 		return mapOptionals(mapper).toList();
 	}
 
@@ -61,7 +61,7 @@ public interface StreamOwner<T> {
 		return stream().flatMap(mapper);
 	}
 
-	default <R> Stream<R> mapOptionals(Function<? super T, Optional<? extends R>> mapper) {
+	default <R> Stream<R> mapOptionals(Function<? super T, Optional<R>> mapper) {
 		return stream().flatMap(o -> mapper.apply(o).stream());
 	}
 
