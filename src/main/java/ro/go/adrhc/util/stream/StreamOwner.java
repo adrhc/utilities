@@ -33,7 +33,11 @@ public interface StreamOwner<T> {
 		return stream().anyMatch(predicate);
 	}
 
-	default <R> List<R> flatMapToList(Function<? super T, Optional<? extends R>> mapper) {
+	default <R> List<R> mapOptionalToList(Function<? super T, Optional<? extends R>> mapper) {
+		return mapOptional(mapper).toList();
+	}
+
+	default <R> List<R> flatMapToList(Function<? super T, ? extends Stream<? extends R>> mapper) {
 		return flatMap(mapper).toList();
 	}
 
@@ -41,8 +45,12 @@ public interface StreamOwner<T> {
 		return map(mapper).toList();
 	}
 
-	default <R> Stream<R> flatMap(Function<? super T, Optional<? extends R>> mapper) {
+	default <R> Stream<R> mapOptional(Function<? super T, Optional<? extends R>> mapper) {
 		return stream().flatMap(o -> mapper.apply(o).stream());
+	}
+
+	default <R> Stream<R> flatMap(Function<? super T, ? extends Stream<? extends R>> mapper) {
+		return stream().flatMap(mapper);
 	}
 
 	default <R> Stream<R> map(Function<? super T, ? extends R> mapper) {
