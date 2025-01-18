@@ -12,9 +12,8 @@ import java.util.function.Function;
 @UtilityClass
 @Slf4j
 public class BiFunctionUtils {
-	public static <T1, T2, R> Function<T2, R> curry(
-			BiFunction<T1, T2, R> biFunction, T1 t1) {
-		return t2 -> biFunction.apply(t1, t2);
+	public static <P1, P2, R> Function<P2, R> toP2Fn(BiFunction<P1, P2, R> biFunction, P1 p1) {
+		return p2 -> biFunction.apply(p1, p2);
 	}
 
 	public static <T, U> BiFunction<T, U, T> toBiFn(BiConsumer<T, U> biConsumer) {

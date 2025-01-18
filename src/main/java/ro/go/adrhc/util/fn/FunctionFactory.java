@@ -6,6 +6,7 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static java.lang.Boolean.TRUE;
@@ -14,6 +15,10 @@ import static ro.go.adrhc.util.fn.FunctionUtils.failToEmpty;
 @UtilityClass
 @Slf4j
 public class FunctionFactory {
+	public static <P1, P2, R> Function<P2, R> rmP1(BiFunction<P1, P2, R> biFn) {
+		return p2 -> biFn.apply(null, p2);
+	}
+
 	public static <T, R, E extends Exception> Function<T, R>
 	of(SneakyFunction<T, R, E> sneakyFn) {
 		return t -> {
