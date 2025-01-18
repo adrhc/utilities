@@ -16,7 +16,8 @@ public class HalfBooleanPair<R> {
 	protected final boolean left;
 	protected final R right;
 
-	public static <R> BooleanInFunction<HalfBooleanPair<R>> ofRightFactory(BooleanInFunction<R> rightFactory) {
+	public static <R> BooleanInFunction<HalfBooleanPair<R>> ofRightFactory(
+			BooleanInFunction<R> rightFactory) {
 		return left -> new HalfBooleanPair<>(left, rightFactory.apply(left));
 	}
 

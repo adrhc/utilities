@@ -49,7 +49,7 @@ public class FilenameUtils {
 	public static String addSuffix(String filename, String suffix) {
 		int extensionDot = filename.lastIndexOf('.');
 		return filename.substring(0, extensionDot)
-				+ suffix + filename.substring(extensionDot);
+		       + suffix + filename.substring(extensionDot);
 	}
 
 	public static String removeSuffix(String filename, String suffix) {
@@ -58,7 +58,7 @@ public class FilenameUtils {
 			return filename;
 		} else {
 			return filename.substring(0, lastIndex) +
-					filename.substring(lastIndex + suffix.length());
+			       filename.substring(lastIndex + suffix.length());
 		}
 	}
 

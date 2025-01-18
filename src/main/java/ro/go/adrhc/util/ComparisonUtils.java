@@ -39,7 +39,7 @@ public class ComparisonUtils {
 		} else if (list.size() < other.size()) {
 			return -1;
 		} else if (equalContentMeansEqualListsNoMatterTheOrder
-				&& new HashSet<>(list).containsAll(other)) {
+		           && new HashSet<>(list).containsAll(other)) {
 			return 0;
 		}
 		for (int i = 0; i < list.size(); i++) {

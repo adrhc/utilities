@@ -47,7 +47,7 @@ public class SimpleDirectory {
 
 	public <R, E extends Exception> R transformPathStream(
 			Path start, SneakyFunction<Stream<Path>, R, E>
-			pathsStreamProcessor) throws IOException, E {
+					pathsStreamProcessor) throws IOException, E {
 		try (Stream<Path> paths = fsUtils.walk(resolvePath(start), fileVisitOption)) {
 			return pathsStreamProcessor.apply(paths.filter(pathsFilter));
 		}
