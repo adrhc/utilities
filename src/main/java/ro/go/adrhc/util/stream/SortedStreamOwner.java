@@ -10,6 +10,10 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public interface SortedStreamOwner<T> extends StreamOwner<T> {
+	default void forEachSorted(Consumer<? super T> consumer) {
+		sortedStream().forEach(consumer);
+	}
+
 	default <R> List<R> sortMapOptionalsToList(
 			Function<? super T, Optional<R>> mapper) {
 		return sortMapOptionals(mapper).toList();
