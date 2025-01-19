@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public interface SortedStreamOwner<T> extends StreamOwner<T> {
@@ -14,20 +15,29 @@ public interface SortedStreamOwner<T> extends StreamOwner<T> {
 		return sortMapOptionals(mapper).toList();
 	}
 
-	default <R> Stream<R> sortMapOptionals(Function<? super T, Optional<R>> mapper) {
-		return sortFlatMap(o -> mapper.apply(o).stream());
+	default <R> Stream<R> sortMapMulti(BiConsumer<? super T, ? super Consumer<R>> mapper) {
+		return sortedStream().mapMulti(mapper);
 	}
 
 	default <R> Stream<R> sortFlatMap(Function<? super T, ? extends Stream<? extends R>> mapper) {
 		return sortedStream().flatMap(mapper);
 	}
 
-	default <R> Stream<R> sortMapMulti(BiConsumer<? super T, ? super Consumer<R>> mapper) {
-		return sortedStream().mapMulti(mapper);
+	default <R> Stream<R> sortMapOptionals(Function<? super T, Optional<R>> mapper) {
+		return sortFlatMap(o -> mapper.apply(o).stream());
 	}
 
 	default <R> Stream<R> sortMap(Function<? super T, ? extends R> mapper) {
 		return sortedStream().map(mapper);
+	}
+
+	default <R> Stream<R> sortFilterMap(
+			Predicate<? super T> predicate, Function<? super T, ? extends R> mapper) {
+		return sortFilter(predicate).map(mapper);
+	}
+
+	default Stream<T> sortFilter(Predicate<? super T> predicate) {
+		return sortedStream().filter(predicate);
 	}
 
 	default Stream<T> sortedStream() {

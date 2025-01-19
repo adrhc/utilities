@@ -65,6 +65,11 @@ public interface StreamOwner<T> {
 		return stream().flatMap(o -> mapper.apply(o).stream());
 	}
 
+	default <R> Stream<R> filterMap(
+			Predicate<? super T> predicate, Function<? super T, ? extends R> mapper) {
+		return stream().filter(predicate).map(mapper);
+	}
+
 	default <R> Stream<R> map(Function<? super T, ? extends R> mapper) {
 		return stream().map(mapper);
 	}
