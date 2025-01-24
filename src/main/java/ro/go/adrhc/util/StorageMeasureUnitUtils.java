@@ -23,6 +23,10 @@ public class StorageMeasureUnitUtils {
 		return gigaBytes * GIGA_BYTE;
 	}
 
+	public static long gbToMB(int gigaBytes) {
+		return gigaBytes * 1024L;
+	}
+
 	public static double bytesToKB(long bytes) {
 		return bytes / KILO_BYTE_DOUBLE;
 	}
