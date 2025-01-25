@@ -1,17 +1,15 @@
 package ro.go.adrhc.util.collection;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
+import lombok.experimental.UtilityClass;
+
+import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+@UtilityClass
 public class SetUtils {
 	/**
 	 * @return from source
@@ -60,14 +58,18 @@ public class SetUtils {
 				.collect(Collectors.joining(" "));
 	}
 
+	public static <T> Set<T> of(Stream<T> stream) {
+		return stream.collect(Collectors.toSet());
+	}
+
 	@SafeVarargs
-	public static <T> Set<T> setOf(T... value) {
+	public static <T> Set<T> ofNonNull(T... value) {
 		return Arrays.stream(value).filter(Objects::nonNull).collect(Collectors.toSet());
 	}
 
 	@SafeVarargs
 	public static <T> Set<T> union(Set<T>... sets) {
-		return setOf(sets).stream().flatMap(Set::stream).collect(Collectors.toSet());
+		return ofNonNull(sets).stream().flatMap(Set::stream).collect(Collectors.toSet());
 	}
 
 	public static <T> Set<T> limit(int maxSize, Collection<T> set) {
