@@ -40,7 +40,7 @@ public class SetUtils {
 				.collect(Collectors.toSet());
 	}
 
-	public static <K, V> Set<V> valuesToHashSet(Map<K, V> map) {
+	public static <V> Set<V> mutableSetOfValues(Map<?, V> map) {
 		return new HashSet<>(map.values());
 	}
 
