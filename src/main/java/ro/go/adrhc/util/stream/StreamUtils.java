@@ -21,6 +21,10 @@ public class StreamUtils {
 		return collection.stream().collect(supplier, accumulator, combiner);
 	}
 
+	public static <T> boolean anyMatch(Predicate<? super T> predicate, Collection<T> collection) {
+		return collection.stream().anyMatch(predicate);
+	}
+
 	public static <T> Optional<T> findAny(Predicate<? super T> predicate, Collection<T> collection) {
 		return collection.stream().filter(predicate).findAny();
 	}
