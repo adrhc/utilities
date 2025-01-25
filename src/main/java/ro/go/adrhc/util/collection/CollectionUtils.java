@@ -1,11 +1,7 @@
 package ro.go.adrhc.util.collection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -80,12 +76,22 @@ public class CollectionUtils {
 		}
 	}
 
-	public static <T> boolean anyMatch(Predicate<? super T> predicate, Collection<T> set) {
-		return set.stream().anyMatch(predicate);
+	public static <T, R> R collect(Supplier<R> supplier,
+			BiConsumer<R, ? super T> accumulator,
+			BiConsumer<R, R> combiner, Collection<T> collection) {
+		return collection.stream().collect(supplier, accumulator, combiner);
 	}
 
-	public static <T> boolean allMatch(Predicate<? super T> predicate, Collection<T> set) {
-		return set.stream().allMatch(predicate);
+	public static <T> boolean allMatch(Predicate<? super T> predicate, Collection<T> collection) {
+		return collection.stream().allMatch(predicate);
+	}
+
+	public static <T> boolean anyMatch(Predicate<? super T> predicate, Collection<T> collection) {
+		return collection.stream().anyMatch(predicate);
+	}
+
+	public static <T> Optional<T> findAny(Predicate<? super T> predicate, Collection<T> collection) {
+		return collection.stream().filter(predicate).findAny();
 	}
 
 	private static <E, C extends Collection<E>> C createAndAddAll(
