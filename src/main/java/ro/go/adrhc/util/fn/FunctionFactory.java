@@ -19,18 +19,6 @@ public class FunctionFactory {
 		return p2 -> biFn.apply(null, p2);
 	}
 
-	public static <T, R, E extends Exception> Function<T, R>
-	of(SneakyFunction<T, R, E> sneakyFn) {
-		return t -> {
-			try {
-				return sneakyFn.apply(t);
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
-				return null;
-			}
-		};
-	}
-
 	public static <T, R, E extends Exception>
 	Function<T, Optional<R>> emptyFailResultFn(SneakyFunction<T, R, E> sneakyFn) {
 		return t -> failToEmpty(sneakyFn, t);
