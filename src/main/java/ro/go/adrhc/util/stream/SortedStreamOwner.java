@@ -19,6 +19,10 @@ public interface SortedStreamOwner<T> extends StreamOwner<T> {
 		return sortMapOptionals(mapper).toList();
 	}
 
+	default <R> List<R> sortMapToList(Function<? super T, R> mapper) {
+		return sortMap(mapper).toList();
+	}
+
 	default <R> Stream<R> sortMapMulti(BiConsumer<? super T, ? super Consumer<R>> mapper) {
 		return sortedStream().mapMulti(mapper);
 	}
