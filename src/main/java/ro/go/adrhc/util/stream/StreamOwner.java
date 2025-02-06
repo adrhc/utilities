@@ -2,11 +2,10 @@ package ro.go.adrhc.util.stream;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.*;
 import java.util.stream.Collector;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public interface StreamOwner<T> {
@@ -51,6 +50,14 @@ public interface StreamOwner<T> {
 
 	default <R> List<R> mapToList(Function<? super T, R> mapper) {
 		return map(mapper).toList();
+	}
+
+	default IntStream mapToInt(ToIntFunction<? super T> mapper) {
+		return stream().mapToInt(mapper);
+	}
+
+	default LongStream mapToLong(ToLongFunction<? super T> mapper) {
+		return stream().mapToLong(mapper);
 	}
 
 	default <R> Stream<R> mapMulti(BiConsumer<? super T, ? super Consumer<R>> mapper) {
