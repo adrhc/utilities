@@ -40,6 +40,10 @@ public interface StreamOwner<T> {
 		return map(mapper).collect(collector);
 	}
 
+	default <R, A> R collect(Collector<? super T, A, R> collector) {
+		return stream().collect(collector);
+	}
+
 	default <R> List<R> flatMapToList(Function<? super T, ? extends Stream<? extends R>> mapper) {
 		return flatMap(mapper).toList();
 	}
