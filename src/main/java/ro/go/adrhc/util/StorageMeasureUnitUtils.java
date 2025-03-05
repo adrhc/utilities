@@ -40,15 +40,15 @@ public class StorageMeasureUnitUtils {
 	}
 
 	public static String kbFormatted(long megaBytes) {
-		return "%.2f".formatted(bytesToKB(megaBytes));
+		return "%.3f".formatted(bytesToKB(megaBytes));
 	}
 
 	public static String mbFormatted(long megaBytes) {
-		return "%.2f".formatted(bytesToMB(megaBytes));
+		return "%.3f".formatted(bytesToMB(megaBytes));
 	}
 
 	public static String gbFormatted(long megaBytes) {
-		return "%.2f".formatted(bytesToGB(megaBytes));
+		return "%.3f".formatted(bytesToGB(megaBytes));
 	}
 
 	/*public static String formatByteCount(long byteCount) {
