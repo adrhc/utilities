@@ -25,7 +25,7 @@ public class ProcessExecutor {
 	}
 
 	public Optional<Boolean> run(List<String> processParams) {
-		return execute(_ -> Boolean.TRUE, processParams);
+		return execute(p -> Boolean.TRUE, processParams);
 	}
 
 	public Optional<String> execute(List<String> processParams) {

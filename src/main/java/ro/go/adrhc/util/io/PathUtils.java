@@ -110,12 +110,12 @@ public class PathUtils {
 	 * @return path if is an absolute path otherwise relativize path against rootPath
 	 */
 	public static Path relativize(Path rootPath, Path path) {
-		Assert.isTrue(rootPath.isAbsolute(), STR."\{rootPath} must be absolute!");
+		Assert.isTrue(rootPath.isAbsolute(), "%s must be absolute!".formatted(rootPath));
 		return path.isAbsolute() ? rootPath.relativize(path) : path;
 	}
 
 	public static Set<Path> relativize(Path rootPath, Collection<Path> paths) {
-		Assert.isTrue(rootPath.isAbsolute(), STR."\{rootPath} must be absolute!");
+		Assert.isTrue(rootPath.isAbsolute(), "%s must be absolute!".formatted(rootPath));
 //		Assert.isTrue(absolutePaths.stream().allMatch(p -> p.startsWith(rootPath)),
 //				"All paths must have rootPath as parent!");
 		return paths.stream().map(rootPath::relativize).collect(Collectors.toSet());

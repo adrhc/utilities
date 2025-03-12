@@ -22,9 +22,9 @@ public class QueueSliceStreamer {
 	 * chunk instead of continuing from where the previous consumer left!
 	 */
 	public <T> Stream<T> streamChunk() {
-		return Stream.iterate(null, _ -> null)
-				.map(_ -> take().orElse(CHUNK_END))
-				.takeWhile(it -> it != CHUNK_END)
+		return Stream.iterate(null, o -> null)
+				.map(o -> take().orElse(CHUNK_END))
+				.takeWhile(o -> o != CHUNK_END)
 				.map(ObjectUtils::cast);
 	}
 

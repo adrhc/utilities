@@ -7,86 +7,86 @@ import java.nio.file.Path;
 @UtilityClass
 public class ConsoleUtils {
 	public static String underline(String text) {
-		return STR."\u001B[4m\{text}\u001B[0m";
+		return "\u001B[4m%s\u001B[0m".formatted(text);
 	}
 
 	public static String italic(String text) {
-		return STR."\u001B[3m\{text}\u001B[0m";
+		return "\u001B[3m%s\u001B[0m".formatted(text);
 	}
 
 	public static String bold(String text) {
-		return STR."\033[1m\{text}\033[0m";
+		return "\033[1m%s\033[0m".formatted(text);
 	}
 
 	public static String bold(Path path) {
-		return STR."\033[1m\{path}\033[0m";
+		return "\033[1m%s\033[0m".formatted(path);
 	}
 
 	public static String bold(boolean value) {
-		return STR."\033[1m\{value}\033[0m";
+		return "\033[1m%b\033[0m".formatted(value);
 	}
 
 	public static String bold(int value) {
-		return STR."\033[1m\{value}\033[0m";
+		return "\033[1m%d\033[0m".formatted(value);
 	}
 
 	public static String bold(long value) {
-		return STR."\033[1m\{value}\033[0m";
+		return "\033[1m%d\033[0m".formatted(value);
 	}
 
 	public static String red(String text) {
-		return STR."\033[31m\{text}\033[0m";
+		return "\033[31m%s\033[0m".formatted(text);
 	}
 
 	public static String red(Path path) {
-		return STR."\033[31m\{path}\033[0m";
+		return "\033[31m%s\033[0m".formatted(path);
 	}
 
 	public static String green(String text) {
-		return STR."\033[32m\{text}\033[0m";
+		return "\033[32m%s\033[0m".formatted(text);
 	}
 
 	public static String yellow(String text) {
-		return STR."\033[33m\{text}\033[0m";
+		return "\033[33m%s\033[0m".formatted(text);
 	}
 
 	public static String yellow(Path path) {
-		return STR."\033[33m\{path}\033[0m";
+		return "\033[33m%s\033[0m".formatted(path);
 	}
 
 	public static String blue(String text) {
-		return STR."\033[34m\{text}\033[0m";
+		return "\033[34m%s\033[0m".formatted(text);
 	}
 
 	public static String boldRed(String text) {
-		return STR."\033[1m\033[31m\{text}\033[0m";
+		return "\033[1m\033[31m%s\033[0m".formatted(text);
 	}
 
 	public static String boldRed(Path path) {
-		return STR."\033[1m\033[31m\{path}\033[0m";
+		return "\033[1m\033[31m%s\033[0m".formatted(path);
 	}
 
 	public static String boldGreen(String text) {
-		return STR."\033[1m\033[32m\{text}\033[0m";
+		return "\033[1m\033[32m%s\033[0m".formatted(text);
 	}
 
 	public static String underlineGreen(String text) {
-		return STR."\u001B[4m\033[32m\{text}\033[0m\u001B[0m";
+		return "\u001B[4m\033[32m%s\033[0m\u001B[0m".formatted(text);
 	}
 
 	public static String boldYellow(String text) {
-		return STR."\033[1m\033[33m\{text}\033[0m";
+		return "\033[1m\033[33m%s\033[0m".formatted(text);
 	}
 
 	public static String boldYellow(Path path) {
-		return STR."\033[1m\033[33m\{path}\033[0m";
+		return "\033[1m\033[33m%s\033[0m".formatted(path);
 	}
 
 	public static String boldBlue(String text) {
-		return STR."\033[1m\033[34m\{text}\033[0m";
+		return "\033[1m\033[34m%s\033[0m".formatted(text);
 	}
 
 	public static String boldBlue(Path path) {
-		return STR."\033[1m\033[34m\{path}\033[0m";
+		return "\033[1m\033[34m%s\033[0m".formatted(path);
 	}
 }
