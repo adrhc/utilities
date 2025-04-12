@@ -71,7 +71,11 @@ public class ConsoleUtils {
 	}
 
 	public static String underlineGreen(String text) {
-		return "\u001B[4m\033[32m%s\033[0m\u001B[0m".formatted(text);
+		return "\033[32m\u001B[4m%s\u001B[0m\033[0m".formatted(text);
+	}
+
+	public static String underlineYellow(String text) {
+		return "\033[33m\u001B[4m%s\u001B[0m\033[0m".formatted(text);
 	}
 
 	public static String boldYellow(String text) {
