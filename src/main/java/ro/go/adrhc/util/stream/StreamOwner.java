@@ -89,5 +89,9 @@ public interface StreamOwner<T> {
 		return stream().filter(predicate);
 	}
 
+	default Stream<T> parallel() {
+		return stream().parallel();
+	}
+
 	Stream<T> stream();
 }
