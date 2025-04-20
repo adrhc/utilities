@@ -20,6 +20,14 @@ public class FutureUtils {
 		return joinAll(futures).map(FutureUtils::safelyGet).flatMap(Optional::stream);
 	}
 
+	public static void safelyWait(Future<?> future) {
+		try {
+			future.get();
+		} catch (InterruptedException | ExecutionException e) {
+			log.error(e.getMessage(), e);
+		}
+	}
+
 	public static <T> Optional<T> safelyGet(Future<T> future) {
 		try {
 			return Optional.ofNullable(future.get());
