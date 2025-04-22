@@ -11,6 +11,11 @@ import java.util.function.Supplier;
 @UtilityClass
 @Slf4j
 public class OptionalUtils {
+	public static <T> boolean ifPresentTrue(Consumer<T> consumer, Optional<T> optional) {
+		optional.ifPresent(consumer);
+		return optional.isPresent();
+	}
+
 	public static <T> Optional<T> ifPresent(Consumer<T> consumer, Optional<T> optional) {
 		optional.ifPresent(consumer);
 		return optional;
