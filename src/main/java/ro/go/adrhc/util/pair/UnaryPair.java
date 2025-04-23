@@ -9,11 +9,11 @@ public class UnaryPair<U> extends Pair<U, U> {
 		return new UnaryPair<>(null, null);
 	}
 
-	public static <U> UnaryPair<U> ofLeft(U left) {
+	public static <U> UnaryPair<U> unaryPairOfLeft(U left) {
 		return new UnaryPair<>(left, null);
 	}
 
-	public static <U> UnaryPair<U> ofRight(U right) {
+	public static <U> UnaryPair<U> unaryPairOfRight(U right) {
 		return new UnaryPair<>(null, right);
 	}
 }

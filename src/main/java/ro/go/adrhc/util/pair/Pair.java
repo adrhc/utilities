@@ -21,21 +21,22 @@ public class Pair<L, R> {
 		return new Pair<>(null, null);
 	}
 
-	public static <L, R> Pair<L, R> pairOfLeft(L left) {
-		return new Pair<>(left, null);
-	}
-
-	public static <L, R> Pair<L, R> pairOfRight(R right) {
-		return new Pair<>(null, right);
-	}
-
 	public static <L, R> Pair<L, R> ofMapEntry(Map.Entry<L, R> mapEntry) {
 		return new Pair<>(mapEntry.getKey(), mapEntry.getValue());
 	}
 
-	public static <L, R> Function<L, Pair<L, R>> ofRightFactory(
-			Function<L, R> rightFactory) {
-		return left -> new Pair<>(left, rightFactory.apply(left));
+	/**
+	 * right will be null
+	 */
+	public static <L, R> Pair<L, R> ofLeft(L left) {
+		return new Pair<>(left, null);
+	}
+
+	/**
+	 * left will be null
+	 */
+	public static <L, R> Pair<L, R> ofRight(R right) {
+		return new Pair<>(null, right);
 	}
 
 	public <T> Pair<T, R> transformLeft(Function<L, T> leftTransformer) {
