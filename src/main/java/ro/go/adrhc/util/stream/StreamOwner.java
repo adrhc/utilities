@@ -85,6 +85,10 @@ public interface StreamOwner<T> {
 		return stream().map(mapper);
 	}
 
+	default Stream<T> parallelFilter(Predicate<? super T> predicate) {
+		return parallel().filter(predicate);
+	}
+
 	default Stream<T> filter(Predicate<? super T> predicate) {
 		return stream().filter(predicate);
 	}
