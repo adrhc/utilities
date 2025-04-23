@@ -39,12 +39,12 @@ public class Pair<L, R> {
 		return new Pair<>(null, right);
 	}
 
-	public <T> Pair<T, R> transformLeft(Function<L, T> leftTransformer) {
-		return new Pair<>(leftTransformer.apply(this.left), this.right);
+	public <T> Pair<T, R> mapLeft(Function<L, T> leftMapper) {
+		return new Pair<>(leftMapper.apply(this.left), this.right);
 	}
 
-	public <T> Pair<L, T> transformRight(Function<R, T> rightTransformer) {
-		return new Pair<>(this.left, rightTransformer.apply(this.right));
+	public <T> Pair<L, T> mapRight(Function<R, T> rightMapper) {
+		return new Pair<>(this.left, rightMapper.apply(this.right));
 	}
 
 	public void ifRightPresent(Consumer<R> consumer) {
