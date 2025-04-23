@@ -1,17 +1,19 @@
 package ro.go.adrhc.util.fn;
 
-import com.rainerhahnekamp.sneakythrow.functional.SneakyBiFunction;
 import lombok.experimental.UtilityClass;
 
-import java.util.Optional;
-import java.util.function.Function;
-
-import static ro.go.adrhc.util.fn.BiFunctionUtils.failToEmpty;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
 @UtilityClass
 public class BiFunctionFactory {
-	public static <T, U, R, E extends Exception>
-	Function<U, Optional<R>> emptyFailResultFn(SneakyBiFunction<T, U, R, E> sneakyBiFn, T t) {
-		return u -> failToEmpty(sneakyBiFn, t, u);
+	/**
+	 * The first parameter (i.e. tFnOutcome) will be the BiFunction's result.
+	 */
+	public static <T, U> BiFunction<T, U, T> toP1OutBiFn(BiConsumer<T, U> biConsumer) {
+		return (tFnOutcome, u) -> {
+			biConsumer.accept(tFnOutcome, u);
+			return tFnOutcome;
+		};
 	}
 }

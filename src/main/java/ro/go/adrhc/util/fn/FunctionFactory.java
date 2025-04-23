@@ -1,5 +1,6 @@
 package ro.go.adrhc.util.fn;
 
+import com.rainerhahnekamp.sneakythrow.functional.SneakyBiFunction;
 import com.rainerhahnekamp.sneakythrow.functional.SneakyConsumer;
 import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
 import lombok.experimental.UtilityClass;
@@ -15,8 +16,17 @@ import static ro.go.adrhc.util.fn.FunctionUtils.failToEmpty;
 @UtilityClass
 @Slf4j
 public class FunctionFactory {
+	public static <P1, P2, R> Function<P2, R> toP2Fn(BiFunction<P1, P2, R> biFunction, P1 p1) {
+		return p2 -> biFunction.apply(p1, p2);
+	}
+
 	public static <P1, P2, R> Function<P2, R> rmP1(BiFunction<P1, P2, R> biFn) {
 		return p2 -> biFn.apply(null, p2);
+	}
+
+	public static <T, U, R, E extends Exception>
+	Function<U, Optional<R>> emptyFailResultFn(SneakyBiFunction<T, U, R, E> sneakyBiFn, T t) {
+		return u -> BiFunctionUtils.failToEmpty(sneakyBiFn, t, u);
 	}
 
 	public static <T, R, E extends Exception>
