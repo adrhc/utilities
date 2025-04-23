@@ -85,6 +85,10 @@ public interface StreamOwner<T> {
 		return stream().filter(predicate).map(mapper);
 	}
 
+	default <R> Stream<R> parallelMap(Function<? super T, ? extends R> mapper) {
+		return parallel().map(mapper);
+	}
+
 	default <R> Stream<R> map(Function<? super T, ? extends R> mapper) {
 		return stream().map(mapper);
 	}
