@@ -8,24 +8,6 @@ import java.util.stream.Stream;
 public interface Breakable<T> {
 	boolean isBroken();
 
-	default boolean isOk() {
-		return !isBroken();
-	}
-
-	/**
-	 * @return empty if broken
-	 */
-	default Optional<T> toOptional() {
-		return isBroken() ? Optional.empty() : Optional.of((T) this);
-	}
-
-	/**
-	 * @return empty if broken
-	 */
-	default <R> Optional<R> map(Function<? super T, R> notBrokenMapper) {
-		return isBroken() ? Optional.empty() : Optional.ofNullable(notBrokenMapper.apply((T) this));
-	}
-
 	/**
 	 * @return resultForBrokenInput if broken
 	 */
@@ -38,6 +20,13 @@ public interface Breakable<T> {
 			Function<? super T, R> notBrokenMapper) {
 		Function<? super T, R> mapper = isBroken() ? brokenMapper : notBrokenMapper;
 		return Optional.ofNullable(mapper.apply((T) this));
+	}
+
+	/**
+	 * @return empty if broken
+	 */
+	default Optional<T> toOptional() {
+		return isBroken() ? Optional.empty() : Optional.of((T) this);
 	}
 
 	/**
