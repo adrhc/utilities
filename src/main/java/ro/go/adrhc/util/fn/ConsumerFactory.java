@@ -1,7 +1,6 @@
 package ro.go.adrhc.util.fn;
 
 import com.rainerhahnekamp.sneakythrow.functional.SneakyBiConsumer;
-import com.rainerhahnekamp.sneakythrow.functional.SneakyConsumer;
 import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -26,16 +25,6 @@ public class ConsumerFactory {
 		return p2 -> {
 			try {
 				sneakyBiConsumer.accept(p1, p2);
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
-			}
-		};
-	}
-
-	public static <T, E extends Exception> Consumer<T> silence(SneakyConsumer<T, E> sneakyConsumer) {
-		return t -> {
-			try {
-				sneakyConsumer.accept(t);
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
 			}
