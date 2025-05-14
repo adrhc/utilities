@@ -10,6 +10,11 @@ import java.util.function.Consumer;
 @UtilityClass
 @Slf4j
 public class ConsumerFactory {
+	public static <T> Consumer<T> skipConsumption() {
+		return it -> {
+		};
+	}
+
 	public static <T, E extends Exception> Consumer<T> silence(SneakyFunction<T, ?, E> sneakyFn) {
 		return t -> {
 			try {
@@ -28,9 +33,5 @@ public class ConsumerFactory {
 				log.error(e.getMessage(), e);
 			}
 		};
-	}
-
-	public static <T> void ignore(T t) {
-		// do nothing
 	}
 }
