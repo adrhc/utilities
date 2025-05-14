@@ -11,24 +11,39 @@ import java.util.function.Supplier;
 @UtilityClass
 @Slf4j
 public class OptionalUtils {
+	/**
+	 * Consume if present then return true, otherwise return false.
+	 */
 	public static <T> boolean ifPresentTrue(Consumer<T> consumer, Optional<T> optional) {
 		optional.ifPresent(consumer);
 		return optional.isPresent();
 	}
 
+	/**
+	 * Consume if present then return "optional".
+	 */
 	public static <T> Optional<T> ifPresent(Consumer<T> consumer, Optional<T> optional) {
 		optional.ifPresent(consumer);
 		return optional;
 	}
 
+	/**
+	 * @return a not empty Optional of the "supplier"'s product
+	 */
 	public <T> Optional<T> of(Supplier<? extends T> supplier) {
 		return Optional.of(supplier.get());
 	}
 
+	/**
+	 * @return a possibly empty Optional of the "supplier"'s product
+	 */
 	public <T> Optional<T> ofNullable(Supplier<? extends T> supplier) {
 		return Optional.ofNullable(supplier.get());
 	}
 
+	/**
+	 * @return a not empty Optional of the "supplier"'s product or empty on error
+	 */
 	public <T, E extends Exception> Optional<T>
 	ofSneaky(SneakySupplier<? extends T, E> supplier) {
 		try {
