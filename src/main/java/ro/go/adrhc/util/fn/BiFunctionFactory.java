@@ -10,10 +10,10 @@ public class BiFunctionFactory {
 	/**
 	 * The first parameter (i.e. tFnOutcome) will be the BiFunction's result.
 	 */
-	public static <T, U> BiFunction<T, U, T> toP1OutBiFn(BiConsumer<T, U> biConsumer) {
-		return (tFnOutcome, u) -> {
-			biConsumer.accept(tFnOutcome, u);
-			return tFnOutcome;
+	public static <P1, P2> BiFunction<P1, P2, P1> toP1OutBiFn(BiConsumer<P1, P2> biConsumer) {
+		return (p1, P2) -> {
+			biConsumer.accept(p1, P2);
+			return p1;
 		};
 	}
 }
