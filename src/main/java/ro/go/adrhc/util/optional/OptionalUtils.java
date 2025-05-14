@@ -20,6 +20,16 @@ public class OptionalUtils {
 	}
 
 	/**
+	 * Handle a miss then return "optional".
+	 */
+	public static <T> Optional<T> ifMissing(Runnable missAction, Optional<T> optional) {
+		if (optional.isEmpty()) {
+			missAction.run();
+		}
+		return optional;
+	}
+
+	/**
 	 * Consume if present then return "optional".
 	 */
 	public static <T> Optional<T> ifPresent(Consumer<T> consumer, Optional<T> optional) {
