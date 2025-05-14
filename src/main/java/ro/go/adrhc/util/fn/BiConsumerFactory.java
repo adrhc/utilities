@@ -8,9 +8,9 @@ import java.util.function.Consumer;
 @UtilityClass
 public class BiConsumerFactory {
 	/**
-	 * Add a new, null, 1st parameter, to the received consumer.
+	 * @return a bi-consumer where the 1st parameter is ignored
 	 */
-	public static <P1, P2> BiConsumer<P1, P2> addP1(Consumer<P2> fn) {
+	public static <P1, P2> BiConsumer<P1, P2> ignoreP1(Consumer<P2> fn) {
 		return (p1, p2) -> fn.accept(p2);
 	}
 }
