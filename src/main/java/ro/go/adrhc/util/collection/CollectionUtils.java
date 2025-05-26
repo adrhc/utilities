@@ -1,5 +1,7 @@
 package ro.go.adrhc.util.collection;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
@@ -7,7 +9,12 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@UtilityClass
 public class CollectionUtils {
+	public static boolean isNullOrEmpty(Collection<?> collection) {
+		return collection == null || collection.isEmpty();
+	}
+
 	/**
 	 * @return first not null
 	 */
@@ -48,7 +55,7 @@ public class CollectionUtils {
 	}
 
 	public static <E, P extends Collection<E>> List<P> partition(
-			Supplier<P> partitionFactory, int size, Collection<E> tCollection) {
+		Supplier<P> partitionFactory, int size, Collection<E> tCollection) {
 		return partition(partitionFactory, size, tCollection.stream());
 	}
 
@@ -61,13 +68,13 @@ public class CollectionUtils {
 	 * @return a list of partitions (i.e. tStream's subset)
 	 */
 	public static <E, P extends Collection<E>> List<P> partition(
-			Supplier<P> partitionFactory, int size, Stream<E> tStream) {
+		Supplier<P> partitionFactory, int size, Stream<E> tStream) {
 		Partition<E> partition = new Partition<>(size, new ArrayList<>());
 		List<P> result = tStream.peek(partition::add)
-				.filter(it -> partition.isFull())
-				.map(it -> partition.copyAndReset())
-				.map(tmp -> createAndAddAll(partitionFactory, tmp.elements()))
-				.collect(Collectors.toCollection(ArrayList::new));
+			.filter(it -> partition.isFull())
+			.map(it -> partition.copyAndReset())
+			.map(tmp -> createAndAddAll(partitionFactory, tmp.elements()))
+			.collect(Collectors.toCollection(ArrayList::new));
 		if (partition.isEmpty()) {
 			return result;
 		} else {
@@ -77,8 +84,8 @@ public class CollectionUtils {
 	}
 
 	public static <T, R> R collect(Supplier<R> supplier,
-			BiConsumer<R, ? super T> accumulator,
-			BiConsumer<R, R> combiner, Collection<T> collection) {
+		BiConsumer<R, ? super T> accumulator,
+		BiConsumer<R, R> combiner, Collection<T> collection) {
 		return collection.stream().collect(supplier, accumulator, combiner);
 	}
 
@@ -95,7 +102,7 @@ public class CollectionUtils {
 	}
 
 	private static <E, C extends Collection<E>> C createAndAddAll(
-			Supplier<C> collectionFactory, Collection<E> elements) {
+		Supplier<C> collectionFactory, Collection<E> elements) {
 		C collection = collectionFactory.get();
 		return addAll(collection, elements);
 	}
