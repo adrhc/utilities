@@ -11,10 +11,6 @@ import java.util.stream.Stream;
 
 @UtilityClass
 public class CollectionUtils {
-	public static boolean isNullOrEmpty(Collection<?> collection) {
-		return collection == null || collection.isEmpty();
-	}
-
 	/**
 	 * @return first not null
 	 */
