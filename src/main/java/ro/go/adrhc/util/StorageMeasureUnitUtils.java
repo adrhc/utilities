@@ -4,11 +4,17 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class StorageMeasureUnitUtils {
-	public static final long KILO_BYTE = 1024;
-	public static final double KILO_BYTE_DOUBLE = 1024d;
-	public static final long MEGA_BYTE = 1024 * KILO_BYTE;
+	//	public static final long KILO_BYTE = 1024;
+//	public static final double KILO_BYTE_DOUBLE = 1024d;
+//	public static final long MEGA_BYTE = 1024 * KILO_BYTE;
+//	public static final double MEGA_BYTE_DOUBLE = 1d * MEGA_BYTE;
+//	public static final long GIGA_BYTE = 1024 * MEGA_BYTE;
+//	public static final double GIGA_BYTE_DOUBLE = 1d * GIGA_BYTE;
+	public static final long KILO_BYTE = 1000;
+	public static final double KILO_BYTE_DOUBLE = 1000d;
+	public static final long MEGA_BYTE = 1000 * KILO_BYTE;
 	public static final double MEGA_BYTE_DOUBLE = 1d * MEGA_BYTE;
-	public static final long GIGA_BYTE = 1024 * MEGA_BYTE;
+	public static final long GIGA_BYTE = 1000 * MEGA_BYTE;
 	public static final double GIGA_BYTE_DOUBLE = 1d * GIGA_BYTE;
 
 	public static long kbToBytes(int megaBytes) {
