@@ -1,5 +1,6 @@
 package ro.go.adrhc.util.text;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -47,6 +48,7 @@ public class StringUtils {
 	public static <T, R> String concat(String separator, Function<T, R> mapper, Stream<T> stream) {
 		return stream
 				.map(mapper)
+				.filter(Objects::nonNull)
 				.map(Object::toString)
 				.collect(Collectors.joining(separator));
 	}
