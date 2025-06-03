@@ -8,10 +8,6 @@ import java.util.stream.Stream;
 public interface Breakable<T> {
 	boolean isBroken();
 
-	default boolean isNotBroken() {
-		return !isBroken();
-	}
-
 	/**
 	 * @return resultForBrokenInput if broken
 	 */
