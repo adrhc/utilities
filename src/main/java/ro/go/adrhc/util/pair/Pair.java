@@ -51,8 +51,10 @@ public class Pair<L, R> {
 	/**
 	 * The right side will be null if the Optional<T> is empty!
 	 */
-	public <T> Pair<L, T> flatMapRight(Function<R, Optional<T>> rightMapper) {
-		return new Pair<>(this.left, rightMapper.apply(this.right).orElse(null));
+	public <T> Pair<L, Optional<T>> flatMapRight(
+		Function<R, Optional<Optional<T>>> rightMapper) {
+		return new Pair<>(this.left,
+			rightMapper.apply(this.right).flatMap(Function.identity()));
 	}
 
 	public void ifRightPresent(Consumer<R> consumer) {
