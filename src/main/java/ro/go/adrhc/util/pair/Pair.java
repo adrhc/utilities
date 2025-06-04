@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -45,6 +46,13 @@ public class Pair<L, R> {
 
 	public <T> Pair<L, T> mapRight(Function<R, T> rightMapper) {
 		return new Pair<>(this.left, rightMapper.apply(this.right));
+	}
+
+	/**
+	 * The right side will be null if the Optional<T> is empty!
+	 */
+	public <T> Pair<L, T> flatMapRight(Function<R, Optional<T>> rightMapper) {
+		return new Pair<>(this.left, rightMapper.apply(this.right).orElse(null));
 	}
 
 	public void ifRightPresent(Consumer<R> consumer) {
