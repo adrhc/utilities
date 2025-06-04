@@ -48,9 +48,6 @@ public class Pair<L, R> {
 		return new Pair<>(this.left, rightMapper.apply(this.right));
 	}
 
-	/**
-	 * The right side will be null if the Optional<T> is empty!
-	 */
 	public <T> Pair<L, Optional<T>> flatMapRight(
 		Function<R, Optional<Optional<T>>> rightMapper) {
 		return new Pair<>(this.left,
