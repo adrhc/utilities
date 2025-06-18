@@ -25,7 +25,7 @@ public class FileSystemUtils {
 	}
 
 	public <T> T readThroughTmp(Path targetRoot, Path tmpRoot, Path filePath,
-			SneakyFunction<Path, T, IOException> reader) throws IOException {
+		SneakyFunction<Path, T, IOException> reader) throws IOException {
 		Path tmpFilePath = swapRoot(tmpRoot, targetRoot, filePath);
 		if (exists(tmpFilePath)) {
 			return reader.apply(tmpFilePath);
@@ -35,7 +35,7 @@ public class FileSystemUtils {
 	}
 
 	public Path writeThroughTmp(Path targetRoot, Path tmpRoot, Path filePath,
-			SneakyConsumer<Path, IOException> writer) throws IOException {
+		SneakyConsumer<Path, IOException> writer) throws IOException {
 		Path tmpFilePath = swapRoot(tmpRoot, targetRoot, filePath);
 		createParentDirectories(tmpFilePath);
 		writer.accept(tmpFilePath);
@@ -64,6 +64,15 @@ public class FileSystemUtils {
 	public void writeUtf8String(Path path, String utf8Text) throws IOException {
 		createParentDirectories(path);
 		Files.writeString(path, utf8Text, UTF_8);
+	}
+
+	/**
+	 * Create the parent directory chain too!
+	 */
+	public void writeUtf8Lines(
+		Path path, Iterable<? extends CharSequence> utf8Lines) throws IOException {
+		createParentDirectories(path);
+		Files.write(path, utf8Lines, UTF_8);
 	}
 
 	/**
@@ -137,8 +146,8 @@ public class FileSystemUtils {
 		return Files.createDirectories(dir, attrs);
 	}
 
-	private Path createParentDirectories(Path target, FileAttribute<?>... attrs) throws IOException {
-		Path parent = target.getParent();
+	private Path createParentDirectories(Path file, FileAttribute<?>... attrs) throws IOException {
+		Path parent = file.getParent();
 		return parent != null ? createDirectories(parent, attrs) : null;
 	}
 }
