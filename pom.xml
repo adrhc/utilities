@@ -20,16 +20,17 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>21</java.version>
+
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
-        <maven-compiler-plugin-version>3.13.0</maven-compiler-plugin-version>
-        <maven-surefire-failsafe-plugin-version>3.2.5</maven-surefire-failsafe-plugin-version>
+        <maven-compiler-plugin-version>3.14.0</maven-compiler-plugin-version>
+        <maven-surefire-failsafe-plugin-version>3.5.3</maven-surefire-failsafe-plugin-version>
 
-        <commons-io-version>2.16.1</commons-io-version>
-        <sneakythrow-version>1.2.0</sneakythrow-version>
-        <lombok.version>1.18.36</lombok.version>
+        <commons-io.version>2.19.0</commons-io.version>
+        <sneakythrow.version>1.2.0</sneakythrow.version>
+        <lombok.version>1.18.38</lombok.version>
     </properties>
 
     <dependencyManagement>
@@ -55,14 +56,14 @@
         <dependency>
             <groupId>com.rainerhahnekamp</groupId>
             <artifactId>sneakythrow</artifactId>
-            <version>${sneakythrow-version}</version>
+            <version>${sneakythrow.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>${commons-io-version}</version>
+            <version>${commons-io.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
