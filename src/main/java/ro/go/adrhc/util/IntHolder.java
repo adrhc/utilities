@@ -3,10 +3,17 @@ package ro.go.adrhc.util;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * NOT SYNCHRONIZED!
+ */
 @AllArgsConstructor
 @Getter
 public class IntHolder {
 	private int value;
+
+	public int incrementAndGet() {
+		return ++this.value;
+	}
 
 	public void subtract(int other) {
 		this.value -= other;
