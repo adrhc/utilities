@@ -32,8 +32,14 @@ public class OptionalUtils {
 	/**
 	 * Consume if present then return "optional".
 	 */
-	public static <T> Optional<T> ifPresent(Consumer<T> consumer, Optional<T> optional) {
+	public static <T> Optional<T> ifPresent(Consumer<? super T> consumer, Optional<T> optional) {
 		optional.ifPresent(consumer);
+		return optional;
+	}
+
+	public static <T> Optional<T> ifPresentOrElse(
+		Consumer<? super T> consumer, Runnable otherwise, Optional<T> optional) {
+		optional.ifPresentOrElse(consumer, otherwise);
 		return optional;
 	}
 
