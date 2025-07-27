@@ -26,7 +26,7 @@ public class ConsumerFactory {
 	}
 
 	/**
-	 * @param p1 is the sneakyBiConsumer's first parameter
+	 * @param p1 is the sneakyBiConsumer's 1st parameter
 	 * @return a Consumer that should be invoked using sneakyBiConsumer's 2nd parameter
 	 */
 	public static <P1, P2, E extends Exception> Consumer<P2>
@@ -41,11 +41,21 @@ public class ConsumerFactory {
 	}
 
 	/**
-	 * @param p1 is the biConsumer's first parameter
+	 * @param p1 is the biConsumer's 1st parameter
 	 * @return a Consumer that should be invoked using biConsumer's 2nd parameter
 	 */
 	public static <P1, P2> Consumer<P2>
 	toP2Consumer(BiConsumer<P1, P2> biConsumer, P1 p1) {
 		return p2 -> biConsumer.accept(p1, p2);
+	}
+
+	/**
+	 * @param p1 is the triConsumer's 1st parameter
+	 * @param p2 is the triConsumer's 2nd parameter
+	 * @return a Consumer that should be invoked using triConsumer's 3rd parameter
+	 */
+	public static <P1, P2, P3> Consumer<P3>
+	toP3Consumer(TriConsumer<P1, P2, P3> triConsumer, P1 p1, P2 p2) {
+		return p3 -> triConsumer.accept(p1, p2, p3);
 	}
 }
