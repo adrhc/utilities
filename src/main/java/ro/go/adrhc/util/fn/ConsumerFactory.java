@@ -27,7 +27,7 @@ public class ConsumerFactory {
 
 	/**
 	 * @param p1 is the sneakyBiConsumer's first parameter
-	 * @return a Consumer that should be invoked using sneakyBiConsumer's second parameter (aka, p2)
+	 * @return a Consumer that should be invoked using sneakyBiConsumer's 2nd parameter
 	 */
 	public static <P1, P2, E extends Exception> Consumer<P2>
 	toSilentP2Consumer(SneakyBiConsumer<P1, P2, E> sneakyBiConsumer, P1 p1) {
@@ -42,7 +42,7 @@ public class ConsumerFactory {
 
 	/**
 	 * @param p1 is the biConsumer's first parameter
-	 * @return a Consumer that should be invoked using biConsumer's second parameter
+	 * @return a Consumer that should be invoked using biConsumer's 2nd parameter
 	 */
 	public static <P1, P2> Consumer<P2>
 	toP2Consumer(BiConsumer<P1, P2> biConsumer, P1 p1) {
