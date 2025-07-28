@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RunnableFactory {
 	public static <T, E extends Exception> Runnable
-	of(SneakyConsumer<T, E> sneakyConsumer, T t) {
+	toRunnable(SneakyConsumer<T, E> sneakyConsumer, T t) {
 		return () -> {
 			try {
 				sneakyConsumer.accept(t);
