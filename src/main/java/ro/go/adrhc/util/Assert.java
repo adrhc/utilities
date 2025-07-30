@@ -6,13 +6,13 @@ import lombok.experimental.UtilityClass;
 public class Assert {
 	public static void isFalse(boolean value, String message) {
 		if (value) {
-			throw new IllegalArgumentException(message);
+			throw new IllegalStateException(message);
 		}
 	}
 
 	public static void isTrue(boolean value, String message) {
 		if (!value) {
-			throw new IllegalArgumentException(message);
+			throw new IllegalStateException(message);
 		}
 	}
 }
