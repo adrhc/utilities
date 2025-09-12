@@ -1,23 +1,22 @@
 package ro.go.adrhc.util.pair;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import ro.go.adrhc.util.fn.BooleanInFunction;
 
 import java.util.function.Function;
 
-@RequiredArgsConstructor
-@EqualsAndHashCode
-@Getter
 @Accessors(fluent = true)
-public class HalfBooleanPair<R> {
-	protected final boolean left;
-	protected final R right;
+public record HalfBooleanPair<R>(boolean left, R right) {
+	public static <R> HalfBooleanPair<R> ofTrue(R right) {
+		return new HalfBooleanPair<>(true, right);
+	}
 
-	public static <R> BooleanInFunction<HalfBooleanPair<R>> ofRightFactory(
-			BooleanInFunction<R> rightFactory) {
+	public static <R> HalfBooleanPair<R> ofFalse(R right) {
+		return new HalfBooleanPair<>(false, right);
+	}
+
+	public static <R> BooleanInFunction<HalfBooleanPair<R>>
+	ofRightFactory(BooleanInFunction<R> rightFactory) {
 		return left -> new HalfBooleanPair<>(left, rightFactory.apply(left));
 	}
 
