@@ -34,8 +34,8 @@ public interface StreamOwner<T> {
 	}
 
 	default <M, A, R> R mapCollect(
-			Function<? super T, ? extends M> mapper,
-			Collector<? super M, A, R> collector
+		Function<? super T, ? extends M> mapper,
+		Collector<? super M, A, R> collector
 	) {
 		return map(mapper).collect(collector);
 	}
@@ -72,21 +72,25 @@ public interface StreamOwner<T> {
 		return stream().mapMulti(mapper);
 	}
 
+	default <R> Stream<R> filterMap(
+		Predicate<? super T> predicate, Function<? super T, ? extends R> mapper) {
+		return stream().filter(predicate).map(mapper);
+	}
+
 	default <R> Stream<R> flatMap(Function<? super T, ? extends Stream<? extends R>> mapper) {
 		return stream().flatMap(mapper);
 	}
 
 	default <R> Stream<R> mapOptionals(Function<? super T, Optional<R>> mapper) {
-		return stream().flatMap(o -> mapper.apply(o).stream());
-	}
-
-	default <R> Stream<R> filterMap(
-			Predicate<? super T> predicate, Function<? super T, ? extends R> mapper) {
-		return stream().filter(predicate).map(mapper);
+		return stream().flatMap(mapper.andThen(Optional::stream));
 	}
 
 	default <R> Stream<R> parallelMap(Function<? super T, ? extends R> mapper) {
 		return parallel().map(mapper);
+	}
+
+	default <R> Stream<R> parallelMapOptionals(Function<? super T, Optional<R>> mapper) {
+		return parallel().flatMap(mapper.andThen(Optional::stream));
 	}
 
 	default <R> Stream<R> map(Function<? super T, ? extends R> mapper) {
