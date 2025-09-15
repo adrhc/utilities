@@ -25,11 +25,16 @@ public class FutureUtils {
 		CompletableFuture.allOf(futuresArray).join();
 	}
 
+	/**
+	 * @param future is allowed to be null
+	 */
 	public static void safelyWait(Future<?> future) {
-		try {
-			future.get();
-		} catch (InterruptedException | ExecutionException e) {
-			log.error(e.getMessage(), e);
+		if (future != null) {
+			try {
+				future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				log.error(e.getMessage(), e);
+			}
 		}
 	}
 
