@@ -1,10 +1,6 @@
 package ro.go.adrhc.util.value;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Optional;
 
@@ -16,7 +12,13 @@ import java.util.Optional;
 public class MutableValue<T> {
 	private T value;
 
-	public Optional<T> getOptionalValue() {
+	public void ifPresent(Runnable runnable) {
+		if (value != null) {
+			runnable.run();
+		}
+	}
+
+	public Optional<T> toOptional() {
 		return Optional.ofNullable(value);
 	}
 
