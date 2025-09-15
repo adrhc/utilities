@@ -11,13 +11,13 @@ import java.util.stream.Stream;
 
 @Slf4j
 public class FutureUtils {
+	public static void waitAll(Future<?>... future) {
+		Arrays.stream(future).forEach(FutureUtils::safelyWait);
+	}
+
 	public static void waitAll(Stream<? extends CompletableFuture<?>> futures) {
 		CompletableFuture<?>[] futuresArray = futures.toArray(CompletableFuture[]::new);
 		CompletableFuture.allOf(futuresArray).join();
-	}
-
-	public static <T> Stream<T> safelyGetAll(Stream<? extends CompletableFuture<T>> futures) {
-		return joinAll(futures).map(FutureUtils::safelyGet).flatMap(Optional::stream);
 	}
 
 	public static void safelyWait(Future<?> future) {
@@ -26,6 +26,10 @@ public class FutureUtils {
 		} catch (InterruptedException | ExecutionException e) {
 			log.error(e.getMessage(), e);
 		}
+	}
+
+	public static <T> Stream<T> safelyGetAll(Stream<? extends CompletableFuture<T>> futures) {
+		return joinAll(futures).map(FutureUtils::safelyGet).flatMap(Optional::stream);
 	}
 
 	public static <T> Optional<T> safelyGet(Future<T> future) {
