@@ -6,11 +6,16 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
 @Slf4j
 public class FutureUtils {
+	public static void waitAll(ExecutorService executorService, Runnable... runnable) {
+		Arrays.stream(runnable).map(executorService::submit).forEach(FutureUtils::safelyWait);
+	}
+
 	public static void waitAll(Future<?>... future) {
 		Arrays.stream(future).forEach(FutureUtils::safelyWait);
 	}
