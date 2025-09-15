@@ -14,7 +14,7 @@ public class OptionalUtils {
 	/**
 	 * Consume if present then return true, otherwise return false.
 	 */
-	public static <T> boolean ifPresentTrue(Consumer<T> consumer, Optional<T> optional) {
+	public static <T> boolean ifPresentTrue(Optional<T> optional, Consumer<T> consumer) {
 		optional.ifPresent(consumer);
 		return optional.isPresent();
 	}
@@ -22,7 +22,7 @@ public class OptionalUtils {
 	/**
 	 * Handle a miss then return "optional".
 	 */
-	public static <T> Optional<T> ifMissing(Runnable missAction, Optional<T> optional) {
+	public static <T> Optional<T> ifMissing(Optional<T> optional, Runnable missAction) {
 		if (optional.isEmpty()) {
 			missAction.run();
 		}
@@ -32,13 +32,13 @@ public class OptionalUtils {
 	/**
 	 * Consume if present then return "optional".
 	 */
-	public static <T> Optional<T> ifPresent(Consumer<? super T> consumer, Optional<T> optional) {
+	public static <T> Optional<T> ifPresent(Optional<T> optional, Consumer<? super T> consumer) {
 		optional.ifPresent(consumer);
 		return optional;
 	}
 
 	public static <T> Optional<T> ifPresentOrElse(
-		Consumer<? super T> consumer, Runnable otherwise, Optional<T> optional) {
+		Optional<T> optional, Consumer<? super T> consumer, Runnable otherwise) {
 		optional.ifPresentOrElse(consumer, otherwise);
 		return optional;
 	}
