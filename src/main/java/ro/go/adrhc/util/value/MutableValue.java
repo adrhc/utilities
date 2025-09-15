@@ -3,6 +3,7 @@ package ro.go.adrhc.util.value;
 import lombok.*;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,9 +13,9 @@ import java.util.Optional;
 public class MutableValue<T> {
 	private T value;
 
-	public void ifPresent(Runnable runnable) {
+	public void ifPresent(Consumer<T> consumer) {
 		if (value != null) {
-			runnable.run();
+			consumer.accept(value);
 		}
 	}
 
