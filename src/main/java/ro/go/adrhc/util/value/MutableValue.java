@@ -27,15 +27,15 @@ public class MutableValue<T> {
 		}
 	}
 
-	public Optional<T> toOptional() {
-		return Optional.ofNullable(value);
+	public boolean isEmpty() {
+		return value == null;
 	}
 
-	public boolean hasValue() {
+	public boolean isNotEmpty() {
 		return value != null;
 	}
 
-	public boolean isEmpty() {
-		return value == null;
+	public Optional<T> toOptional() {
+		return Optional.ofNullable(value);
 	}
 }
