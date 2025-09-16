@@ -13,6 +13,12 @@ import java.util.function.Consumer;
 public class MutableValue<T> {
 	private T value;
 
+	public void ifPresent(Consumer<T> consumer) {
+		if (value != null) {
+			consumer.accept(value);
+		}
+	}
+
 	public void ifPresentOrElse(Consumer<? super T> consumer, Runnable runnable) {
 		if (value == null) {
 			runnable.run();
@@ -21,10 +27,8 @@ public class MutableValue<T> {
 		}
 	}
 
-	public void ifPresent(Consumer<T> consumer) {
-		if (value != null) {
-			consumer.accept(value);
-		}
+	public void clear() {
+		value = null;
 	}
 
 	public boolean isEmpty() {
