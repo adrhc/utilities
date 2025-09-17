@@ -36,7 +36,7 @@ public class OptionalFactory {
 	 * @return a not empty Optional of the "supplier"'s product or empty on error
 	 */
 	public <T, E extends Exception> Optional<T>
-	ofQuietRiskySupplier(SneakySupplier<? extends T, E> supplier) {
+	ofSilencedRiskySupplier(SneakySupplier<? extends T, E> supplier) {
 		try {
 			return Optional.of(supplier.get());
 		} catch (Exception e) {
