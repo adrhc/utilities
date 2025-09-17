@@ -13,7 +13,8 @@ public class OptionalFactory {
 	/**
 	 * @return an Optional of the "supplier"'s product if the condition is true, otherwise Optional.empty()
 	 */
-	public <T> Optional<T> ofConditioned(boolean condition, Supplier<? extends T> supplier) {
+	public <T, E extends Exception> Optional<T>
+	ofConditioned(boolean condition, SneakySupplier<? extends T, E> supplier) throws E {
 		return condition ? Optional.ofNullable(supplier.get()) : Optional.empty();
 	}
 
@@ -35,7 +36,7 @@ public class OptionalFactory {
 	 * @return a not empty Optional of the "supplier"'s product or empty on error
 	 */
 	public <T, E extends Exception> Optional<T>
-	ofSneaky(SneakySupplier<? extends T, E> supplier) {
+	ofRiskySupplier(SneakySupplier<? extends T, E> supplier) {
 		try {
 			return Optional.of(supplier.get());
 		} catch (Exception e) {
