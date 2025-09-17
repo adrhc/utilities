@@ -11,6 +11,13 @@ import java.util.function.Supplier;
 @Slf4j
 public class OptionalFactory {
 	/**
+	 * @return an Optional of the "supplier"'s product if the condition is true, otherwise Optional.empty()
+	 */
+	public <T> Optional<T> ofConditioned(boolean condition, Supplier<? extends T> supplier) {
+		return condition ? Optional.ofNullable(supplier.get()) : Optional.empty();
+	}
+
+	/**
 	 * @return a not empty Optional of the "supplier"'s product
 	 */
 	public <T> Optional<T> of(Supplier<? extends T> supplier) {
