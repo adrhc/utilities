@@ -9,7 +9,7 @@ pipeline {
   }
 
   environment {
-    PROJECT_NAME = 'rclone-virtual-storage'
+    PROJECT_NAME = 'utilities'
     REPO_DIR     = "${env.PROJECTS_ADRHC}/${env.PROJECT_NAME}"
   }
 
