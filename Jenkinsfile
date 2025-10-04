@@ -41,8 +41,8 @@ pipeline {
                 # remove target/failsafe-reports if it's a real directory (not a symlink)
                 [ ! -L "$WKSP_FAILSAFE" ] && [ -d "$WKSP_FAILSAFE" ] && rm -r "$WKSP_FAILSAFE"
                 # -n, --no-dereference
-                [ -d "$BUILD_DIR/surefire-reports" ] && ln -sfn "${BUILD_DIR}/surefire-reports" "$WKSP_SUREFIRE"
-                [ -d "$BUILD_DIR/failsafe-reports" ] && ln -sfn "${BUILD_DIR}/failsafe-reports" "$WKSP_FAILSAFE"
+                [ -d "$BUILD_DIR/surefire-reports" ] && ln -sfn "${BUILD_DIR}/surefire-reports" "$WKSP_SUREFIRE" || true
+                [ -d "$BUILD_DIR/failsafe-reports" ] && ln -sfn "${BUILD_DIR}/failsafe-reports" "$WKSP_FAILSAFE" || true
               fi
             '''
           }          
