@@ -10,4 +10,11 @@ public class ExceptionUtils {
 			throw (E) exception;
 		}
 	}
+
+	public static <E extends Exception, T extends Exception> void
+	throwIfDiffClass(Class<E> exceptionClass, T exception) throws T {
+		if (!exceptionClass.isInstance(exception)) {
+			throw exception;
+		}
+	}
 }
