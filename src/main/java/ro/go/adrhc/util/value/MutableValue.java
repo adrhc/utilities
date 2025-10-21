@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,6 +13,13 @@ import java.util.function.Consumer;
 @ToString
 public class MutableValue<T> {
 	private T value;
+
+	/**
+	 * If the value is null the predicate is not invoked and false is returned!
+	 */
+	public boolean test(Predicate<? super T> predicate) {
+		return value != null && predicate.test(value);
+	}
 
 	public void ifNotEmpty(Consumer<T> consumer) {
 		if (value != null) {
