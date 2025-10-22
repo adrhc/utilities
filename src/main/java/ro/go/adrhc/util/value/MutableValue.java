@@ -5,6 +5,7 @@ import lombok.*;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +16,19 @@ public class MutableValue<T> {
 	private T value;
 
 	/**
-	 * If the value is null the predicate is not invoked and false is returned!
+	 * "replacer" is invoked only if value is not null!
+	 *
+	 * @param replacer is used to determine the new value
+	 * @return the previous value
+	 */
+	public T replace(UnaryOperator<T> replacer) {
+		T oldValue = value;
+		value = replacer.apply(value);
+		return oldValue;
+	}
+
+	/**
+	 * If the value is null the predicate is not used and false is returned!
 	 */
 	public boolean test(Predicate<? super T> predicate) {
 		return value != null && predicate.test(value);
