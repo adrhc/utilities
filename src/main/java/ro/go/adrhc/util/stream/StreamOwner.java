@@ -2,11 +2,15 @@ package ro.go.adrhc.util.stream;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import java.util.function.*;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
+
+import static ro.go.adrhc.util.concurrency.FutureUtils.safelyGetAll;
 
 public interface StreamOwner<T> {
 	default void forEach(Consumer<? super T> consumer) {
@@ -91,6 +95,15 @@ public interface StreamOwner<T> {
 
 	default <R> Stream<R> mapOptionals(Function<? super T, Optional<R>> mapper) {
 		return stream().flatMap(mapper.andThen(Optional::stream));
+	}
+
+	/**
+	 * Execute the mapping in parallel using the provided ExecutorService.
+	 */
+	default <R> Stream<R> parallelMap(ExecutorService executorService, Function<? super T, R> mapper) {
+		return safelyGetAll(
+			stream().map(t -> CompletableFuture.supplyAsync(() -> mapper.apply(t), executorService))
+		);
 	}
 
 	default <R> Stream<R> parallelMap(Function<? super T, ? extends R> mapper) {
