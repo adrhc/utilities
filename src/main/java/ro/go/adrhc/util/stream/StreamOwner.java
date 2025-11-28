@@ -33,6 +33,14 @@ public interface StreamOwner<T> {
 		return stream().anyMatch(predicate);
 	}
 
+	default T parallelReduce(T identity, BinaryOperator<T> accumulator) {
+		return parallel().reduce(identity, accumulator);
+	}
+
+	default T reduce(T identity, BinaryOperator<T> accumulator) {
+		return stream().reduce(identity, accumulator);
+	}
+
 	default <M, A, R> R mapCollect(
 		Function<? super T, ? extends M> mapper,
 		Collector<? super M, A, R> collector
@@ -41,7 +49,7 @@ public interface StreamOwner<T> {
 	}
 
 	default <R, A> R parallelCollect(Collector<? super T, A, R> collector) {
-		return stream().collect(collector);
+		return parallel().collect(collector);
 	}
 
 	default <R, A> R collect(Collector<? super T, A, R> collector) {
