@@ -100,7 +100,8 @@ public interface StreamOwner<T> {
 	/**
 	 * Execute the mapping in parallel using the provided ExecutorService.
 	 */
-	default <R> Stream<R> parallelMap(ExecutorService executorService, Function<? super T, R> mapper) {
+	default <R> Stream<R> parallelMap(
+		ExecutorService executorService, Function<? super T, ? extends R> mapper) {
 		return safelyGetAll(
 			stream().map(t -> CompletableFuture.supplyAsync(() -> mapper.apply(t), executorService))
 		);
