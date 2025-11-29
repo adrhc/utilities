@@ -93,6 +93,10 @@ public interface StreamOwner<T> {
 		return stream().flatMap(mapper);
 	}
 
+	default <R> Stream<R> parallelMapOptionals(Function<? super T, Optional<R>> mapper) {
+		return parallel().flatMap(mapper.andThen(Optional::stream));
+	}
+
 	default <R> Stream<R> mapOptionals(Function<? super T, Optional<R>> mapper) {
 		return stream().flatMap(mapper.andThen(Optional::stream));
 	}
@@ -109,10 +113,6 @@ public interface StreamOwner<T> {
 
 	default <R> Stream<R> parallelMap(Function<? super T, ? extends R> mapper) {
 		return parallel().map(mapper);
-	}
-
-	default <R> Stream<R> parallelMapOptionals(Function<? super T, Optional<R>> mapper) {
-		return parallel().flatMap(mapper.andThen(Optional::stream));
 	}
 
 	default <R> Stream<R> map(Function<? super T, ? extends R> mapper) {
