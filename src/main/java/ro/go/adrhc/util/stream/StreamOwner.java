@@ -3,7 +3,7 @@ package ro.go.adrhc.util.stream;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executor;
 import java.util.function.*;
 import java.util.stream.Collector;
 import java.util.stream.IntStream;
@@ -102,12 +102,11 @@ public interface StreamOwner<T> {
 	}
 
 	/**
-	 * Execute the mapping in parallel using the provided ExecutorService.
+	 * Execute the mapping in parallel using the provided Executor.
 	 */
-	default <R> Stream<R> parallelMap(
-		ExecutorService executorService, Function<? super T, ? extends R> mapper) {
+	default <R> Stream<R> parallelMap(Executor executor, Function<? super T, ? extends R> mapper) {
 		return safelyGetAll(
-			stream().map(t -> CompletableFuture.supplyAsync(() -> mapper.apply(t), executorService))
+			stream().map(t -> CompletableFuture.supplyAsync(() -> mapper.apply(t), executor))
 		);
 	}
 
