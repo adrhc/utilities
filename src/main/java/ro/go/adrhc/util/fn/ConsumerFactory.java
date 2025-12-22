@@ -41,6 +41,15 @@ public class ConsumerFactory {
 	}
 
 	/**
+	 * @param p2 is the biConsumer's 2st parameter
+	 * @return a Consumer that should be invoked using biConsumer's 1nd parameter
+	 */
+	public static <P1, P2> Consumer<P1>
+	toP1Consumer(BiConsumer<P1, P2> biConsumer, P2 p2) {
+		return p1 -> biConsumer.accept(p1, p2);
+	}
+
+	/**
 	 * @param p1 is the biConsumer's 1st parameter
 	 * @return a Consumer that should be invoked using biConsumer's 2nd parameter
 	 */

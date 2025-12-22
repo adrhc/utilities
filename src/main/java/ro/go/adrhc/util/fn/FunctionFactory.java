@@ -27,7 +27,7 @@ public class FunctionFactory {
 	/**
 	 * @return p2 -> biFn.apply(null, p2)
 	 */
-	public static <P1, P2, R> Function<P2, R> rmP1(BiFunction<P1, P2, R> biFn) {
+	public static <P1, P2, R> Function<P2, R> withNullP1(BiFunction<P1, P2, R> biFn) {
 		return p2 -> biFn.apply(null, p2);
 	}
 
