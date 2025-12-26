@@ -45,7 +45,7 @@ public interface SortedStreamOwner<T> extends StreamOwner<T> {
 	}
 
 	default Stream<T> sortFilter(Predicate<? super T> predicate) {
-		return sortedStream().filter(predicate);
+		return filter(predicate).sorted(comparator());
 	}
 
 	default Stream<T> sortedStream() {
