@@ -3,6 +3,7 @@ package ro.go.adrhc.util.concurrency.lock;
 import com.rainerhahnekamp.sneakythrow.functional.SneakyRunnable;
 import com.rainerhahnekamp.sneakythrow.functional.SneakySupplier;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
@@ -13,6 +14,19 @@ public class SmartLock extends ReentrantLock {
 			runnable.run();
 		} finally {
 			unlock();
+		}
+	}
+
+	public <T> T synchronize(int waitMillis, Supplier<T> supplier)
+		throws InterruptedException, LockWaitTimeoutException {
+		if (tryLock() || tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
+			try {
+				return supplier.get();
+			} finally {
+				unlock();
+			}
+		} else {
+			throw new LockWaitTimeoutException();
 		}
 	}
 
