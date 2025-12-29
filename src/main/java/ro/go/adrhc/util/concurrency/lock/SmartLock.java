@@ -2,6 +2,7 @@ package ro.go.adrhc.util.concurrency.lock;
 
 import com.rainerhahnekamp.sneakythrow.functional.SneakyRunnable;
 import com.rainerhahnekamp.sneakythrow.functional.SneakySupplier;
+import ro.go.adrhc.util.fn.ThrowableSupplier;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
@@ -49,6 +50,15 @@ public class SmartLock extends ReentrantLock {
 	}
 
 	public <T, E extends Exception> T synchronizeUnsafe(SneakySupplier<T, E> supplier) throws E {
+		lock();
+		try {
+			return supplier.get();
+		} finally {
+			unlock();
+		}
+	}
+
+	public <T> T synchronizeUnsafe(ThrowableSupplier<T> supplier) throws Throwable {
 		lock();
 		try {
 			return supplier.get();
