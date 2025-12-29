@@ -58,8 +58,8 @@ public class SmartLock extends ReentrantLock {
 		}
 	}
 
-	public <R, T extends Throwable> R synchronizeUnsafe(ThrowableSupplier<R, T> supplier)
-		throws Throwable {
+	public <R, T extends Throwable> R
+	synchronizeUnsafe(ThrowableSupplier<R, T> supplier) throws T {
 		lock();
 		try {
 			return supplier.get();
@@ -83,7 +83,7 @@ public class SmartLock extends ReentrantLock {
 	}
 
 	public <R, T extends Throwable> R synchronizeUnsafe(long waitMillis,
-		ThrowableSupplier<R, T> supplier) throws Throwable {
+		ThrowableSupplier<R, T> supplier) throws T, InterruptedException, LockWaitTimeoutException {
 		if (tryLock() || tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
 			try {
 				return supplier.get();
