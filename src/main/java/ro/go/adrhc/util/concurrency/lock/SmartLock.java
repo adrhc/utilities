@@ -80,4 +80,16 @@ public class SmartLock extends ReentrantLock {
 			throw new LockWaitTimeoutException(waitMillis);
 		}
 	}
+
+	public <T> T synchronizeUnsafe(long waitMillis, ThrowableSupplier<T> supplier) throws Throwable {
+		if (tryLock() || tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
+			try {
+				return supplier.get();
+			} finally {
+				unlock();
+			}
+		} else {
+			throw new LockWaitTimeoutException(waitMillis);
+		}
+	}
 }
