@@ -17,7 +17,7 @@ public class SmartLock extends ReentrantLock {
 		}
 	}
 
-	public <T> T synchronize(int waitMillis, Supplier<T> supplier)
+	public <T> T synchronize(long waitMillis, Supplier<T> supplier)
 		throws InterruptedException, LockWaitTimeoutException {
 		if (tryLock() || tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
 			try {
