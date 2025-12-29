@@ -17,6 +17,15 @@ public class SmartLock extends ReentrantLock {
 		}
 	}
 
+	public <T> T synchronize(Supplier<T> supplier) {
+		lock();
+		try {
+			return supplier.get();
+		} finally {
+			unlock();
+		}
+	}
+
 	public <T> T synchronize(long waitMillis, Supplier<T> supplier)
 		throws InterruptedException, LockWaitTimeoutException {
 		if (tryLock() || tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
@@ -27,15 +36,6 @@ public class SmartLock extends ReentrantLock {
 			}
 		} else {
 			throw new LockWaitTimeoutException(waitMillis);
-		}
-	}
-
-	public <T> T synchronize(Supplier<T> supplier) {
-		lock();
-		try {
-			return supplier.get();
-		} finally {
-			unlock();
 		}
 	}
 
@@ -54,6 +54,20 @@ public class SmartLock extends ReentrantLock {
 			return supplier.get();
 		} finally {
 			unlock();
+		}
+	}
+
+	public <T, E extends Exception> T
+	synchronizeUnsafe(long waitMillis, SneakySupplier<T, E> supplier)
+		throws E, InterruptedException, LockWaitTimeoutException {
+		if (tryLock() || tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
+			try {
+				return supplier.get();
+			} finally {
+				unlock();
+			}
+		} else {
+			throw new LockWaitTimeoutException(waitMillis);
 		}
 	}
 }
