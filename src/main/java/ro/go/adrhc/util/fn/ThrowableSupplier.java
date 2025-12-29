@@ -1,6 +1,6 @@
 package ro.go.adrhc.util.fn;
 
 @FunctionalInterface
-public interface ThrowableSupplier<T> {
-	T get() throws Throwable;
+public interface ThrowableSupplier<R, T extends Throwable> {
+	R get() throws T;
 }
