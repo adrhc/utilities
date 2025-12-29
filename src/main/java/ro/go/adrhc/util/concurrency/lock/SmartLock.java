@@ -26,7 +26,7 @@ public class SmartLock extends ReentrantLock {
 				unlock();
 			}
 		} else {
-			throw new LockWaitTimeoutException();
+			throw new LockWaitTimeoutException(waitMillis);
 		}
 	}
 
