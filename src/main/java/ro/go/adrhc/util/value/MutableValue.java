@@ -16,14 +16,14 @@ public class MutableValue<T> {
 	private T value;
 
 	/**
-	 * "replacer" is invoked only if value is not null!
+	 * If "replacer" is null, then the replacement value is considered null!
 	 *
 	 * @param replacer is used to determine the new value
 	 * @return the previous value
 	 */
 	public T replace(UnaryOperator<T> replacer) {
 		T oldValue = value;
-		value = replacer.apply(value);
+		value = replacer == null ? null : replacer.apply(value);
 		return oldValue;
 	}
 
