@@ -1,11 +1,20 @@
 package ro.go.adrhc.util;
 
 import lombok.experimental.UtilityClass;
+import ro.go.adrhc.util.text.FontWeight;
 
 import java.nio.file.Path;
 
 @UtilityClass
 public class ConsoleUtils {
+	public static String format(FontWeight weight, String text) {
+		return switch (weight) {
+			case BOLD -> bold(text);
+			case ITALIC -> italic(text);
+			case NORMAL -> text;
+		};
+	}
+
 	public static String underline(String text) {
 		return "\u001B[4m%s\u001B[0m".formatted(text);
 	}
