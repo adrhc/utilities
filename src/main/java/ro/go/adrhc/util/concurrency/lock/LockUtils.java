@@ -3,9 +3,11 @@ package ro.go.adrhc.util.concurrency.lock;
 import com.rainerhahnekamp.sneakythrow.functional.SneakyRunnable;
 import com.rainerhahnekamp.sneakythrow.functional.SneakySupplier;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.util.fn.ThrowableConsumer;
 import ro.go.adrhc.util.fn.ThrowableSupplier;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.function.Consumer;
@@ -13,7 +15,39 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 @UtilityClass
+@Slf4j
 public class LockUtils {
+	/**
+	 * @return supplier's outcome or empty if the lock can't be obtained
+	 */
+	public static <R, T extends Throwable> Optional<R>
+	getNowThrowableExclusively(Lock lock, ThrowableSupplier<R, T> supplier) throws T {
+		if (lock.tryLock()) {
+			return Optional.ofNullable(getThenUnlock(lock, supplier));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	/**
+	 * Wait "waitMillisForFast" milliseconds.
+	 *
+	 * @return supplier's outcome or empty if the lock can't be obtained
+	 */
+	public static <R, T extends Throwable> Optional<R>
+	getFastThrowableExclusively(Lock lock, long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
+		try {
+			if (lock.tryLock() || lock.tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
+				return Optional.ofNullable(getThenUnlock(lock, supplier));
+			} else {
+				return Optional.empty();
+			}
+		} catch (InterruptedException e) {
+			log.error(e.getMessage(), e);
+			return Optional.empty();
+		}
+	}
+
 	public static void synchronizeRun(Lock lock, Runnable runnable) {
 		lock.lock();
 		try {
@@ -151,6 +185,15 @@ public class LockUtils {
 			}
 		} else {
 			throw new LockWaitTimeoutException(waitMillis);
+		}
+	}
+
+	private static <R, T extends Throwable> R
+	getThenUnlock(Lock lock, ThrowableSupplier<R, T> supplier) throws T {
+		try {
+			return supplier.get();
+		} finally {
+			lock.unlock();
 		}
 	}
 }

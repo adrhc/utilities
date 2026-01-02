@@ -5,6 +5,7 @@ import com.rainerhahnekamp.sneakythrow.functional.SneakySupplier;
 import lombok.RequiredArgsConstructor;
 import ro.go.adrhc.util.fn.ThrowableSupplier;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -13,6 +14,12 @@ import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 public class SmartLock {
+	private final Lock lock;
+
+	public static SmartLock of() {
+		return new SmartLock(new ReentrantLock());
+	}
+
 	public boolean tryLock() {
 		return lock.tryLock();
 	}
@@ -21,18 +28,22 @@ public class SmartLock {
 		return lock.tryLock(time, unit);
 	}
 
-	private final Lock lock;
-
-	public static SmartLock of() {
-		return new SmartLock(new ReentrantLock());
-	}
-
 	public void lock() {
 		lock.lock();
 	}
 
 	public void unlock() {
 		lock.unlock();
+	}
+
+	public <R, T extends Throwable> Optional<R>
+	getNowThrowableExclusively(ThrowableSupplier<R, T> supplier) throws T {
+		return LockUtils.getNowThrowableExclusively(lock, supplier);
+	}
+
+	public <R, T extends Throwable> Optional<R>
+	getFastThrowableExclusively(long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
+		return LockUtils.getFastThrowableExclusively(lock, waitMillis, supplier);
 	}
 
 	public void synchronizeRun(Runnable runnable) {
