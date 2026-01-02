@@ -7,6 +7,7 @@ import ro.go.adrhc.util.fn.ThrowableSupplier;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
@@ -18,6 +19,10 @@ public class SmartLock {
 
 	public static SmartLock of() {
 		return new SmartLock(new ReentrantLock());
+	}
+
+	public Condition newCondition() {
+		return lock.newCondition();
 	}
 
 	public boolean tryLock() {
