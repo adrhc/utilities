@@ -8,6 +8,8 @@ import ro.go.adrhc.util.fn.ThrowableSupplier;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 @UtilityClass
@@ -16,6 +18,34 @@ public class LockUtils {
 		lock.lock();
 		try {
 			runnable.run();
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	/**
+	 * @param fn is executed with the provided lock
+	 */
+	public static <O, R> R synchronizeApply(
+		Lock lock, long waitMillis, O o, Function<O, R> fn)
+		throws InterruptedException, LockWaitTimeoutException {
+		if (lock.tryLock() || lock.tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
+			try {
+				return fn.apply(o);
+			} finally {
+				lock.unlock();
+			}
+		}
+		throw new LockWaitTimeoutException(waitMillis);
+	}
+
+	/**
+	 * @param consumer is run with the provided lock
+	 */
+	public static <O> void synchronizeAccept(Lock lock, O o, Consumer<O> consumer) {
+		lock.lock();
+		try {
+			consumer.accept(o);
 		} finally {
 			lock.unlock();
 		}
