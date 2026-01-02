@@ -7,6 +7,7 @@ import ro.go.adrhc.util.fn.ThrowableSupplier;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 @RequiredArgsConstructor
@@ -23,6 +24,10 @@ public class SmartLock {
 
 	public <E extends Exception> void synchronizeUnsafeRun(SneakyRunnable<E> runnable) throws E {
 		LockUtils.synchronizeUnsafeRun(lock, runnable);
+	}
+
+	public <O, R> R synchronizeApply(O o, Function<O, R> fn) {
+		return LockUtils.synchronizeApply(lock, o, fn);
 	}
 
 	public <T> T synchronizeGet(Supplier<T> supplier) {

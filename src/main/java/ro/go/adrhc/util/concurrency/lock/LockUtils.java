@@ -23,6 +23,15 @@ public class LockUtils {
 		}
 	}
 
+	public static <O, R> R synchronizeApply(Lock lock, O o, Function<O, R> fn) {
+		lock.lock();
+		try {
+			return fn.apply(o);
+		} finally {
+			lock.unlock();
+		}
+	}
+
 	/**
 	 * @param fn is executed with the provided lock
 	 */
