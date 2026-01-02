@@ -37,12 +37,12 @@ public class SmartLock {
 	}
 
 	public <R, T extends Throwable> Optional<R>
-	getNowThrowableExclusively(ThrowableSupplier<R, T> supplier) throws T {
+	getThrowableNowExclusively(ThrowableSupplier<R, T> supplier) throws T {
 		return LockUtils.getThrowableNowExclusively(lock, supplier);
 	}
 
 	public <R, T extends Throwable> Optional<R>
-	getFastThrowableExclusively(long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
+	getThrowableFastExclusively(long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
 		return LockUtils.getThrowableFastExclusively(lock, waitMillis, supplier);
 	}
 
