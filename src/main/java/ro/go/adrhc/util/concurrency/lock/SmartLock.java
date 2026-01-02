@@ -18,6 +18,14 @@ public class SmartLock {
 		return new SmartLock(new ReentrantLock());
 	}
 
+	public void lock() {
+		lock.lock();
+	}
+
+	public void unlock() {
+		lock.unlock();
+	}
+
 	public void synchronizeRun(Runnable runnable) {
 		LockUtils.synchronizeRun(lock, runnable);
 	}
