@@ -5,6 +5,7 @@ import com.rainerhahnekamp.sneakythrow.functional.SneakySupplier;
 import lombok.RequiredArgsConstructor;
 import ro.go.adrhc.util.fn.ThrowableSupplier;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
@@ -12,6 +13,14 @@ import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 public class SmartLock {
+	public boolean tryLock() {
+		return lock.tryLock();
+	}
+
+	public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+		return lock.tryLock(time, unit);
+	}
+
 	private final Lock lock;
 
 	public static SmartLock of() {
