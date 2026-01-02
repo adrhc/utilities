@@ -2,96 +2,56 @@ package ro.go.adrhc.util.concurrency.lock;
 
 import com.rainerhahnekamp.sneakythrow.functional.SneakyRunnable;
 import com.rainerhahnekamp.sneakythrow.functional.SneakySupplier;
+import lombok.RequiredArgsConstructor;
 import ro.go.adrhc.util.fn.ThrowableSupplier;
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
-public class SmartLock extends ReentrantLock {
-	public void synchronize(Runnable runnable) {
-		lock();
-		try {
-			runnable.run();
-		} finally {
-			unlock();
-		}
+@RequiredArgsConstructor
+public class SmartLock {
+	private final Lock lock;
+
+	public static SmartLock of() {
+		return new SmartLock(new ReentrantLock());
 	}
 
-	public <T> T synchronize(Supplier<T> supplier) {
-		lock();
-		try {
-			return supplier.get();
-		} finally {
-			unlock();
-		}
+	public void synchronizeRun(Runnable runnable) {
+		LockUtils.synchronizeRun(lock, runnable);
 	}
 
-	public <T> T synchronize(long waitMillis, Supplier<T> supplier)
+	public <E extends Exception> void synchronizeUnsafeRun(SneakyRunnable<E> runnable) throws E {
+		LockUtils.synchronizeUnsafeRun(lock, runnable);
+	}
+
+	public <T> T synchronizeGet(Supplier<T> supplier) {
+		return LockUtils.synchronizeGet(lock, supplier);
+	}
+
+	public <T> T synchronizeGet(long waitMillis, Supplier<T> supplier)
 		throws InterruptedException, LockWaitTimeoutException {
-		if (tryLock() || tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
-			try {
-				return supplier.get();
-			} finally {
-				unlock();
-			}
-		} else {
-			throw new LockWaitTimeoutException(waitMillis);
-		}
+		return LockUtils.synchronizeGet(lock, waitMillis, supplier);
 	}
 
-	public <E extends Exception> void synchronizeUnsafe(SneakyRunnable<E> runnable) throws E {
-		lock();
-		try {
-			runnable.run();
-		} finally {
-			unlock();
-		}
-	}
-
-	public <T, E extends Exception> T synchronizeUnsafe(SneakySupplier<T, E> supplier) throws E {
-		lock();
-		try {
-			return supplier.get();
-		} finally {
-			unlock();
-		}
-	}
-
-	public <R, T extends Throwable> R
-	synchronizeUnsafe(ThrowableSupplier<R, T> supplier) throws T {
-		lock();
-		try {
-			return supplier.get();
-		} finally {
-			unlock();
-		}
+	public <T, E extends Exception> T synchronizeUnsafeGet(SneakySupplier<T, E> supplier) throws E {
+		return LockUtils.synchronizeUnsafeGet(lock, supplier);
 	}
 
 	public <T, E extends Exception> T
-	synchronizeUnsafe(long waitMillis, SneakySupplier<T, E> supplier)
+	synchronizeUnsafeGet(long waitMillis, SneakySupplier<T, E> supplier)
 		throws E, InterruptedException, LockWaitTimeoutException {
-		if (tryLock() || tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
-			try {
-				return supplier.get();
-			} finally {
-				unlock();
-			}
-		} else {
-			throw new LockWaitTimeoutException(waitMillis);
-		}
+		return LockUtils.synchronizeUnsafeGet(lock, waitMillis, supplier);
 	}
 
-	public <R, T extends Throwable> R synchronizeUnsafe(long waitMillis,
-		ThrowableSupplier<R, T> supplier) throws T, InterruptedException, LockWaitTimeoutException {
-		if (tryLock() || tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
-			try {
-				return supplier.get();
-			} finally {
-				unlock();
-			}
-		} else {
-			throw new LockWaitTimeoutException(waitMillis);
-		}
+	public <R, T extends Throwable> R
+	synchronizeThrowableGet(ThrowableSupplier<R, T> supplier) throws T {
+		return LockUtils.synchronizeThrowableGet(lock, supplier);
+	}
+
+	public <R, T extends Throwable> R
+	synchronizeThrowableGet(long waitMillis, ThrowableSupplier<R, T> supplier)
+		throws T, InterruptedException, LockWaitTimeoutException {
+		return LockUtils.synchronizeThrowableGet(lock, waitMillis, supplier);
 	}
 }

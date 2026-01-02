@@ -1,7 +1,7 @@
 package ro.go.adrhc.util.streamer;
 
 import lombok.RequiredArgsConstructor;
-import ro.go.adrhc.util.concurrency.lock.LocksCollection;
+import ro.go.adrhc.util.concurrency.lock.LockCollection;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -17,7 +17,7 @@ class CloseableQueueSliceStreamer implements AutoCloseable {
 	 * markChunkEndLock is necessary to prevent a markChunkEnd() and close() clash!
 	 */
 	private final Lock markChunkEndLock = new ReentrantLock();
-	private final LocksCollection locks = LocksCollection.of(addElementLock, markChunkEndLock);
+	private final LockCollection locks = LockCollection.of(addElementLock, markChunkEndLock);
 	private final QueueSliceStreamer queueSliceStreamer;
 	private final Runnable stopTrigger;
 	private boolean closed;
@@ -46,7 +46,7 @@ class CloseableQueueSliceStreamer implements AutoCloseable {
 
 	public void close() {
 //			log.info("closing ...");
-		locks.execute(this::doClose);
+		locks.synchronizeRun(this::doClose);
 //			log.info("closed");
 	}
 

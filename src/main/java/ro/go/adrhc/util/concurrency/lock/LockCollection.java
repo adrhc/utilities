@@ -8,27 +8,27 @@ import java.util.ListIterator;
 import java.util.concurrent.locks.Lock;
 
 @RequiredArgsConstructor
-public class LocksCollection {
+public class LockCollection {
 	private final List<Lock> locks;
 
-	public static LocksCollection of(Lock... addElementLock) {
-		return new LocksCollection(Arrays.asList(addElementLock));
+	public static LockCollection of(Lock... addElementLock) {
+		return new LockCollection(Arrays.asList(addElementLock));
 	}
 
-	public void execute(Runnable action) {
-		lock();
+	public void synchronizeRun(Runnable action) {
+		lockAll();
 		try {
 			action.run();
 		} finally {
-			unlock();
+			unlockAll();
 		}
 	}
 
-	public void lock() {
+	public void lockAll() {
 		locks.forEach(Lock::lock);
 	}
 
-	public void unlock() {
+	public void unlockAll() {
 		ListIterator<Lock> listIterator = locks.listIterator(locks.size());
 		while (listIterator.hasPrevious()) {
 			listIterator.previous().unlock();
