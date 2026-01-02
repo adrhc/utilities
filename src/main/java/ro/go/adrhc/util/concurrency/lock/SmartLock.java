@@ -38,12 +38,12 @@ public class SmartLock {
 
 	public <R, T extends Throwable> Optional<R>
 	getNowThrowableExclusively(ThrowableSupplier<R, T> supplier) throws T {
-		return LockUtils.getNowThrowableExclusively(lock, supplier);
+		return LockUtils.getThrowableNowExclusively(lock, supplier);
 	}
 
 	public <R, T extends Throwable> Optional<R>
 	getFastThrowableExclusively(long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
-		return LockUtils.getFastThrowableExclusively(lock, waitMillis, supplier);
+		return LockUtils.getThrowableFastExclusively(lock, waitMillis, supplier);
 	}
 
 	public void synchronizeRun(Runnable runnable) {

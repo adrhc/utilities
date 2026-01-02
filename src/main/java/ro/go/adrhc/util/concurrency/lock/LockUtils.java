@@ -5,6 +5,7 @@ import com.rainerhahnekamp.sneakythrow.functional.SneakySupplier;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.util.fn.ThrowableConsumer;
+import ro.go.adrhc.util.fn.ThrowableFunction;
 import ro.go.adrhc.util.fn.ThrowableSupplier;
 
 import java.util.Optional;
@@ -21,7 +22,7 @@ public class LockUtils {
 	 * @return supplier's outcome or empty if the lock can't be obtained
 	 */
 	public static <R, T extends Throwable> Optional<R>
-	getNowThrowableExclusively(Lock lock, ThrowableSupplier<R, T> supplier) throws T {
+	getThrowableNowExclusively(Lock lock, ThrowableSupplier<R, T> supplier) throws T {
 		if (lock.tryLock()) {
 			return Optional.ofNullable(getThenUnlock(lock, supplier));
 		} else {
@@ -35,10 +36,30 @@ public class LockUtils {
 	 * @return supplier's outcome or empty if the lock can't be obtained
 	 */
 	public static <R, T extends Throwable> Optional<R>
-	getFastThrowableExclusively(Lock lock, long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
+	getThrowableFastExclusively(Lock lock, long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
 		try {
 			if (lock.tryLock() || lock.tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
 				return Optional.ofNullable(getThenUnlock(lock, supplier));
+			} else {
+				return Optional.empty();
+			}
+		} catch (InterruptedException e) {
+			log.error(e.getMessage(), e);
+			return Optional.empty();
+		}
+	}
+
+	/**
+	 * Wait "waitMillisForFast" milliseconds.
+	 *
+	 * @return supplier's outcome or empty if the lock can't be obtained
+	 */
+	public static <I, R, T extends Throwable> Optional<R>
+	applyThrowableFastExclusively(Lock lock, long waitMillis, I input, ThrowableFunction<I, R, T> fn)
+		throws T {
+		try {
+			if (lock.tryLock() || lock.tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
+				return Optional.ofNullable(applyThenUnlock(lock, input, fn));
 			} else {
 				return Optional.empty();
 			}
@@ -192,6 +213,15 @@ public class LockUtils {
 	getThenUnlock(Lock lock, ThrowableSupplier<R, T> supplier) throws T {
 		try {
 			return supplier.get();
+		} finally {
+			lock.unlock();
+		}
+	}
+
+	private static <I, R, T extends Throwable> R
+	applyThenUnlock(Lock lock, I input, ThrowableFunction<I, R, T> fn) throws T {
+		try {
+			return fn.apply(input);
 		} finally {
 			lock.unlock();
 		}
