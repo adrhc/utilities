@@ -1,13 +1,13 @@
 package ro.go.adrhc.util;
 
 import lombok.experimental.UtilityClass;
-import ro.go.adrhc.util.text.Style;
+import ro.go.adrhc.util.text.FontStyle;
 
 import java.nio.file.Path;
 
 @UtilityClass
 public class ConsoleUtils {
-	public static String format(Style weight, String text) {
+	public static String format(FontStyle weight, String text) {
 		return switch (weight) {
 			case BOLD -> bold(text);
 			case ITALIC -> italic(text);

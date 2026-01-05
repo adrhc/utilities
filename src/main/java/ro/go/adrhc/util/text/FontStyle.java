@@ -1,6 +1,6 @@
 package ro.go.adrhc.util.text;
 
-public enum Style {
+public enum FontStyle {
 	NORMAL,
 	BOLD,
 	ITALIC
