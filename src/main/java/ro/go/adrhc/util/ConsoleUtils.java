@@ -4,11 +4,16 @@ import lombok.experimental.UtilityClass;
 import ro.go.adrhc.util.text.FontStyle;
 
 import java.nio.file.Path;
+import java.util.Arrays;
 
 @UtilityClass
 public class ConsoleUtils {
-	public static String format(FontStyle weight, String text) {
-		return switch (weight) {
+	public static String format(FontStyle[] style, String text) {
+		return Arrays.stream(style).reduce(text, (t, s) -> format(s, t), (s1, s2) -> s2);
+	}
+
+	public static String format(FontStyle style, String text) {
+		return switch (style) {
 			case BOLD -> bold(text);
 			case ITALIC -> italic(text);
 			case NORMAL -> text;
