@@ -1,6 +1,6 @@
 package ro.go.adrhc.util.text;
 
-public enum FontWeight {
+public enum Style {
 	NORMAL,
 	BOLD,
 	ITALIC
