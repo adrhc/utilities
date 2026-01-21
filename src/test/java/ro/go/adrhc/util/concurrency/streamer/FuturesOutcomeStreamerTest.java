@@ -40,9 +40,9 @@ class FuturesOutcomeStreamerTest {
 
 	private static Stream<String> streamerStream(boolean cancelFuturesOnClose) {
 		FuturesOutcomeStreamer<String> streamer =
-				FuturesOutcomeStreamer.create(EXECUTOR, cancelFuturesOnClose);
+			FuturesOutcomeStreamer.create(EXECUTOR, cancelFuturesOnClose);
 		Stream<CompletableFuture<String>> futuresStream = IntStream.range(0, 10)
-				.mapToObj(FuturesOutcomeStreamerTest::completableFuture);
+			.mapToObj(FuturesOutcomeStreamerTest::completableFuture);
 		return streamer.toStream(futuresStream);
 	}
 

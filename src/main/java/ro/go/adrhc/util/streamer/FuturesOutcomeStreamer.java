@@ -19,17 +19,17 @@ public class FuturesOutcomeStreamer<T> {
 
 	public static <T> FuturesOutcomeStreamer<T> create(ExecutorService executorService) {
 		return new FuturesOutcomeStreamer<>(
-				new VisitableStructureStreamer<>(executorService), false);
+			new VisitableStructureStreamer<>(executorService), false);
 	}
 
 	public static <T> FuturesOutcomeStreamer<T> create(
-			ExecutorService executorService, boolean cancelFuturesOnStreamClose) {
+		ExecutorService executorService, boolean cancelFuturesOnStreamClose) {
 		return new FuturesOutcomeStreamer<>(
-				new VisitableStructureStreamer<>(executorService), cancelFuturesOnStreamClose);
+			new VisitableStructureStreamer<>(executorService), cancelFuturesOnStreamClose);
 	}
 
 	public Stream<T> toStream(Stream<? extends CompletableFuture<T>> futures) {
 		return streamer.toStream(FuturesStoppableVisitable
-				.create(futures, cancelFuturesOnStreamClose));
+			.create(futures, cancelFuturesOnStreamClose));
 	}
 }

@@ -5,7 +5,7 @@ import ro.go.adrhc.util.ComparisonUtils;
 import java.util.Objects;
 
 public class ComparablePair<L extends Comparable<L>, R extends Comparable<R>>
-		extends Pair<L, R> implements Comparable<Pair<L, R>> {
+	extends Pair<L, R> implements Comparable<Pair<L, R>> {
 	public ComparablePair(L left, R right) {
 		super(left, right);
 	}

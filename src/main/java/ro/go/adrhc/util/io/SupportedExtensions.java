@@ -23,7 +23,7 @@ public class SupportedExtensions {
 
 	public static SupportedExtensions of(Set<String> extensions) {
 		return new SupportedExtensions(extensions.stream()
-				.map(String::toLowerCase).collect(Collectors.toSet()));
+			.map(String::toLowerCase).collect(Collectors.toSet()));
 	}
 
 	/**
@@ -35,6 +35,6 @@ public class SupportedExtensions {
 
 	private boolean isSupportedFile(Path path) {
 		return supportedExtensions.contains(
-				getExtension(path.getFileName().toString()).toLowerCase());
+			getExtension(path.getFileName().toString()).toLowerCase());
 	}
 }

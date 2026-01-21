@@ -30,9 +30,9 @@ public record JoinDsl<T, U>(Stream<T> first, Collection<U> second) {
 
 	private <R> Stream<R> on(BiPredicate<T, U> joiningRule, BiFunction<T, U, R> combiner) {
 		return first
-				.flatMap(it1 -> second.stream()
-						.filter(it2 -> joiningRule.test(it1, it2))
-						.map(it2 -> combiner.apply(it1, it2)));
+			.flatMap(it1 -> second.stream()
+				.filter(it2 -> joiningRule.test(it1, it2))
+				.map(it2 -> combiner.apply(it1, it2)));
 	}
 
 	@RequiredArgsConstructor

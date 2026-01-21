@@ -24,12 +24,12 @@ public class FilesMetadataLoader<M> {
 	 * @param metadataExecutorService is used to load the metadata from files
 	 */
 	public static <M> FilesMetadataLoader<M> create(
-			ExecutorService adminExecutorService, ExecutorService metadataExecutorService,
-			SimpleDirectory directory, Function<Path, M> metadataLoader) {
+		ExecutorService adminExecutorService, ExecutorService metadataExecutorService,
+		SimpleDirectory directory, Function<Path, M> metadataLoader) {
 		return new FilesMetadataLoader<>(metadataExecutorService,
-				FuturesOutcomeStreamer.create(adminExecutorService),
-				PathsStreamer.create(metadataExecutorService, directory),
-				metadataLoader);
+			FuturesOutcomeStreamer.create(adminExecutorService),
+			PathsStreamer.create(metadataExecutorService, directory),
+			metadataLoader);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class FilesMetadataLoader<M> {
 
 	protected CompletableFuture<M> loadMetadata(Path filePath) {
 		return CompletableFuture.supplyAsync(() ->
-				doLoadMetadata(filePath), metadataExecutorService);
+			doLoadMetadata(filePath), metadataExecutorService);
 	}
 
 	protected M doLoadMetadata(Path path) {

@@ -11,7 +11,8 @@ import java.io.InputStreamReader;
 @Slf4j
 public class ProcessUtils {
 	public static void logOutcome(Process process) throws IOException {
-		BufferedReader outputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+		BufferedReader outputReader = new BufferedReader(
+			new InputStreamReader(process.getInputStream()));
 		String line;
 		while ((line = outputReader.readLine()) != null) {
 			log.debug(line);

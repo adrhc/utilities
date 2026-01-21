@@ -15,7 +15,7 @@ public interface SortedStreamOwner<T> extends StreamOwner<T> {
 	}
 
 	default <R> List<R> sortMapOptionalsToList(
-			Function<? super T, Optional<R>> mapper) {
+		Function<? super T, Optional<R>> mapper) {
 		return sortMapOptionals(mapper).toList();
 	}
 
@@ -40,7 +40,7 @@ public interface SortedStreamOwner<T> extends StreamOwner<T> {
 	}
 
 	default <R> Stream<R> sortFilterMap(
-			Predicate<? super T> predicate, Function<? super T, ? extends R> mapper) {
+		Predicate<? super T> predicate, Function<? super T, ? extends R> mapper) {
 		return sortFilter(predicate).map(mapper);
 	}
 

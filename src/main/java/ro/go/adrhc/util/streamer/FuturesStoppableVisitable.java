@@ -21,7 +21,7 @@ public class FuturesStoppableVisitable<T> extends AbstractVisitorAwareStoppableV
 	private final List<? extends CompletableFuture<T>> cancellableFutures;
 
 	public static <T> FuturesStoppableVisitable<T> create(
-			Stream<? extends CompletableFuture<T>> futures, boolean cancelFuturesOnStreamClose) {
+		Stream<? extends CompletableFuture<T>> futures, boolean cancelFuturesOnStreamClose) {
 		if (cancelFuturesOnStreamClose) {
 			List<? extends CompletableFuture<T>> futureList = futures.toList();
 			return new FuturesStoppableVisitable<>(futureList.stream(), futureList);
@@ -33,6 +33,16 @@ public class FuturesStoppableVisitable<T> extends AbstractVisitorAwareStoppableV
 	public void accept(Consumer<? super T> elemCollector) {
 		this.visitor = elemCollector;
 		waitAll(attachFuturesOutcomeCollector());
+	}
+
+	@Override
+	public void stop() {
+		super.stop();
+		if (cancellableFutures != null) {
+//			log.info("cancelling futures ...");
+			cancellableFutures.forEach(f -> f.cancel(true));
+//			log.info("futures cancelled");
+		}
 	}
 
 	protected Stream<CompletableFuture<T>> attachFuturesOutcomeCollector() {
@@ -48,15 +58,5 @@ public class FuturesStoppableVisitable<T> extends AbstractVisitorAwareStoppableV
 			visitor.accept(t);
 		}
 		return t;
-	}
-
-	@Override
-	public void stop() {
-		super.stop();
-		if (cancellableFutures != null) {
-//			log.info("cancelling futures ...");
-			cancellableFutures.forEach(f -> f.cancel(true));
-//			log.info("futures cancelled");
-		}
 	}
 }

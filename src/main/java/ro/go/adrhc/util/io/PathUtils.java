@@ -13,9 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static java.nio.file.attribute.PosixFilePermission.OWNER_EXECUTE;
-import static java.nio.file.attribute.PosixFilePermission.OWNER_READ;
-import static java.nio.file.attribute.PosixFilePermission.OWNER_WRITE;
+import static java.nio.file.attribute.PosixFilePermission.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,7 +25,7 @@ import static java.nio.file.attribute.PosixFilePermission.OWNER_WRITE;
 @Slf4j
 public class PathUtils {
 	public static final EnumSet<PosixFilePermission> RWX =
-			EnumSet.of(OWNER_EXECUTE, OWNER_READ, OWNER_WRITE);
+		EnumSet.of(OWNER_EXECUTE, OWNER_READ, OWNER_WRITE);
 
 	public static Path getUniquePrefix(Path sourceFile, Path targetFile) {
 		// Normalize both paths to ensure consistency in comparisons
@@ -74,8 +72,8 @@ public class PathUtils {
 		int dotIndex = fileName.lastIndexOf('.');
 
 		return (dotIndex == -1)
-				? path // No extension, do nothing
-				: path.resolveSibling(fileName.substring(0, dotIndex));
+			? path // No extension, do nothing
+			: path.resolveSibling(fileName.substring(0, dotIndex));
 	}
 
 	public static Path replaceFileExtension(String newExtension, Path path) {
@@ -87,8 +85,8 @@ public class PathUtils {
 
 		// Construct the new file name with the replacement extension
 		String newFileName = (dotIndex == -1)
-				? fileName // No extension, do nothing
-				: fileName.substring(0, dotIndex) + "." + newExtension;
+			? fileName // No extension, do nothing
+			: fileName.substring(0, dotIndex) + "." + newExtension;
 
 		// Return the updated Path with the new file name
 		return path.resolveSibling(newFileName);
@@ -137,7 +135,7 @@ public class PathUtils {
 	}
 
 	public static Optional<Path> setPosixFilePermissions(
-			EnumSet<PosixFilePermission> permissions, Path path) {
+		EnumSet<PosixFilePermission> permissions, Path path) {
 		try {
 			return Optional.of(Files.setPosixFilePermissions(path, permissions));
 		} catch (Exception e) {

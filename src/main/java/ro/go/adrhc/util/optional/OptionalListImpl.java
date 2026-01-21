@@ -2,12 +2,7 @@ package ro.go.adrhc.util.optional;
 
 import lombok.NonNull;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
@@ -24,12 +19,12 @@ public class OptionalListImpl<T> extends OptionalCollectionStatusImpl implements
 
 	public static <T> OptionalList<T> of(List<T> list) {
 		return list instanceof OptionalList<T> ? (OptionalList<T>) list
-				: new OptionalListImpl<>(false, false, list);
+			: new OptionalListImpl<>(false, false, list);
 	}
 
 	public static <T> OptionalList<T> ofIncomplete(List<T> list) {
 		return list instanceof OptionalList<T> ? (OptionalList<T>) list
-				: new OptionalListImpl<>(false, true, list);
+			: new OptionalListImpl<>(false, true, list);
 	}
 
 	public static <T> OptionalList<T> ofMissing() {

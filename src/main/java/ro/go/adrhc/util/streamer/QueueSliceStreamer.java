@@ -23,9 +23,9 @@ public class QueueSliceStreamer {
 	 */
 	public <T> Stream<T> streamChunk() {
 		return Stream.iterate(null, o -> null)
-				.map(o -> take().orElse(CHUNK_END))
-				.takeWhile(o -> o != CHUNK_END)
-				.map(ObjectUtils::cast);
+			.map(o -> take().orElse(CHUNK_END))
+			.takeWhile(o -> o != CHUNK_END)
+			.map(ObjectUtils::cast);
 	}
 
 	/**

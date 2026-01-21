@@ -15,12 +15,12 @@ public class PassThroughFSCache {
 	private final Path targetRoot;
 
 	public <T> T read(Path filePath,
-			SneakyFunction<Path, T, IOException> reader) throws IOException {
+		SneakyFunction<Path, T, IOException> reader) throws IOException {
 		return fsUtils.readThroughTmp(targetRoot, tmpRoot, filePath, reader);
 	}
 
 	public Path write(Path filePath,
-			SneakyConsumer<Path, IOException> writer) throws IOException {
+		SneakyConsumer<Path, IOException> writer) throws IOException {
 		return fsUtils.writeThroughTmp(targetRoot, tmpRoot, filePath, writer);
 	}
 }

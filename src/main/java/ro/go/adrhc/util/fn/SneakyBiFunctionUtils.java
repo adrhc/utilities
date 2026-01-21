@@ -11,7 +11,7 @@ import java.util.Optional;
 @Slf4j
 public class SneakyBiFunctionUtils {
 	public static <T1, T2, R, E extends Exception> SneakyFunction<T2, R, E> curry(
-			SneakyBiFunction<T1, T2, R, E> biFunction, T1 t1) {
+		SneakyBiFunction<T1, T2, R, E> biFunction, T1 t1) {
 		return t2 -> biFunction.apply(t1, t2);
 	}
 

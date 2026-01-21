@@ -25,12 +25,12 @@ public record SetDsl<T>(Collection<T> collection) {
 	 */
 	public <R> Set<R> map(Function<? super T, R> converter) {
 		return collection.stream().map(converter).filter(Objects::nonNull).collect(
-				Collectors.toSet());
+			Collectors.toSet());
 	}
 
 	public <R> Set<R> flatMap(Function<? super T, Optional<R>> converter) {
 		return collection.stream().map(converter).flatMap(Optional::stream).collect(
-				Collectors.toSet());
+			Collectors.toSet());
 	}
 
 	public <R> Set<R> optionalFlatMap(Function<? super T, Optional<R>> converter) {

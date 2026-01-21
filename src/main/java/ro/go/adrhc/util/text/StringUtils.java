@@ -29,7 +29,7 @@ public class StringUtils {
 	}
 
 	public static <T, R> String concat(String separator, Function<T, R> mapper,
-			Iterable<T> iterable) {
+		Iterable<T> iterable) {
 		return concat(separator, mapper, stream(iterable));
 	}
 
@@ -47,9 +47,9 @@ public class StringUtils {
 
 	public static <T, R> String concat(String separator, Function<T, R> mapper, Stream<T> stream) {
 		return stream
-				.map(mapper)
-				.filter(Objects::nonNull)
-				.map(Object::toString)
-				.collect(Collectors.joining(separator));
+			.map(mapper)
+			.filter(Objects::nonNull)
+			.map(Object::toString)
+			.collect(Collectors.joining(separator));
 	}
 }

@@ -35,33 +35,33 @@ public class SimpleDirectory {
 	}
 
 	public static SimpleDirectory of(FileSystemUtils fsUtils,
-			Supplier<Path> rootPathSupplier, Predicate<Path> pathsFilter) {
+		Supplier<Path> rootPathSupplier, Predicate<Path> pathsFilter) {
 		return new SimpleDirectory(FOLLOW_LINKS, fsUtils, rootPathSupplier, pathsFilter);
 	}
 
 	public <R, E extends Exception> R transformPathStream(
-			SneakyFunction<Stream<Path>, R, E>
-					pathsStreamProcessor) throws IOException, E {
+		SneakyFunction<Stream<Path>, R, E>
+			pathsStreamProcessor) throws IOException, E {
 		return transformPathStream(rootPathSupplier.get(), pathsStreamProcessor);
 	}
 
 	public <R, E extends Exception> R transformPathStream(
-			Path start, SneakyFunction<Stream<Path>, R, E>
-					pathsStreamProcessor) throws IOException, E {
+		Path start, SneakyFunction<Stream<Path>, R, E>
+			pathsStreamProcessor) throws IOException, E {
 		try (Stream<Path> paths = fsUtils.walk(resolvePath(start), fileVisitOption)) {
 			return pathsStreamProcessor.apply(paths.filter(pathsFilter));
 		}
 	}
 
 	public <E extends Exception> void doWithPathStream(
-			SneakyConsumer<Stream<Path>, E>
-					pathsStreamConsumer) throws IOException, E {
+		SneakyConsumer<Stream<Path>, E>
+			pathsStreamConsumer) throws IOException, E {
 		doWithPathStream(rootPathSupplier.get(), pathsStreamConsumer);
 	}
 
 	public <E extends Exception> void doWithPathStream(Path start,
-			SneakyConsumer<Stream<Path>, E>
-					pathsStreamConsumer) throws IOException, E {
+		SneakyConsumer<Stream<Path>, E>
+			pathsStreamConsumer) throws IOException, E {
 		try (Stream<Path> paths = fsUtils.walk(resolvePath(start), fileVisitOption)) {
 			pathsStreamConsumer.accept(paths.filter(pathsFilter));
 		}

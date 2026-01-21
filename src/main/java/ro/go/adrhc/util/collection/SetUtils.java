@@ -16,9 +16,9 @@ public class SetUtils {
 	 */
 	public static <T, R> Set<T> common(Function<T, R> property, Set<T> source, Set<T> gauge) {
 		return source.stream()
-				.filter(s -> gauge.stream()
-						.anyMatch(d -> Objects.equals(property.apply(s), property.apply(d))))
-				.collect(Collectors.toSet());
+			.filter(s -> gauge.stream()
+				.anyMatch(d -> Objects.equals(property.apply(s), property.apply(d))))
+			.collect(Collectors.toSet());
 	}
 
 	/**
@@ -26,9 +26,9 @@ public class SetUtils {
 	 */
 	public static <T, R> Set<T> diff(Function<T, R> property, Set<T> source, Set<T> toSubtract) {
 		return source.stream()
-				.filter(s -> toSubtract.stream()
-						.noneMatch(d -> Objects.equals(property.apply(s), property.apply(d))))
-				.collect(Collectors.toSet());
+			.filter(s -> toSubtract.stream()
+				.noneMatch(d -> Objects.equals(property.apply(s), property.apply(d))))
+			.collect(Collectors.toSet());
 	}
 
 	/**
@@ -36,8 +36,8 @@ public class SetUtils {
 	 */
 	public static <T> Set<T> diff(BiPredicate<T, T> matchRule, Set<T> source, Set<T> toSubtract) {
 		return source.stream()
-				.filter(s -> toSubtract.stream().noneMatch(r -> matchRule.test(s, r)))
-				.collect(Collectors.toSet());
+			.filter(s -> toSubtract.stream().noneMatch(r -> matchRule.test(s, r)))
+			.collect(Collectors.toSet());
 	}
 
 	public static <V> Set<V> mutableSetOfValues(Map<?, V> map) {
@@ -45,17 +45,17 @@ public class SetUtils {
 	}
 
 	public static <T, R> Set<R> mapToSet(Iterable<T> iterable,
-			Function<? super T, ? extends R> mapper) {
+		Function<? super T, ? extends R> mapper) {
 		return StreamSupport.stream(iterable.spliterator(), false)
-				.map(mapper)
-				.collect(Collectors.toSet());
+			.map(mapper)
+			.collect(Collectors.toSet());
 	}
 
 	public static String sortThenJoin(Set<?> items) {
 		return items.stream()
-				.map(Object::toString)
-				.sorted()
-				.collect(Collectors.joining(" "));
+			.map(Object::toString)
+			.sorted()
+			.collect(Collectors.joining(" "));
 	}
 
 	public static <T> Set<T> of(Stream<T> stream) {

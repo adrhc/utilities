@@ -30,12 +30,12 @@ public class ProcessExecutor {
 
 	public Optional<String> execute(List<String> processParams) {
 		return execute(p -> IOUtils.toString(
-				p.getInputStream(), StandardCharsets.UTF_8), processParams)
-				.filter(StringUtils::hasText);
+			p.getInputStream(), StandardCharsets.UTF_8), processParams)
+			.filter(StringUtils::hasText);
 	}
 
 	public <T> Optional<T> execute(SneakyFunction<Process, T, IOException> resultMapper,
-			List<String> processParams) {
+		List<String> processParams) {
 		ProcessBuilder processBuilder = createProcessBuilder(processParams);
 //		log.info("\nprocess command:\n{}", concat(" ", processBuilder.command()));
 

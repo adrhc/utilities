@@ -21,12 +21,12 @@ public class OptionalSetImpl<T> extends OptionalCollectionStatusImpl implements 
 
 	public static <T> OptionalSet<T> of(Set<T> set) {
 		return set instanceof OptionalSet ? (OptionalSet) set
-				: new OptionalSetImpl<>(false, false, set);
+			: new OptionalSetImpl<>(false, false, set);
 	}
 
 	public static <T> OptionalSet<T> ofIncomplete(Set<T> set) {
 		return set instanceof OptionalSet ? (OptionalSet) set
-				: new OptionalSetImpl<>(false, true, set);
+			: new OptionalSetImpl<>(false, true, set);
 	}
 
 	public static <T> OptionalSet<T> ofMissing() {

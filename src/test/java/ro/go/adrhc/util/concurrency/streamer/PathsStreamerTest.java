@@ -27,8 +27,8 @@ class PathsStreamerTest {
 		PathsStreamer pathsStreamer = pathsStreamer(tmp);
 		initFS(tmp);
 		assertThat(pathsStreamer.toStream()
-				.map(Path::getFileName).map(Path::toString))
-				.containsOnly("test-file1.txt", "test-file2.txt", "test-file3.txt");
+			.map(Path::getFileName).map(Path::toString))
+			.containsOnly("test-file1.txt", "test-file2.txt", "test-file3.txt");
 	}
 
 	@Disabled
@@ -51,7 +51,7 @@ class PathsStreamerTest {
 
 	private static PathsStreamer pathsStreamer(Path tmp) {
 		return PathsStreamer.create(
-				Executors.newSingleThreadExecutor(),
-				SimpleDirectory.fixedRootPath(tmp));
+			Executors.newSingleThreadExecutor(),
+			SimpleDirectory.fixedRootPath(tmp));
 	}
 }

@@ -11,7 +11,7 @@ import static ro.go.adrhc.util.text.StringUtils.hasText;
 
 public class FilenameUtils {
 	public static final Comparator<Path> CASE_IGNORE_FILENAME_COMPARATOR =
-			Comparator.comparing(o -> o.getFileName().toString(), String::compareToIgnoreCase);
+		Comparator.comparing(o -> o.getFileName().toString(), String::compareToIgnoreCase);
 
 	/**
 	 * see https://stackoverflow.com/questions/1976007/what-characters-are-forbidden-in-windows-and-linux-directory-names#:~:text=Under%20Linux%20and%20other%20Unix,'%5C0'%20and%20slash%20'%2F'%20.
@@ -34,16 +34,16 @@ public class FilenameUtils {
 	@NonNull
 	public static String sanitize(String fileName) {
 		return RegExUtils
-				.replacePattern(fileName, "[<>:\"/\\\\|\\?\\*!;\\{\\}]", " ")
-				.replaceAll("\\s+", " ")
-				.trim();
+			.replacePattern(fileName, "[<>:\"/\\\\|\\?\\*!;\\{\\}]", " ")
+			.replaceAll("\\s+", " ")
+			.trim();
 	}
 
 	public static Optional<String> filenameNoExt(Path path) {
 		return Optional.ofNullable(path)
-				.map(Path::getFileName)
-				.map(Path::toString)
-				.map(org.apache.commons.io.FilenameUtils::removeExtension);
+			.map(Path::getFileName)
+			.map(Path::toString)
+			.map(org.apache.commons.io.FilenameUtils::removeExtension);
 	}
 
 	public static String addSuffix(String filename, String suffix) {

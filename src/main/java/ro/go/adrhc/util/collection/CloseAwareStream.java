@@ -6,22 +6,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.Spliterator;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.BinaryOperator;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.IntFunction;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToIntFunction;
-import java.util.function.ToLongFunction;
-import java.util.stream.Collector;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
+import java.util.function.*;
+import java.util.stream.*;
 
 @RequiredArgsConstructor
 public class CloseAwareStream<T> implements Stream<T> {
@@ -135,13 +121,13 @@ public class CloseAwareStream<T> implements Stream<T> {
 
 	@Override
 	public <U> U reduce(U identity, BiFunction<U, ? super T, U> accumulator,
-			BinaryOperator<U> combiner) {
+		BinaryOperator<U> combiner) {
 		return stream.reduce(identity, accumulator, combiner);
 	}
 
 	@Override
 	public <R> R collect(Supplier<R> supplier, BiConsumer<R, ? super T> accumulator,
-			BiConsumer<R, R> combiner) {
+		BiConsumer<R, R> combiner) {
 		return stream.collect(supplier, accumulator, combiner);
 	}
 
