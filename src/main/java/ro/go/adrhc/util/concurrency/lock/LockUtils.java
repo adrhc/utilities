@@ -22,7 +22,7 @@ public class LockUtils {
 	 * @return supplier's outcome or empty if the lock can't be obtained
 	 */
 	public static <R, T extends Throwable> Optional<R>
-	getThrowableNowExclusively(Lock lock, ThrowableSupplier<R, T> supplier) throws T {
+	getNowExclusively(Lock lock, ThrowableSupplier<R, T> supplier) throws T {
 		if (lock.tryLock()) {
 			return Optional.ofNullable(getThenUnlock(lock, supplier));
 		} else {
@@ -36,7 +36,7 @@ public class LockUtils {
 	 * @return supplier's outcome or empty if the lock can't be obtained
 	 */
 	public static <R, T extends Throwable> Optional<R>
-	getThrowableFastExclusively(Lock lock, long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
+	getFastExclusively(Lock lock, long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
 		try {
 			if (lock.tryLock() || lock.tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
 				return Optional.ofNullable(getThenUnlock(lock, supplier));
