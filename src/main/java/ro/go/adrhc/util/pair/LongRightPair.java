@@ -7,8 +7,8 @@ import lombok.experimental.Accessors;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
-@Accessors(fluent = true)
 @Getter
+@Accessors(fluent = true)
 public class LongRightPair<L> {
 	protected final L left;
 	protected final long right;
