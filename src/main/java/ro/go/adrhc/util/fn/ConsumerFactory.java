@@ -1,6 +1,7 @@
 package ro.go.adrhc.util.fn;
 
 import com.rainerhahnekamp.sneakythrow.functional.SneakyBiConsumer;
+import com.rainerhahnekamp.sneakythrow.functional.SneakyConsumer;
 import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,20 @@ import java.util.function.Consumer;
 @UtilityClass
 @Slf4j
 public class ConsumerFactory {
+	/**
+	 * @return a Consumer that should be invoked using sneakyFn's parameter
+	 */
+	public static <T, E extends Exception> Consumer<T>
+	toSilentConsumer(SneakyConsumer<T, E> sneakyConsumer) {
+		return t -> {
+			try {
+				sneakyConsumer.accept(t);
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+			}
+		};
+	}
+
 	/**
 	 * @return a Consumer that should be invoked using sneakyFn's parameter
 	 */
