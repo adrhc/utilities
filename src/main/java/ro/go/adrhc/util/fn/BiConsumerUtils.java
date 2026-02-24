@@ -10,6 +10,15 @@ import java.util.function.BinaryOperator;
 @UtilityClass
 @Slf4j
 public class BiConsumerUtils {
+	public static <T, U, E extends Exception> void
+	ignoreFailure(SneakyBiConsumer<T, U, E> sneakyFn, T t, U u) {
+		try {
+			sneakyFn.accept(t, u);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+	}
+
 	public static <T, U, E extends Exception> boolean
 	failToFalse(SneakyBiConsumer<T, U, E> sneakyFn, T t, U u) {
 		try {
