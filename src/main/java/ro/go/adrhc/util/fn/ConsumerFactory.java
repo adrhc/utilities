@@ -41,6 +41,21 @@ public class ConsumerFactory {
 	}
 
 	/**
+	 * @param p2 is the sneakyBiConsumer's 2nd parameter
+	 * @return a Consumer that should be invoked using sneakyBiConsumer's 2nd parameter
+	 */
+	public static <P1, P2, E extends Exception> Consumer<P1>
+	toSilentP1Consumer(SneakyBiConsumer<P1, P2, E> sneakyBiConsumer, P2 p2) {
+		return p1 -> {
+			try {
+				sneakyBiConsumer.accept(p1, p2);
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+			}
+		};
+	}
+
+	/**
 	 * @param p1 is the sneakyBiConsumer's 1st parameter
 	 * @return a Consumer that should be invoked using sneakyBiConsumer's 2nd parameter
 	 */
