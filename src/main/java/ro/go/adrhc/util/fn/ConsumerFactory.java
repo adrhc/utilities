@@ -16,7 +16,7 @@ public class ConsumerFactory {
 	 * @return a Consumer that should be invoked using sneakyFn's parameter
 	 */
 	public static <T, E extends Exception> Consumer<T>
-	toSilentConsumer(SneakyConsumer<T, E> sneakyConsumer) {
+	toConsumer(SneakyConsumer<T, E> sneakyConsumer) {
 		return t -> {
 			try {
 				sneakyConsumer.accept(t);
@@ -30,7 +30,7 @@ public class ConsumerFactory {
 	 * @return a Consumer that should be invoked using sneakyFn's parameter
 	 */
 	public static <T, E extends Exception> Consumer<T>
-	toSilentConsumer(SneakyFunction<T, ?, E> sneakyFn) {
+	toConsumer(SneakyFunction<T, ?, E> sneakyFn) {
 		return t -> {
 			try {
 				sneakyFn.apply(t);
@@ -45,7 +45,7 @@ public class ConsumerFactory {
 	 * @return a Consumer that should be invoked using sneakyBiConsumer's 2nd parameter
 	 */
 	public static <P1, P2, E extends Exception> Consumer<P1>
-	toSilentP1Consumer(SneakyBiConsumer<P1, P2, E> sneakyBiConsumer, P2 p2) {
+	toP1Consumer(SneakyBiConsumer<P1, P2, E> sneakyBiConsumer, P2 p2) {
 		return p1 -> {
 			try {
 				sneakyBiConsumer.accept(p1, p2);
@@ -60,7 +60,7 @@ public class ConsumerFactory {
 	 * @return a Consumer that should be invoked using sneakyBiConsumer's 2nd parameter
 	 */
 	public static <P1, P2, E extends Exception> Consumer<P2>
-	toSilentP2Consumer(SneakyBiConsumer<P1, P2, E> sneakyBiConsumer, P1 p1) {
+	toP2Consumer(SneakyBiConsumer<P1, P2, E> sneakyBiConsumer, P1 p1) {
 		return p2 -> {
 			try {
 				sneakyBiConsumer.accept(p1, p2);
