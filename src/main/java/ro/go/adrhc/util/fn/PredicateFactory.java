@@ -4,18 +4,17 @@ import com.rainerhahnekamp.sneakythrow.functional.SneakyPredicate;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
 @UtilityClass
 @Slf4j
 public class PredicateFactory {
-	public static <T> Predicate<T> failToFalse(SneakyPredicate<T, IOException> predicate) {
+	public static <T> Predicate<T> toPredicate(SneakyPredicate<T, ?> predicate) {
 		return t -> {
 			try {
 				return predicate.test(t);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				log.error(e.getMessage(), e);
 			}
 			return false;
