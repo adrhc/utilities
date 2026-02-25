@@ -3,6 +3,7 @@ package ro.go.adrhc.util.stream;
 import lombok.experimental.UtilityClass;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Spliterator;
 import java.util.stream.Collectors;
@@ -18,12 +19,20 @@ public class StreamUtils {
 	}
 
 	public static <T> Stream<T> stream(Iterable<T> iterable) {
-		return stream(false, iterable);
+		return stream(iterable.iterator());
+	}
+
+	public static <T> Stream<T> stream(Iterator<T> iterator) {
+		return stream(false, iterator);
 	}
 
 	public static <T> Stream<T> stream(boolean includeNull, Iterable<T> iterable) {
+		return stream(includeNull, iterable.iterator());
+	}
+
+	public static <T> Stream<T> stream(boolean includeNull, Iterator<T> iterator) {
 		return StreamSupport
-			.stream(spliteratorUnknownSize(iterable.iterator(), Spliterator.ORDERED), false)
+			.stream(spliteratorUnknownSize(iterator, Spliterator.ORDERED), false)
 			.filter(includeNull ? t -> true : Objects::nonNull);
 	}
 }
