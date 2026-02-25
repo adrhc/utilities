@@ -9,8 +9,8 @@ import java.util.Optional;
 @UtilityClass
 @Slf4j
 public class OptionalOutFnUtils {
-	public static <T, R, E extends Exception>
-	Optional<R> failToEmpty(SneakyFunction<T, Optional<R>, E> sneakyFn, T t) {
+	public static <T, R>
+	Optional<R> failToEmpty(SneakyFunction<T, Optional<R>, ?> sneakyFn, T t) {
 		try {
 			return sneakyFn.apply(t);
 		} catch (Exception e) {
