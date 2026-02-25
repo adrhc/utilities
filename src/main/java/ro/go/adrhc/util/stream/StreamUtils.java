@@ -20,7 +20,7 @@ public class StreamUtils {
 
 	public static <T> Stream<T> stream(boolean includeNull, Iterable<T> iterable) {
 		Iterator<T> iterator = iterable.iterator();
-		return Stream.iterate(null, o -> iterator.hasNext(), o -> null)
+		return Stream.iterate(null, o -> iterator.hasNext(), o -> o)
 			.map(o -> iterator.next())
 			.filter(includeNull ? t -> true : Objects::nonNull);
 	}

@@ -11,18 +11,18 @@ import java.util.function.BinaryOperator;
 @Slf4j
 public class BiConsumerUtils {
 	public static <T, U, E extends Exception> void
-	ignoreFailure(SneakyBiConsumer<T, U, E> sneakyFn, T t, U u) {
+	ignoreFailure(SneakyBiConsumer<T, U, E> sneakyBiConsumer, T t, U u) {
 		try {
-			sneakyFn.accept(t, u);
+			sneakyBiConsumer.accept(t, u);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
 	}
 
 	public static <T, U, E extends Exception> boolean
-	failToFalse(SneakyBiConsumer<T, U, E> sneakyFn, T t, U u) {
+	failToFalse(SneakyBiConsumer<T, U, E> sneakyBiConsumer, T t, U u) {
 		try {
-			sneakyFn.accept(t, u);
+			sneakyBiConsumer.accept(t, u);
 			return true;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
