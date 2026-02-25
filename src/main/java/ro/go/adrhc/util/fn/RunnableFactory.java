@@ -1,6 +1,7 @@
 package ro.go.adrhc.util.fn;
 
 import com.rainerhahnekamp.sneakythrow.functional.SneakyConsumer;
+import com.rainerhahnekamp.sneakythrow.functional.SneakyRunnable;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,6 +10,17 @@ import lombok.extern.slf4j.Slf4j;
 public class RunnableFactory {
 	public static Runnable doNothing() {
 		return () -> {
+		};
+	}
+
+	public static <E extends Exception> Runnable
+	toRunnable(SneakyRunnable<E> sneakyRunnable) {
+		return () -> {
+			try {
+				sneakyRunnable.run();
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+			}
 		};
 	}
 
