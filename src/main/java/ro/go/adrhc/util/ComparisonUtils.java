@@ -38,6 +38,10 @@ public class ComparisonUtils {
 		return compareCollections(set1, set2, true);
 	}
 
+	/**
+	 * Compares two collections by their size and, if they are of the
+	 * same size, by their elements, optionally ignoring their order.
+	 */
 	public static <T extends Comparable<T>> int compareCollections(
 		Collection<T> set1, Collection<T> set2, boolean ignoreTheOrder) {
 		List<T> list1 = List.copyOf(set1);
