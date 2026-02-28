@@ -35,7 +35,7 @@ public class FilenameUtils {
 	public static String sanitize(String fileName) {
 		return RegExUtils
 			.replacePattern(fileName, "[<>:\"/\\\\|\\?\\*!;\\{\\}]", " ")
-			.replaceAll("\\s+", " ")
+			.replaceAll("\\s{2,}", " ")
 			.trim();
 	}
 
