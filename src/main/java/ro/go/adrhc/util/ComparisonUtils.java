@@ -43,19 +43,19 @@ public class ComparisonUtils {
 	 * same size, by their elements, optionally ignoring their order.
 	 */
 	public static <T extends Comparable<T>> int compareCollections(
-		Collection<T> set1, Collection<T> set2, boolean ignoreTheOrder) {
+		Collection<T> set1, Collection<T> set2, boolean ignoreOrder) {
 		List<T> list1 = List.copyOf(set1);
 		List<T> list2 = List.copyOf(set2);
-		return compareLists(list1, list2, ignoreTheOrder);
+		return compareLists(list1, list2, ignoreOrder);
 	}
 
 	public static <T extends Comparable<T>> int
-	compareLists(List<T> list, List<T> other, boolean ignoreTheOrder) {
+	compareLists(List<T> list, List<T> other, boolean ignoreOrder) {
 		if (list.size() > other.size()) {
 			return 1;
 		} else if (list.size() < other.size()) {
 			return -1;
-		} else if (ignoreTheOrder && Set.copyOf(list).containsAll(other)) {
+		} else if (ignoreOrder && Set.copyOf(list).containsAll(other)) {
 			return 0;
 		}
 		return compareElemsOnEqualPositions(list, other);
