@@ -5,10 +5,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.*;
-import java.util.stream.Collector;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
+import java.util.stream.*;
 
 import static ro.go.adrhc.util.concurrency.FutureUtils.safelyGetAll;
 
@@ -78,6 +75,10 @@ public interface StreamOwner<T> {
 
 	default LongStream mapToLong(ToLongFunction<? super T> mapper) {
 		return stream().mapToLong(mapper);
+	}
+
+	default <R> Stream<R> gather(Gatherer<? super T, ?, R> gatherer) {
+		return stream().gather(gatherer);
 	}
 
 	default <R> Stream<R> mapMulti(BiConsumer<? super T, ? super Consumer<R>> mapper) {
