@@ -95,11 +95,11 @@ public interface StreamOwner<T> {
 	}
 
 	default <R> Stream<R> parallelMapOptionals(Function<? super T, Optional<R>> mapper) {
-		return parallel().flatMap(mapper.andThen(Optional::stream));
+		return parallel().mapMulti((t, c) -> mapper.apply(t).ifPresent(c));
 	}
 
 	default <R> Stream<R> mapOptionals(Function<? super T, Optional<R>> mapper) {
-		return stream().flatMap(mapper.andThen(Optional::stream));
+		return stream().mapMulti((t, c) -> mapper.apply(t).ifPresent(c));
 	}
 
 	/**

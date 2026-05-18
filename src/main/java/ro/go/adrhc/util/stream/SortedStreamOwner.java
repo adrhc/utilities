@@ -14,8 +14,7 @@ public interface SortedStreamOwner<T> extends StreamOwner<T> {
 		sortedStream().forEach(consumer);
 	}
 
-	default <R> List<R> sortMapOptionalsToList(
-		Function<? super T, Optional<R>> mapper) {
+	default <R> List<R> sortMapOptionalsToList(Function<? super T, Optional<R>> mapper) {
 		return sortMapOptionals(mapper).toList();
 	}
 
@@ -32,7 +31,7 @@ public interface SortedStreamOwner<T> extends StreamOwner<T> {
 	}
 
 	default <R> Stream<R> sortMapOptionals(Function<? super T, Optional<R>> mapper) {
-		return sortFlatMap(o -> mapper.apply(o).stream());
+		return sortedStream().mapMulti((t, c) -> mapper.apply(t).ifPresent(c));
 	}
 
 	default <R> Stream<R> sortMap(Function<? super T, ? extends R> mapper) {
