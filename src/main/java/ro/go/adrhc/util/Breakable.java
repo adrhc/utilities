@@ -1,6 +1,6 @@
 package ro.go.adrhc.util;
 
 @FunctionalInterface
-public interface Breakable<T> {
+public interface Breakable {
 	boolean isBroken();
 }
