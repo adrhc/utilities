@@ -31,6 +31,14 @@ public class ReadWriteLockMap {
 		return new ReadWriteLockMap(locks);
 	}
 
+	public void lockAllForRead() {
+		readWriteLocks.values().stream().map(ReadWriteLock::readLock).forEach(Lock::lock);
+	}
+
+	public void unlockAllForRead() {
+		readWriteLocks.values().stream().map(ReadWriteLock::readLock).forEach(Lock::unlock);
+	}
+
 	public void lockAllForWrite() {
 		readWriteLocks.values().stream().map(ReadWriteLock::writeLock).forEach(Lock::lock);
 	}
