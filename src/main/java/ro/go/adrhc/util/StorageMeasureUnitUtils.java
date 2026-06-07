@@ -10,12 +10,24 @@ public class StorageMeasureUnitUtils {
 //	public static final double MEGA_BYTE_DOUBLE = 1d * MEGA_BYTE;
 //	public static final long GIGA_BYTE = 1024 * MEGA_BYTE;
 //	public static final double GIGA_BYTE_DOUBLE = 1d * GIGA_BYTE;
+	public static final long KIBI_BYTE = 1024;
+	public static final double KIBI_BYTE_DOUBLE = 1024d;
+	public static final long MEBI_BYTE = 1024 * KIBI_BYTE;
+	public static final double MEBI_BYTE_DOUBLE = 1d * MEBI_BYTE;
 	public static final long KILO_BYTE = 1000;
 	public static final double KILO_BYTE_DOUBLE = 1000d;
 	public static final long MEGA_BYTE = 1000 * KILO_BYTE;
 	public static final double MEGA_BYTE_DOUBLE = 1d * MEGA_BYTE;
 	public static final long GIGA_BYTE = 1000 * MEGA_BYTE;
 	public static final double GIGA_BYTE_DOUBLE = 1d * GIGA_BYTE;
+
+	public static long kibToBytes(int megaBytes) {
+		return megaBytes * KIBI_BYTE;
+	}
+
+	public static long mibToBytes(int megaBytes) {
+		return megaBytes * MEBI_BYTE;
+	}
 
 	public static long kbToBytes(int megaBytes) {
 		return megaBytes * KILO_BYTE;
