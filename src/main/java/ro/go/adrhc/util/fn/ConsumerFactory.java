@@ -16,7 +16,7 @@ public class ConsumerFactory {
 	 * @return a Consumer that should be invoked using sneakyFn's parameter
 	 */
 	public static <T, E extends Exception> Consumer<T>
-	toSilentConsumer(SneakyConsumer<T, E> sneakyConsumer) {
+	cToSilentConsumer(SneakyConsumer<T, E> sneakyConsumer) {
 		return t -> {
 			try {
 				sneakyConsumer.accept(t);
@@ -30,7 +30,7 @@ public class ConsumerFactory {
 	 * @return a Consumer that should be invoked using sneakyFn's parameter
 	 */
 	public static <T, E extends Exception> Consumer<T>
-	toSilentConsumer(SneakyFunction<T, ?, E> sneakyFn) {
+	fnToSilentConsumer(SneakyFunction<T, ?, E> sneakyFn) {
 		return t -> {
 			try {
 				sneakyFn.apply(t);
