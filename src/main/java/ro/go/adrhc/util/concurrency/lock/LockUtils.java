@@ -27,7 +27,7 @@ public class LockUtils {
 	}
 
 	public static <T extends Throwable> void
-	runSafelyExclusively(Lock lock, ThrowableRunnable<T> runnable) throws T {
+	runExclusively(Lock lock, ThrowableRunnable<T> runnable) throws T {
 		lock.lock();
 		try {
 			runnable.run();
@@ -40,9 +40,9 @@ public class LockUtils {
 	 * @return supplier's outcome or empty if the lock can't be obtained
 	 */
 	public static <R, T extends Throwable> Optional<R>
-	getOptionallyNowSafelyExclusively(Lock lock, ThrowableSupplier<R, T> supplier) throws T {
+	getOptionallyNowExclusively(Lock lock, ThrowableSupplier<R, T> supplier) throws T {
 		if (lock.tryLock()) {
-			return Optional.ofNullable(getSafelyThenUnlock(lock, supplier));
+			return Optional.ofNullable(getThenUnlock(lock, supplier));
 		} else {
 			return Optional.empty();
 		}
@@ -53,13 +53,11 @@ public class LockUtils {
 	 *
 	 * @return supplier's outcome or empty if the lock can't be obtained
 	 */
-	public static <I, R, T extends Throwable> Optional<R>
-	applyOptionallyOnTimeSafelyExclusively(Lock lock, long waitMillis, I input,
-		ThrowableFunction<I, R, T> fn)
-		throws T {
+	public static <I, R, T extends Throwable> Optional<R> applyOptionallyOnTimeExclusively(
+		Lock lock, long waitMillis, I input, ThrowableFunction<I, R, T> fn) throws T {
 		try {
 			if (lock.tryLock() || lock.tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
-				return Optional.ofNullable(applySafelyThenUnlock(lock, input, fn));
+				return Optional.ofNullable(applyThenUnlock(lock, input, fn));
 			} else {
 				return Optional.empty();
 			}
@@ -128,18 +126,8 @@ public class LockUtils {
 		}
 	}
 
-	/*public static <R, E extends Exception> R
-	getSafelyExclusively(Lock lock, SneakySupplier<R, E> supplier) throws E {
-		lock.lock();
-		try {
-			return supplier.get();
-		} finally {
-			lock.unlock();
-		}
-	}*/
-
 	public static <R, T extends Throwable> R
-	getSafelyExclusively(Lock lock, ThrowableSupplier<R, T> supplier) throws T {
+	getExclusively(Lock lock, ThrowableSupplier<R, T> supplier) throws T {
 		lock.lock();
 		try {
 			return supplier.get();
@@ -148,31 +136,16 @@ public class LockUtils {
 		}
 	}
 
-	/*public static <R, E extends Exception> R getOnTimeSafelyExclusively(
-		Lock lock, long waitMillis, SneakySupplier<R, E> supplier)
-		throws E, InterruptedException, LockWaitTimeoutException {
-		if (lock.tryLock() || lock.tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
-			try {
-				return supplier.get();
-			} finally {
-				lock.unlock();
-			}
-		} else {
-			throw new LockWaitTimeoutException(waitMillis);
-		}
-	}*/
-
 	/**
 	 * Wait "waitMillisForFast" milliseconds.
 	 *
 	 * @return supplier's outcome or empty if the lock can't be obtained
 	 */
-	public static <R, T extends Throwable> Optional<R>
-	getOptionallyOnTimeSafelyExclusively(Lock lock, long waitMillis, ThrowableSupplier<R, T> supplier)
-		throws T {
+	public static <R, T extends Throwable> Optional<R> getOptionallyOnTimeExclusively(
+		Lock lock, long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
 		try {
 			if (lock.tryLock() || lock.tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
-				return Optional.ofNullable(getSafelyThenUnlock(lock, supplier));
+				return Optional.ofNullable(getThenUnlock(lock, supplier));
 			} else {
 				return Optional.empty();
 			}
@@ -182,7 +155,7 @@ public class LockUtils {
 		}
 	}
 
-	public static <R, T extends Throwable> R getOnTimeSafelyExclusively(
+	public static <R, T extends Throwable> R getOnTimeExclusively(
 		Lock lock, long waitMillis, ThrowableSupplier<R, T> supplier)
 		throws T, InterruptedException, LockWaitTimeoutException {
 		if (lock.tryLock() || lock.tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
@@ -196,7 +169,7 @@ public class LockUtils {
 		}
 	}
 
-	public static <O, T extends Throwable> void acceptOnTimeSafelyExclusively(
+	public static <O, T extends Throwable> void acceptOnTimeExclusively(
 		Lock lock, long waitMillis, O o, ThrowableConsumer<O, T> consumer)
 		throws T, InterruptedException, LockWaitTimeoutException {
 		if (lock.tryLock() || lock.tryLock(waitMillis, TimeUnit.MILLISECONDS)) {
@@ -211,7 +184,7 @@ public class LockUtils {
 	}
 
 	private static <R, T extends Throwable> R
-	getSafelyThenUnlock(Lock lock, ThrowableSupplier<R, T> supplier) throws T {
+	getThenUnlock(Lock lock, ThrowableSupplier<R, T> supplier) throws T {
 		try {
 			return supplier.get();
 		} finally {
@@ -220,7 +193,7 @@ public class LockUtils {
 	}
 
 	private static <I, R, T extends Throwable> R
-	applySafelyThenUnlock(Lock lock, I input, ThrowableFunction<I, R, T> fn) throws T {
+	applyThenUnlock(Lock lock, I input, ThrowableFunction<I, R, T> fn) throws T {
 		try {
 			return fn.apply(input);
 		} finally {

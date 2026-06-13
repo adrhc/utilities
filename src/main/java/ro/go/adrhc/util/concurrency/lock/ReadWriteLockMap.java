@@ -32,7 +32,7 @@ public class ReadWriteLockMap {
 		return new ReadWriteLockMap(locks);
 	}
 
-	public <R, T extends Throwable> R aroundAllForRead(ThrowableSupplier<R, T> supplier) throws T {
+	public <R, T extends Throwable> R getReadExclusively(ThrowableSupplier<R, T> supplier) throws T {
 		lockAllForRead();
 		try {
 			return supplier.get();
@@ -41,7 +41,7 @@ public class ReadWriteLockMap {
 		}
 	}
 
-	public <R, T extends Throwable> R aroundAllForWrite(ThrowableSupplier<R, T> supplier) throws T {
+	public <R, T extends Throwable> R getWriteExclusively(ThrowableSupplier<R, T> supplier) throws T {
 		lockAllForWrite();
 		try {
 			return supplier.get();
@@ -66,16 +66,16 @@ public class ReadWriteLockMap {
 		readWriteLocks.values().stream().map(ReadWriteLock::writeLock).forEach(Lock::unlock);
 	}
 
-	public <T extends Throwable> void runWithLockForRead(
+	public <T extends Throwable> void runReadExclusively(
 		String lockName, ThrowableRunnable<T> runnable) throws T {
 		Lock lock = readWriteLocks.get(lockName).readLock();
-		LockUtils.runSafelyExclusively(lock, runnable);
+		LockUtils.runExclusively(lock, runnable);
 	}
 
-	public <T extends Throwable> void runWithLockForWrite(
+	public <T extends Throwable> void runWriteExclusively(
 		String lockName, ThrowableRunnable<T> runnable) throws T {
 		Lock lock = readWriteLocks.get(lockName).writeLock();
-		LockUtils.runSafelyExclusively(lock, runnable);
+		LockUtils.runExclusively(lock, runnable);
 	}
 
 	/**
@@ -83,10 +83,10 @@ public class ReadWriteLockMap {
 	 *
 	 * @return supplier's outcome or empty if the lock can't be obtained
 	 */
-	public <R, T extends Throwable> Optional<R> getOptionallyOnTimeSafelyReadExclusively(
+	public <R, T extends Throwable> Optional<R> getOptionallyOnTimeReadExclusively(
 		String lockName, long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
 		Lock lock = readWriteLocks.get(lockName).readLock();
-		return LockUtils.getOptionallyOnTimeSafelyExclusively(lock, waitMillis, supplier);
+		return LockUtils.getOptionallyOnTimeExclusively(lock, waitMillis, supplier);
 	}
 
 	/**
@@ -94,36 +94,36 @@ public class ReadWriteLockMap {
 	 *
 	 * @return supplier's outcome or empty if the lock can't be obtained
 	 */
-	public <R, T extends Throwable> Optional<R> getOptionallyOnTimeSafelyWriteExclusively(
+	public <R, T extends Throwable> Optional<R> getOptionallyOnTimeWriteExclusively(
 		String lockName, long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
 		Lock lock = readWriteLocks.get(lockName).writeLock();
-		return LockUtils.getOptionallyOnTimeSafelyExclusively(lock, waitMillis, supplier);
+		return LockUtils.getOptionallyOnTimeExclusively(lock, waitMillis, supplier);
 	}
 
-	public <R, T extends Throwable> R getSafelyReadExclusively(
+	public <R, T extends Throwable> R getReadExclusively(
 		String lockName, ThrowableSupplier<R, T> supplier) throws T {
 		Lock lock = readWriteLocks.get(lockName).readLock();
-		return LockUtils.getSafelyExclusively(lock, supplier);
+		return LockUtils.getExclusively(lock, supplier);
 	}
 
-	public <R, T extends Throwable> R getOnTimeSafelyReadExclusively(
+	public <R, T extends Throwable> R getOnTimeReadExclusively(
 		String lockName, long waitMillis, ThrowableSupplier<R, T> supplier)
 		throws T, LockWaitTimeoutException, InterruptedException {
 		Lock lock = readWriteLocks.get(lockName).readLock();
-		return LockUtils.getOnTimeSafelyExclusively(lock, waitMillis, supplier);
+		return LockUtils.getOnTimeExclusively(lock, waitMillis, supplier);
 	}
 
-	public <R, T extends Throwable> R getSafelyWriteExclusively(
+	public <R, T extends Throwable> R getWriteExclusively(
 		String lockName, ThrowableSupplier<R, T> supplier) throws T {
 		Lock lock = readWriteLocks.get(lockName).writeLock();
-		return LockUtils.getSafelyExclusively(lock, supplier);
+		return LockUtils.getExclusively(lock, supplier);
 	}
 
-	public <R, T extends Throwable> R getOnTimeSafelyWriteExclusively(
+	public <R, T extends Throwable> R getOnTimeWriteExclusively(
 		String lockName, long waitMillis, ThrowableSupplier<R, T> supplier)
 		throws T, LockWaitTimeoutException, InterruptedException {
 		Lock lock = readWriteLocks.get(lockName).writeLock();
-		return LockUtils.getOnTimeSafelyExclusively(lock, waitMillis, supplier);
+		return LockUtils.getOnTimeExclusively(lock, waitMillis, supplier);
 	}
 
 	public Set<String> lockNames() {

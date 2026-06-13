@@ -41,21 +41,21 @@ public class SmartLock {
 	}
 
 	public <R, T extends Throwable> Optional<R>
-	getOptionallyNowSafelyExclusively(ThrowableSupplier<R, T> supplier) throws T {
-		return LockUtils.getOptionallyNowSafelyExclusively(lock, supplier);
+	getOptionallyNowExclusively(ThrowableSupplier<R, T> supplier) throws T {
+		return LockUtils.getOptionallyNowExclusively(lock, supplier);
 	}
 
 	public <R, T extends Throwable> Optional<R>
-	getOptionallyOnTimeSafelyExclusively(long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
-		return LockUtils.getOptionallyOnTimeSafelyExclusively(lock, waitMillis, supplier);
+	getOptionallyOnTimeExclusively(long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
+		return LockUtils.getOptionallyOnTimeExclusively(lock, waitMillis, supplier);
 	}
 
 	public void runExclusively(Runnable runnable) {
 		LockUtils.runExclusively(lock, runnable);
 	}
 
-	public <T extends Throwable> void runSafelyExclusively(ThrowableRunnable<T> runnable) throws T {
-		LockUtils.runSafelyExclusively(lock, runnable);
+	public <T extends Throwable> void runExclusively(ThrowableRunnable<T> runnable) throws T {
+		LockUtils.runExclusively(lock, runnable);
 	}
 
 	public <O, R> R applyExclusively(O o, Function<O, R> fn) {
@@ -72,12 +72,12 @@ public class SmartLock {
 	}
 
 	public <R, T extends Throwable> R
-	getOnTimeSafelyExclusively(long waitMillis, ThrowableSupplier<R, T> supplier)
+	getOnTimeExclusively(long waitMillis, ThrowableSupplier<R, T> supplier)
 		throws T, InterruptedException, LockWaitTimeoutException {
-		return LockUtils.getOnTimeSafelyExclusively(lock, waitMillis, supplier);
+		return LockUtils.getOnTimeExclusively(lock, waitMillis, supplier);
 	}
 
-	public <R, T extends Throwable> R getSafelyExclusively(ThrowableSupplier<R, T> supplier) throws T {
-		return LockUtils.getSafelyExclusively(lock, supplier);
+	public <R, T extends Throwable> R getExclusively(ThrowableSupplier<R, T> supplier) throws T {
+		return LockUtils.getExclusively(lock, supplier);
 	}
 }
