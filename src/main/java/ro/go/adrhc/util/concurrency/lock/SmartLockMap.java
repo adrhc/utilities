@@ -22,15 +22,15 @@ public class SmartLockMap {
 		return new SmartLockMap(locks);
 	}
 
-	public <R, T extends Throwable> R syncThrowableGet(
+	public <R, T extends Throwable> R getSafelyExclusively(
 		String lockName, ThrowableSupplier<R, T> supplier) throws T {
-		return locks.get(lockName).synchronizeThrowableGet(supplier);
+		return locks.get(lockName).getSafelyExclusively(supplier);
 	}
 
-	public <R, T extends Throwable> R syncThrowableGet(
+	public <R, T extends Throwable> R getOnTimeSafelyExclusively(
 		String lockName, long waitMillis, ThrowableSupplier<R, T> supplier)
 		throws T, LockWaitTimeoutException, InterruptedException {
-		return locks.get(lockName).synchronizeThrowableGet(waitMillis, supplier);
+		return locks.get(lockName).getOnTimeSafelyExclusively(waitMillis, supplier);
 	}
 
 	/**
@@ -38,9 +38,9 @@ public class SmartLockMap {
 	 *
 	 * @return supplier's outcome or empty if the lock can't be obtained
 	 */
-	public <R, T extends Throwable> Optional<R> getFastExclusively(
+	public <R, T extends Throwable> Optional<R> getOptionallyOnTimeSafelyExclusively(
 		String lockName, long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
-		return locks.get(lockName).getFastExclusively(waitMillis, supplier);
+		return locks.get(lockName).getOptionallyOnTimeSafelyExclusively(waitMillis, supplier);
 	}
 
 	public void lockAll() {

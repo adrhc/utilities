@@ -1,8 +1,7 @@
 package ro.go.adrhc.util.concurrency.lock;
 
-import com.rainerhahnekamp.sneakythrow.functional.SneakyRunnable;
-import com.rainerhahnekamp.sneakythrow.functional.SneakySupplier;
 import lombok.RequiredArgsConstructor;
+import ro.go.adrhc.util.fn.ThrowableRunnable;
 import ro.go.adrhc.util.fn.ThrowableSupplier;
 
 import java.util.Optional;
@@ -42,54 +41,43 @@ public class SmartLock {
 	}
 
 	public <R, T extends Throwable> Optional<R>
-	getNowExclusively(ThrowableSupplier<R, T> supplier) throws T {
-		return LockUtils.getNowExclusively(lock, supplier);
+	getOptionallyNowSafelyExclusively(ThrowableSupplier<R, T> supplier) throws T {
+		return LockUtils.getOptionallyNowSafelyExclusively(lock, supplier);
 	}
 
 	public <R, T extends Throwable> Optional<R>
-	getFastExclusively(long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
-		return LockUtils.getFastExclusively(lock, waitMillis, supplier);
+	getOptionallyOnTimeSafelyExclusively(long waitMillis, ThrowableSupplier<R, T> supplier) throws T {
+		return LockUtils.getOptionallyOnTimeSafelyExclusively(lock, waitMillis, supplier);
 	}
 
-	public void synchronizeRun(Runnable runnable) {
-		LockUtils.synchronizeRun(lock, runnable);
+	public void runExclusively(Runnable runnable) {
+		LockUtils.runExclusively(lock, runnable);
 	}
 
-	public <E extends Exception> void synchronizeUnsafeRun(SneakyRunnable<E> runnable) throws E {
-		LockUtils.synchronizeUnsafeRun(lock, runnable);
+	public <T extends Throwable> void runSafelyExclusively(ThrowableRunnable<T> runnable) throws T {
+		LockUtils.runSafelyExclusively(lock, runnable);
 	}
 
-	public <O, R> R synchronizeApply(O o, Function<O, R> fn) {
-		return LockUtils.synchronizeApply(lock, o, fn);
+	public <O, R> R applyExclusively(O o, Function<O, R> fn) {
+		return LockUtils.applyExclusively(lock, o, fn);
 	}
 
-	public <T> T synchronizeGet(Supplier<T> supplier) {
-		return LockUtils.synchronizeGet(lock, supplier);
+	public <R> R getExclusively(Supplier<R> supplier) {
+		return LockUtils.getExclusively(lock, supplier);
 	}
 
-	public <T> T synchronizeGet(long waitMillis, Supplier<T> supplier)
+	public <R> R getOnTimeExclusively(long waitMillis, Supplier<R> supplier)
 		throws InterruptedException, LockWaitTimeoutException {
-		return LockUtils.synchronizeGet(lock, waitMillis, supplier);
-	}
-
-	public <T, E extends Exception> T synchronizeUnsafeGet(SneakySupplier<T, E> supplier) throws E {
-		return LockUtils.synchronizeUnsafeGet(lock, supplier);
-	}
-
-	public <T, E extends Exception> T
-	synchronizeUnsafeGet(long waitMillis, SneakySupplier<T, E> supplier)
-		throws E, InterruptedException, LockWaitTimeoutException {
-		return LockUtils.synchronizeUnsafeGet(lock, waitMillis, supplier);
+		return LockUtils.getOnTimeExclusively(lock, waitMillis, supplier);
 	}
 
 	public <R, T extends Throwable> R
-	synchronizeThrowableGet(ThrowableSupplier<R, T> supplier) throws T {
-		return LockUtils.synchronizeThrowableGet(lock, supplier);
-	}
-
-	public <R, T extends Throwable> R
-	synchronizeThrowableGet(long waitMillis, ThrowableSupplier<R, T> supplier)
+	getOnTimeSafelyExclusively(long waitMillis, ThrowableSupplier<R, T> supplier)
 		throws T, InterruptedException, LockWaitTimeoutException {
-		return LockUtils.synchronizeThrowableGet(lock, waitMillis, supplier);
+		return LockUtils.getOnTimeSafelyExclusively(lock, waitMillis, supplier);
+	}
+
+	public <R, T extends Throwable> R getSafelyExclusively(ThrowableSupplier<R, T> supplier) throws T {
+		return LockUtils.getSafelyExclusively(lock, supplier);
 	}
 }
