@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static ro.go.adrhc.util.fn.FunctionUtils.failToEmpty;
 
@@ -65,11 +66,19 @@ public class FunctionFactory {
 		};
 	}
 
+	/**
+	 * @return true for success and false for failure
+	 */
 	public static <T, E extends Exception> SneakyFunction<T, Boolean, E>
-	finishWithTrue(SneakyConsumer<T, E> sneakyFn) throws E {
+	toBooleanFn(SneakyConsumer<T, E> sneakyFn) {
 		return t -> {
-			sneakyFn.accept(t);
-			return TRUE;
+			try {
+				sneakyFn.accept(t);
+				return TRUE;
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+			}
+			return FALSE;
 		};
 	}
 }
