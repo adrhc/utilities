@@ -28,8 +28,8 @@ public class OptionalFactory {
 	 * @return an Optional of the "supplier"'s product if the condition is true, otherwise Optional.empty()
 	 */
 	public <T, E extends Exception> Optional<T>
-	ofConditionedSneakySupplier(boolean condition, SneakySupplier<? extends T, E> supplier) throws E {
-		return condition ? Optional.ofNullable(supplier.get()) : Optional.empty();
+	ofConditionedSneakySupplier(boolean condition, SneakySupplier<? extends T, E> supplier) {
+		return condition ? ofSneakySupplier(supplier) : Optional.empty();
 	}
 
 	/**
