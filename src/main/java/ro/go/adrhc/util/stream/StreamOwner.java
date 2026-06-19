@@ -1,6 +1,7 @@
 package ro.go.adrhc.util.stream;
 
 import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
+import ro.go.adrhc.util.exception.HiddenException;
 
 import java.util.List;
 import java.util.Optional;
@@ -110,12 +111,12 @@ public interface StreamOwner<T> {
 	 * <p>If {@code mapper} throws:
 	 * <ul>
 	 *   <li>{@link RuntimeException} is rethrown as-is</li>
-	 *   <li>checked exceptions are wrapped in {@link StreamProcessingException}</li>
+	 *   <li>checked exceptions are wrapped in {@link HiddenException}</li>
 	 * </ul>
 	 *
 	 * <p>Note: because this is a stream pipeline, exceptions are raised during terminal operations.
 	 *
-	 * @throws StreamProcessingException when mapper throws a checked exception
+	 * @throws HiddenException when mapper throws a checked exception
 	 */
 	default <E extends Exception, R> Stream<R>
 	mapOptionalsUnchecked(SneakyFunction<? super T, Optional<R>, E> mapper) {
@@ -125,7 +126,7 @@ public interface StreamOwner<T> {
 			} catch (RuntimeException e) {
 				throw e;
 			} catch (Exception e) {
-				throw new StreamProcessingException(e);
+				throw new HiddenException(e);
 			}
 		});
 	}
@@ -147,12 +148,12 @@ public interface StreamOwner<T> {
 	 * <p>If {@code mapper} throws:
 	 * <ul>
 	 *   <li>{@link RuntimeException} is rethrown as-is</li>
-	 *   <li>checked exceptions are wrapped in {@link StreamProcessingException}</li>
+	 *   <li>checked exceptions are wrapped in {@link HiddenException}</li>
 	 * </ul>
 	 *
 	 * <p>Note: because this is a stream pipeline, exceptions are raised during terminal operations.
 	 *
-	 * @throws StreamProcessingException when mapper throws a checked exception
+	 * @throws HiddenException when mapper throws a checked exception
 	 */
 	default <E extends Exception, R> Stream<R>
 	mapUnchecked(SneakyFunction<? super T, R, E> mapper) {
@@ -162,7 +163,7 @@ public interface StreamOwner<T> {
 			} catch (RuntimeException e) {
 				throw e;
 			} catch (Exception e) {
-				throw new StreamProcessingException(e);
+				throw new HiddenException(e);
 			}
 		});
 	}
