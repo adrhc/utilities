@@ -1,5 +1,7 @@
 package ro.go.adrhc.util.stream;
 
+import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -100,6 +102,32 @@ public interface StreamOwner<T> {
 
 	default <R> Stream<R> mapOptionals(Function<? super T, Optional<R>> mapper) {
 		return stream().mapMulti((t, c) -> mapper.apply(t).ifPresent(c));
+	}
+
+	/**
+	 * Maps each element to an Optional and emits present values.
+	 *
+	 * <p>If {@code mapper} throws:
+	 * <ul>
+	 *   <li>{@link RuntimeException} is rethrown as-is</li>
+	 *   <li>checked exceptions are wrapped in {@link StreamProcessingException}</li>
+	 * </ul>
+	 *
+	 * <p>Note: because this is a stream pipeline, exceptions are raised during terminal operations.
+	 *
+	 * @throws StreamProcessingException when mapper throws a checked exception
+	 */
+	default <E extends Exception, R> Stream<R>
+	mapOptionalsUnchecked(SneakyFunction<? super T, Optional<R>, E> mapper) {
+		return stream().mapMulti((t, c) -> {
+			try {
+				mapper.apply(t).ifPresent(c);
+			} catch (RuntimeException e) {
+				throw e;
+			} catch (Exception e) {
+				throw new StreamProcessingException(e);
+			}
+		});
 	}
 
 	/**
