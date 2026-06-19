@@ -143,6 +143,30 @@ public interface StreamOwner<T> {
 		return parallel().map(mapper);
 	}
 
+	/**
+	 * <p>If {@code mapper} throws:
+	 * <ul>
+	 *   <li>{@link RuntimeException} is rethrown as-is</li>
+	 *   <li>checked exceptions are wrapped in {@link StreamProcessingException}</li>
+	 * </ul>
+	 *
+	 * <p>Note: because this is a stream pipeline, exceptions are raised during terminal operations.
+	 *
+	 * @throws StreamProcessingException when mapper throws a checked exception
+	 */
+	default <E extends Exception, R> Stream<R>
+	mapUnchecked(SneakyFunction<? super T, R, E> mapper) {
+		return stream().mapMulti((t, c) -> {
+			try {
+				c.accept(mapper.apply(t));
+			} catch (RuntimeException e) {
+				throw e;
+			} catch (Exception e) {
+				throw new StreamProcessingException(e);
+			}
+		});
+	}
+
 	default <R> Stream<R> map(Function<? super T, ? extends R> mapper) {
 		return stream().map(mapper);
 	}
