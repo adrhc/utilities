@@ -8,15 +8,21 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+import static ro.go.adrhc.util.fn.ConsumerUtils.useAndReturnNull;
 import static ro.go.adrhc.util.fn.FunctionUtils.failToEmpty;
 
 @UtilityClass
 @Slf4j
 public class FunctionFactory {
+	public static <T, R> Function<T, R> toNullResultFn(Consumer<T> runnable) {
+		return t -> useAndReturnNull(runnable, t);
+	}
+
 	public static <P1, P2, R> Function<P1, R> toP1Fn(BiFunction<P1, P2, R> biFunction, P2 p2) {
 		return p1 -> biFunction.apply(p1, p2);
 	}
