@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -45,7 +44,7 @@ public class FutureUtils {
 	}
 
 	public static <T> Stream<T> safelyGetAll(Stream<? extends CompletableFuture<T>> futures) {
-		return safelyWaitAndGetThemAll(futures).map(FutureUtils::safelyGet).flatMap(Optional::stream);
+		return futures.map(FutureUtils::safelyGet).flatMap(Optional::stream);
 	}
 
 	public static <T> Optional<T> safelyGet(Future<T> future) {
@@ -55,11 +54,5 @@ public class FutureUtils {
 			log.error(e.getMessage(), e);
 		}
 		return Optional.empty();
-	}
-
-	private static <T, F extends Future<T>> Stream<F> safelyWaitAndGetThemAll(Stream<F> futures) {
-		List<F> futuresList = futures.toList();
-		safelyWaitAll(futuresList.stream());
-		return futuresList.stream();
 	}
 }
