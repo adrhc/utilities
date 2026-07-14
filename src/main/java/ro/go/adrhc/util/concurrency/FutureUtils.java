@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -20,6 +21,10 @@ public class FutureUtils {
 
 	public static void safelyWaitAll(Future<?>... future) {
 		safelyWaitAll(Arrays.stream(future));
+	}
+
+	public static void safelyWaitAll(Collection<? extends Future<?>> futures) {
+		futures.forEach(FutureUtils::safelyWait);
 	}
 
 	public static void safelyWaitAll(Stream<? extends Future<?>> futures) {
