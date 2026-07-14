@@ -2,14 +2,13 @@ package ro.go.adrhc.util.streamer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ro.go.adrhc.util.concurrency.FutureUtils;
 
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-
-import static ro.go.adrhc.util.concurrency.FutureUtils.waitAll;
 
 /**
  * Not thread safe!
@@ -32,7 +31,7 @@ public class FuturesStoppableVisitable<T> extends AbstractVisitorAwareStoppableV
 
 	public void accept(Consumer<? super T> elemCollector) {
 		this.visitor = elemCollector;
-		waitAll(attachFuturesOutcomeCollector());
+		FutureUtils.safelyWaitAll(attachFuturesOutcomeCollector());
 	}
 
 	@Override
